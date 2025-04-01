@@ -1,0 +1,61 @@
+// utils/imageMap.js
+export const imageMap = {
+  'aglaonema': require('../assets/aglaonema.jpg'),
+  'african violet': require('../assets/african-violet.jpg'),
+  'alocasia': require('../assets/alocasia.jpg'),
+  'aloe vera': require('../assets/aloe-vera.jpg'),
+  'anthurium': require('../assets/anthurium.jpg'),
+  'amaryllis': require('../assets/amaryllis.jpg'),
+  'banana': require('../assets/banana-plant.jpg'),
+  'begonia': require('../assets/begonia.jpg'),
+  'bromeliad': require('../assets/bromeliad.jpg'),
+  'cactus': require('../assets/cactus.jpg'),
+  'calathea': require('../assets/calathea-plant.jpg'),
+  'cast iron plant': require('../assets/cast-iron-plant.jpg'), 
+  'coffee plant': require('../assets/coffee-plant.jpg'),
+  'coleus': require('../assets/coleus.jpg'),
+  'croton': require('../assets/croton.jpg'),
+  'cyclamen': require('../assets/cyclamen.jpg'),
+  'dieffenbachia': require('../assets/dieffenbachia.jpg'),
+  'dracaena': require('../assets/dracaena.jpg'),
+  'pothos': require('../assets/pothos.jpg'),
+  'fern': require('../assets/ferns.jpg'),
+  'fiddle leaf fig': require('../assets/fiddle-leaf-fig.jpg'),
+  'gardenia': require('../assets/gardenia.jpg'),
+  'gloom moss': require('../assets/gloom-moss.jpg'), 
+  'hibiscus': require('../assets/hibiscus.jpg'),
+  'hoya': require('../assets/hoya.jpg'),
+  'jasmine': require('../assets/jasmin.jpg'),
+  'lavender': require('../assets/lavender.jpg'),
+  'maranta': require('../assets/maranta.jpg'),
+  'monstera': require('../assets/monstera.jpg'),
+  'nerve plant': require('../assets/nerve-plant.jpg'),
+  'orchid': require('../assets/orchid.jpg'),
+  'palm': require('../assets/palm-plant.jpg'),
+  'parlor palm': require('../assets/parlor-palm.jpg'),
+  'peace lily': require('../assets/lily-plant.jpg'), 
+  'peperomia': require('../assets/peperomia.jpg'),
+  'persian shield': require('../assets/persian-shield.jpg'),
+  'philodendron': require('../assets/philodendron.jpg'),
+  'polka dot plant': require('../assets/polka-dot.jpg'),
+  'rubber plant': require('../assets/rubber-plant.jpg'),
+  'scindapsus': require('../assets/scindapsus.jpg'),
+  'shadow fern': require('../assets/shadow-ferns.jpg'), 
+  'snake plant': require('../assets/snake-plant.jpg'), 
+  'spider plant': require('../assets/spider-plant.jpg'),
+  'strelitzia': require('../assets/strelitzia.jpg'),
+  'syngonium': require('../assets/syngonium.jpg'),
+  'succulents': require('../assets/succulents.jpg'),
+  'tradescantia': require('../assets/tradescantia.jpg'),
+  'yucca': require('../assets/yucca.jpg'),
+  'zz plant': require('../assets/zz-plant.jpg'), 
+  'default': require('../assets/placeholder.png'),
+};
+
+export const getImageSource = (plantName) => {
+  if (!plantName || typeof plantName !== 'string') {
+    return imageMap['default'];
+  }
+  const key = plantName.toLowerCase().replace(/\s+/g, ' ');
+  return imageMap[key] || imageMap['default'];
+};
