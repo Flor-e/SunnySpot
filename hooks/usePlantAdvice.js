@@ -44,8 +44,8 @@ const usePlantAdvice = ({
     const recommendedPlants = getPlantsForLux(lux, filters) || [];
 
     if (recommendedPlants.length === 0) {
-      setNoMatchesAfterMeasurement(true); // Set for no matches after measurement
-      setNoMoreMatchesAfterSwiping(false); // Reset swiping state
+      setNoMatchesAfterMeasurement(true);
+      setNoMoreMatchesAfterSwiping(false);
       setPlantAdviceModalVisible(false);
       return;
     }
@@ -68,8 +68,8 @@ const usePlantAdvice = ({
       logbookName,
     };
     setSearchHistory((prev) => [searchEntry, ...prev].slice(0, 5));
-    setNoMatchesAfterMeasurement(false); // Reset measurement state
-    setNoMoreMatchesAfterSwiping(false); // Reset swiping state
+    setNoMatchesAfterMeasurement(false);
+    setNoMoreMatchesAfterSwiping(false);
     setPlantAdviceModalVisible(true);
   }, [luxValue, getLux, filters, setSearchHistory, logbookName]);
 

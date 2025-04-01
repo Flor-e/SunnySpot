@@ -16,7 +16,7 @@ export const loadLogbooks = async () => {
 export const saveLogbooks = async (logbooks) => {
   try {
     await AsyncStorage.setItem('logbooks', JSON.stringify(logbooks));
-    console.log('Saved logbooks:', logbooks); // Debug log
+    console.log('Saved logbooks:', logbooks); 
   } catch (error) {
     console.error('Error saving logbooks:', error);
   }

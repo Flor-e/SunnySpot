@@ -60,7 +60,7 @@ export default function FavoritePlantsScreen() {
   }, [snackbarVisible, fadeAnim]);
 
   const renderItem = ({ item }) => (
-    <PlantCard plant={item} toggleFavorite={toggleFavorite} isFavorite={true} /> // Always true since it's favorites
+    <PlantCard plant={item} toggleFavorite={toggleFavorite} isFavorite={true} /> 
   );
 
   return (
@@ -73,7 +73,7 @@ export default function FavoritePlantsScreen() {
         <FlatList
           data={favoritePlants}
           renderItem={renderItem}
-          keyExtractor={(item) => item.name} // Assumes plant.name is unique; adjust if there's an id
+          keyExtractor={(item) => item.name} 
           numColumns={2}
           columnWrapperStyle={styles.columnWrapper}
           contentContainerStyle={styles.listContentContainer}
@@ -96,7 +96,7 @@ export default function FavoritePlantsScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingTop: 20, // Add padding to separate header from content
+    paddingTop: 20, 
   },
   columnWrapper: { 
     justifyContent: 'flex-start', 

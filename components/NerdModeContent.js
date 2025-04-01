@@ -6,8 +6,8 @@ import globalStyles, { colors } from '../utils/globalStyles';
 
 const NerdModeContent = ({ 
   selectedLogbook,
-  filters, // This should come from selectedLogbook.plantProfile
-  setFilters, // This function should update the selectedLogbook.plantProfile
+  filters, 
+  setFilters, 
   slotCounts,
   modalVisible,
   setModalVisible,
@@ -20,7 +20,6 @@ const NerdModeContent = ({
 
   // Use useEffect to update UI when selectedLogbook or its filters change
   useEffect(() => {
-    // This will trigger re-render when logbook or its contents change
   }, [selectedLogbook, selectedLogbook?.plantProfile, slotCounts]);
 
   // If no logbooks exist, show a different message
@@ -65,7 +64,6 @@ const NerdModeContent = ({
     >
       <View style={globalStyles.contentWrapper}>
         <View style={[globalStyles.nerdCard, globalStyles.cardBorder, styles.cardContainer]}>
-          {/* Toggle chevron - repositioned to right edge vertically centered */}
           <TouchableOpacity
             style={styles.toggleChevron}
             onPress={() => setViewMode(viewMode === 'plantProfile' ? 'lightDetails' : 'plantProfile')}
@@ -299,23 +297,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardContainer: {
-    position: 'relative', // Ensure positioned children work correctly
+    position: 'relative', 
   },
   dividerContainer: {
     paddingVertical: 10, 
     marginTop: 0,
   },
-  // Repositioned trash icon to sit beside the title with 3pts spacing
   binIcon: {
-    marginLeft: 3, // 3pts spacing
+    marginLeft: 3, 
     marginBottom: 2,
   },
-  // Repositioned toggle chevron to the right edge, vertically centered
   toggleChevron: {
     position: 'absolute',
-    right: -12, // Position it on the right edge
-    top: '50%', // Center vertically
-    transform: [{ translateY: -12 }], // Adjust for the height of the chevron
+    right: -12, 
+    top: '50%', 
+    transform: [{ translateY: -12 }], 
     backgroundColor: colors.accent,
     width: 25,
     height: 25,

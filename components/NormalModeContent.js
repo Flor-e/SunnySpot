@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dividerContainer: {
-    paddingVertical: 10, // Consistent spacing above and below divider
+    paddingVertical: 10,
     marginTop: 8,
 },
 });

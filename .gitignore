@@ -1,6 +1,21 @@
+# Make sure you're in your project's root directory
+cd /path/to/sunny-spot-swipe
+
+# Create the .gitignore file with the content
+cat > .gitignore << 'EOF'
 node_modules/
-builds/
-*.apk
-*.zip
 .expo/
 dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+.DS_Store
+.env
+android/build/
+ios/build/
+EOF

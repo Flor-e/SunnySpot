@@ -16,7 +16,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   const translateX = new Animated.Value(0);
   const rotate = new Animated.Value(0);
   const opacity = new Animated.Value(1);
-  const closeButtonOpacity = new Animated.Value(1); // Separate opacity for close button
+  const closeButtonOpacity = new Animated.Value(1);
 
   useEffect(() => {
     if (visible && plantAdvice?.lux !== null && plantAdvice?.lux !== undefined) {
@@ -26,7 +26,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       translateX.setValue(0);
       rotate.setValue(0);
       opacity.setValue(1);
-      closeButtonOpacity.setValue(1); // Reset close button opacity
+      closeButtonOpacity.setValue(1);
     }
   }, [visible, plantAdvice, filters]);
 
@@ -34,7 +34,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     const { translationX } = nativeEvent;
     translateX.setValue(translationX);
     rotate.setValue(translationX / 300);
-    // Remove the opacity change during swipe
     
     // Immediately hide the close button when any swipe begins
     if (Math.abs(translationX) > 0) {
@@ -68,7 +67,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
           setCurrentIndex((prev) => prev + 1);
           translateX.setValue(0);
           rotate.setValue(0);
-          closeButtonOpacity.setValue(1); // Reset close button opacity
+          closeButtonOpacity.setValue(1); 
         });
       } else {
         Animated.parallel([
@@ -81,7 +80,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
             useNativeDriver: true,
           }),
           Animated.timing(closeButtonOpacity, {
-            toValue: 1, // Fade the close button back in if swipe is cancelled
+            toValue: 1, 
             duration: 200,
             useNativeDriver: true,
           }),
@@ -160,7 +159,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                           { translateX },
                           { rotate: rotateInterpolate },
                         ],
-                        // Remove opacity from here
                       },
                     ]}
                   >
@@ -296,7 +294,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: colors.cardBorder, // Grey border color from globalStyles
+    borderColor: colors.cardBorder,
   },
   frontSide: {
     flexDirection: 'column',

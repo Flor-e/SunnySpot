@@ -43,7 +43,7 @@ export default function App() {
   useEffect(() => {
     const clearStorage = async () => {
       try {
-        await AsyncStorage.removeItem('NAVIGATION_STATE'); // Prevents restoring the last tab
+        await AsyncStorage.removeItem('NAVIGATION_STATE'); 
       } catch (error) {
         console.error('Error clearing navigation state:', error);
       }

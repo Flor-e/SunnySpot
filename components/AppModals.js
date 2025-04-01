@@ -467,7 +467,7 @@ export const ConfirmDeleteMeasurementModal = ({
   >
     <View style={globalStyles.modalOverlay}>
       <View style={globalStyles.modalBox}>
-        <Text style={globalStyles.modalTitle}>Delete Measurement</Text>
+        <Text style={globalStyles.modalTitle}>Delete measurement</Text>
         <Text style={globalStyles.modalText}>
           Are you sure you want to delete the measurement from:
         </Text>
@@ -538,7 +538,7 @@ export const NoMoreMatchesAfterSwipingModal = ({ visible, onClose }) => (
   >
     <View style={globalStyles.modalOverlay}>
       <View style={globalStyles.modalBox}>
-        <Text style={globalStyles.modalTitle}>No More Matches</Text>
+        <Text style={globalStyles.modalTitle}>No more matches</Text>
         <Text style={globalStyles.modalText}>
           You’ve swiped through all the plants for this spot. Take a new measurement or adjust your filters to find more matches.
         </Text>

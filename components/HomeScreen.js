@@ -139,7 +139,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
       setCountdown(null);
       return avgLux;
     },
-    filters: normalFilters, // Use normalFilters for NormalMode
+    filters: normalFilters, 
     searchHistory,
     setSearchHistory,
     logbookName: 'Single Measurement',
@@ -175,7 +175,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         setModalVisible(prev => ({ ...prev, imbalance: true }));
         return false;
       }
-      return true; // Proceed to show plant advice if balanced
+      return true; 
     },
   });
 
@@ -183,7 +183,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   useEffect(() => {
     const initializeLogbooks = async () => {
       try {
-        setIsLoading(true); // Start loading
+        setIsLoading(true); 
         const storedLogbooks = await loadLogbooks();
   
         setLogbooks(storedLogbooks);
@@ -195,7 +195,6 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   
           if (lastSelectedLogbookId && lastLogbook) {
             setSelectedLogbook(lastLogbook);
-            // Don't set normal filters from the logbook - keep them separate
           } else {
             setSelectedLogbook(null);
             await saveLastSelectedLogbookId(null);
@@ -208,7 +207,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
       } catch (error) {
         console.error('Error in initializeLogbooks:', error);
       } finally {
-        setIsLoading(false); // Done loading
+        setIsLoading(false); 
       }
     };
   
@@ -333,7 +332,6 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   // Function to clear filters
   const clearFilters = async () => {
     if (nerdMode && selectedLogbook) {
-      // In NerdMode, clear filters for the specific logbook
       const emptyFilters = { size: '', looks: '', loveLevel: '', watering: '', pets: '' };
       const updatedLogbook = {
         ...selectedLogbook,
@@ -362,7 +360,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
       title, 
       measurements: [], 
       average: 0, 
-      plantProfile: { size: '', looks: '', loveLevel: '', watering: '', pets: '' } // Initialize with empty filters
+      plantProfile: { size: '', looks: '', loveLevel: '', watering: '', pets: '' }
     };
     setLogbooks([...logbooks, newLogbook]);
     setSelectedLogbook(newLogbook);
@@ -618,8 +616,8 @@ const deleteMeasurement = (timestamp) => {
       {nerdMode ? (
         <NerdModeContent
           selectedLogbook={selectedLogbook}
-          filters={selectedLogbook?.plantProfile || { size: '', looks: '', loveLevel: '', watering: '', pets: '' }} // Use logbook's plantProfile
-          setFilters={updateNerdFilters} // Pass the function to update logbook's plantProfile
+          filters={selectedLogbook?.plantProfile || { size: '', looks: '', loveLevel: '', watering: '', pets: '' }} 
+          setFilters={updateNerdFilters} 
           slotCounts={slotCounts}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -631,8 +629,8 @@ const deleteMeasurement = (timestamp) => {
         />
       ) : (
         <NormalModeContent
-          filters={normalFilters} // Use normalFilters for NormalMode
-          setFilters={setNormalFilters} // Update normalFilters
+          filters={normalFilters} 
+          setFilters={setNormalFilters} 
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           clearFilters={clearFilters}
