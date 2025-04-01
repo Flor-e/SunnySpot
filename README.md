@@ -1,11 +1,11 @@
 # SunnySpot: find your plant match 🌿
 
 ## Overview
-SunnySpot is a mobile application for Android designed to help you pick the perfect plant for your space based on precise lux measurements. Created with the assistance of AI technologies, this app bridges the gap between technology and plant care.
+SunnySpot is a mobile application for Android designed to help you pick the perfect plant for your space based on precise lux measurements. This app was created with the help of AI.
 
 ## Features
-- **One-click Plant Advice**: Instantly get recommendations tailored to your specific light conditions.
-- **Logbook Mode**: Track and log multiple light measurements over time.
+- **One-click Plant Advice**: Instantly get recommendations based on your specific light conditions.
+- **Logbook Mode**: Track and log multiple light measurements over time for more accurate plant advice.
 - **Comprehensive Plant Database**: Search and explore a wide variety of plants.
 
 ## Technologies Used
@@ -14,9 +14,9 @@ SunnySpot is a mobile application for Android designed to help you pick the perf
 - JavaScript
 
 ## Development Notes
-This project was uniquely developed with the assistance of AI technologies:
-- Initial coding: Grok 2
-- Refinement and development: Claude 3.5 Sonnet
+I can't actually code and this is my very first app. All the coding was done with the assistance of AI:
+- Grok 2 and 3: initial coding.
+- Claude 3.5 Haiku and 3.7 Sonnet: refinement.
 
 ## Installation
 
