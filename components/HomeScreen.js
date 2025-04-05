@@ -573,10 +573,10 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         {nerdMode ? (
           <>
             <Text style={globalStyles.instructionPanelText}>
-              Light changes during the day, and one measurement might not be accurate enough to pick the perfect plant. So for all you plant nerds out there, there's logbook mode.
+            ☀️ Light changes during the day, and one measurement might not be accurate enough to pick the perfect plant. So for all you plant nerds out there, there's logbook mode.
             </Text>
             <Text style={globalStyles.instructionPanelText}>
-              Log multiple measurements throughout the day, on one day, or several. For an accurate result, make sure you have an equal amount of morning, afternoon, and evening measurements.
+              Log multiple measurements throughout the day, on one day, or several. For an accurate result, make sure you have an equal amount of morning, afternoon, and evening measurements. 🕰️
             </Text>
           </>
         ) : (
@@ -643,7 +643,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
     </Animated.View>
     <View style={styles.helpButtonContainer}>
   <Text style={globalStyles.buttonLabel}>
-    {isMeasuring ? 'Measuring...' : 'Tap to find match'}
+    {isMeasuring ? 'Measuring...' : 'Take light measurement'}
   </Text>
   <TouchableOpacity 
     style={styles.helpBadge}
@@ -780,8 +780,8 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         // Update the selected logbook using the updateNerdFilters function
         updateNerdFilters(updatedPlantProfile);
       } else {
-        // In NormalMode, update normalFilters
-        setNormalFilters(prev => ({ ...prev, [type]: option }));
+        // In NormalMode, clear the specific filter
+        setNormalFilters(prev => ({ ...prev, [type]: '' }));
       }
       setModalVisible(prev => ({ ...prev, [type]: false }));
     }}

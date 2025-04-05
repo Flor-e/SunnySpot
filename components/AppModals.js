@@ -35,8 +35,9 @@ const styles = {
     borderRadius: 8,
     paddingHorizontal: normalize(10),
     fontSize: FONT_SIZE.REGULAR,
-    backgroundColor: '#FFFFFF',
     fontFamily: FONT_FAMILY.REGULAR,
+    color: colors.textDark,
+    backgroundColor: '#FFFFFF',
     alignSelf: 'center',
   },
 };
@@ -172,6 +173,15 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
     }, { morning: [], afternoon: [], evening: [] });
   }, [selectedLogbook?.measurements, getTimeOfDay]);
 
+  // Find the most recent measurement timestamp
+  const findMostRecentTimestamp = useMemo(() => {
+    if (!selectedLogbook?.measurements?.length) return null;
+    const sortedMeasurements = [...selectedLogbook.measurements].sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    );
+    return sortedMeasurements[0].timestamp;
+  }, [selectedLogbook?.measurements]);
+
   // Function to format the timestamp as dd-mm-yyyy, hh:mm:ss
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -204,9 +214,7 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
                   const group = groupedMeasurements[timeOfDay];
                   if (group.length === 0) return null;
 
-                  const sortedMeasurements = [...selectedLogbook.measurements].sort(
-                    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-                  );
+                  const mostRecentTimestamp = findMostRecentTimestamp;
 
                   return (
                     <>
@@ -214,9 +222,7 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
                         {timeOfDay.charAt(0).toUpperCase() + timeOfDay.slice(1)}
                       </Text>
                       {group.map((measurement, index) => {
-                        const isLast =
-                          measurement.timestamp ===
-                          sortedMeasurements[sortedMeasurements.length - 1].timestamp;
+                        const isLatest = measurement.timestamp === mostRecentTimestamp;
 
                         return (
                           <View
@@ -224,13 +230,13 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
                             style={[
                               styles.historyEntry,
                               index % 2 === 0 ? styles.historyEntryOdd : styles.historyEntryEven,
-                              isLast && { backgroundColor: 'transparent' },
+                              isLatest && { backgroundColor: 'transparent' },
                             ]}
                           >
                             <View style={styles.historyTextContainer}>
                               <Text
-                                style={[styles.historyText, isLast && styles.lastHistoryText]}
-                                numberOfLines={2}
+                                style={[styles.historyText, isLatest && styles.lastHistoryText]}
+                                numberOfLines={3}
                                 ellipsizeMode="tail"
                               >
                                 {`${formatTimestamp(measurement.timestamp)} ${getTimeOfDay(
@@ -448,7 +454,7 @@ export const FilterModal = ({ type, title, visible, onClose, options, onSelect, 
   </Modal>
 );
 
-// ConfirmDeleteMeasurementModal component with added safety checks
+// ConfirmDeleteMeasurementModal component with added safety checks and fixed font styling
 export const ConfirmDeleteMeasurementModal = ({ 
   visible, 
   onClose, 
@@ -473,7 +479,11 @@ export const ConfirmDeleteMeasurementModal = ({
         </Text>
         {timestamp ? (
           <>
-            <Text style={[globalStyles.modalText, { fontWeight: FONT_WEIGHT.BOLD, marginVertical: normalize(10) }]}>
+            <Text style={[globalStyles.modalText, { 
+              fontFamily: FONT_FAMILY.BOLD,
+              fontWeight: FONT_WEIGHT.BOLD, 
+              marginVertical: normalize(10) 
+            }]}>
               {formatTimestamp(timestamp)} ({getTimeOfDay(timestamp)})
             </Text>
             <Text style={globalStyles.modalText}>

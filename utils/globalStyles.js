@@ -267,8 +267,11 @@ const globalStyles = StyleSheet.create({
     borderColor: colors.accentMedium,
   },
   
+  // Modal Text - UPDATED with consistent font styling
   modalText: {
     fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: colors.textDark,
     paddingHorizontal: normalize(10),
     marginVertical: normalize(5),
   },
@@ -309,8 +312,6 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     width: '40%',
     marginTop: normalize(10),
-    borderWidth: 1,
-    borderColor: colors.accentDark,
   },
   
   // Card styles
@@ -341,7 +342,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: colors.background,
     borderRadius: 12,
     margin: normalize(15),
-    paddingLeft: normalize(12),
+    padding: normalize(15),
     paddingVertical: normalize(15),
     position: 'relative',
     alignSelf: 'center',
