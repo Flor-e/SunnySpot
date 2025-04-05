@@ -2,7 +2,7 @@
   { "name": "Aglaonema", "lightLevel": "Low to Medium Light", "thrivesMinLux": 500, "thrivesMaxLux": 4000, "growsWellMinLux": 300, "growsWellMaxLux": 6000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Zero",
-    "tagline": "Colorful shade survivor",
+    "tagline": "Colourful shade survivor",
     "loveLanguage": "Likes leaves wiped to stay glossy",
     "tempMin": 18,
     "tempMax": 24
@@ -66,7 +66,7 @@
   { "name": "Bromeliad", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 12000, "growsWellMinLux": 6000, "growsWellMaxLux": 15000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Some",
-    "tagline": "Tropical color burst",
+    "tagline": "Tropical colour burst",
     "loveLanguage": "Likes to be waterd in it's leafy cup",
     "tempMin": 18,
     "tempMax": 27
@@ -82,7 +82,7 @@
   { "name": "Calathea", "lightLevel": "Medium Light", "thrivesMinLux": 2000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
-    "tagline": "Strikingly colorful patterns",
+    "tagline": "Strikingly colourful patterns",
     "loveLanguage": "Needs regular misting for humidity",
     "tempMin": 18,
     "tempMax": 24
@@ -106,7 +106,7 @@
   { "name": "Coleus", "lightLevel": "Bright Light", "thrivesMinLux": 7000, "thrivesMaxLux": 10000, "growsWellMinLux": 5000, "growsWellMaxLux": 12000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
-    "tagline": "Popping with color",
+    "tagline": "Popping with colour",
     "loveLanguage": "Needs pruning to remain bushy",
     "tempMin": 16,
     "tempMax": 24
@@ -251,7 +251,7 @@
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Purple leaf magic",
-    "loveLanguage": "Needs pruning to maintain color",
+    "loveLanguage": "Needs pruning to maintain colour",
     "tempMin": 18,
     "tempMax": 27
   },
@@ -365,7 +365,7 @@
       "petSafetyDetail": "Mildly toxic",     
       "looks": "catching",     
       "loveLevel": "Lots of",     
-      "tagline": "Colorful trailing wonder",     
+      "tagline": "Colourful trailing wonder",     
       "loveLanguage": "Needs pruning to prevent legginess",
       "tempMin": 15,
       "tempMax": 30
