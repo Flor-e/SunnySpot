@@ -1,284 +1,411 @@
 [
-  { "name": "Aglaonema", "lightLevel": "Low to Medium Light", "thrivesMinLux": 500, "thrivesMaxLux": 4000, "growsWellMinLux": 300, "growsWellMaxLux": 6000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
+  { "name": "Aglaonema", "lightLevel": "Low to Medium Light", "thrivesMinLux": 0, "thrivesMaxLux": 4000, "growsWellMinLux": 300, "growsWellMaxLux": 6000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Zero",
     "tagline": "Colorful shade survivor",
-    "loveLanguage": "Likes leaves wiped to stay glossy"
+    "loveLanguage": "Likes leaves wiped to stay glossy",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "African Violet", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 4000, "growsWellMinLux": 500, "growsWellMaxLux": 6000, "height": "20 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Delicate bloom delight",
-    "loveLanguage": "Needs careful bottom watering"
+    "loveLanguage": "Needs careful bottom watering",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Alocasia", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "90 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Green jungle vibes",
-    "loveLanguage": "Likes pot rotated for even growth"
+    "loveLanguage": "Likes pot rotated for even growth",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Aloe Vera", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 20000, "height": "40 cm", "size": "small", "waterRequirement": "Rarely", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Healing desert gem",
-    "loveLanguage": "Likes to dry out between waterings"
+    "loveLanguage": "Likes to dry out between waterings",
+    "tempMin": 13,
+    "tempMax": 27
   },
   { "name": "Amaryllis", "lightLevel": "Bright Light", "thrivesMinLux": 7000, "thrivesMaxLux": 12000, "growsWellMinLux": 5000, "growsWellMaxLux": 15000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Dramatic holiday bloom",
-    "loveLanguage": "Needs rest period after flowering"
+    "loveLanguage": "Needs rest period after flowering",
+    "tempMin": 15,
+    "tempMax": 24
   },
   { "name": "Anthurium", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Glossy red blooms",
-    "loveLanguage": "Needs occasional misting for humidity"
+    "loveLanguage": "Needs occasional misting for humidity",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Banana", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 20000, "growsWellMinLux": 8000, "growsWellMaxLux": 25000, "height": "200 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Tropical tree vibes",
-    "loveLanguage": "Likes dead leaves removed to stay neat"
+    "loveLanguage": "Likes dead leaves removed to stay neat",
+    "tempMin": 16,
+    "tempMax": 30
   },
   { "name": "Begonia", "lightLevel": "Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3000, "growsWellMaxLux": 12000, "height": "40 cm", "size": "small", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Dazzeling flower power",
-    "loveLanguage": "Needs pruning to remain bushy"
+    "loveLanguage": "Needs pruning to remain bushy",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Bromeliad", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 12000, "growsWellMinLux": 6000, "growsWellMaxLux": 15000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Tropical color burst",
-    "loveLanguage": "Likes to be waterd in it's leafy cup"
+    "loveLanguage": "Likes to be waterd in it's leafy cup",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Cactus", "lightLevel": "Bright Direct", "thrivesMinLux": 20000, "thrivesMaxLux": 50000, "growsWellMinLux": 15000, "growsWellMaxLux": 60000, "height": "30 cm", "size": "small", "waterRequirement": "Rarely", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Desert icon",
-    "loveLanguage": "Likes pot turned for even sun"
+    "loveLanguage": "Likes pot turned for even sun",
+    "tempMin": 10,
+    "tempMax": 32
   },
   { "name": "Calathea", "lightLevel": "Medium Light", "thrivesMinLux": 2000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
     "tagline": "Strikingly colorful patterns",
-    "loveLanguage": "Needs regular misting for humidity"
+    "loveLanguage": "Needs regular misting for humidity",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Cast Iron Plant", "lightLevel": "Very Low to Low Light", "thrivesMinLux": 100, "thrivesMaxLux": 2000, "growsWellMinLux": 50, "growsWellMaxLux": 4000, "height": "70 cm", "size": "medium", "waterRequirement": "Bi-weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Ironclad shade warrior",
-    "loveLanguage": "Likes dead leaves removed to stay neat"
+    "loveLanguage": "Likes dead leaves removed to stay neat",
+    "tempMin": 10,
+    "tempMax": 27
   },
   { "name": "Coffee Plant", "lightLevel": "Medium Light", "thrivesMinLux": 3000, "thrivesMaxLux": 7000, "growsWellMinLux": 2000, "growsWellMaxLux": 9000, "height": "120 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Aromatic leafy brew",
-    "loveLanguage": "Likes consistent moisture"
+    "loveLanguage": "Likes consistent moisture",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Coleus", "lightLevel": "Bright Light", "thrivesMinLux": 7000, "thrivesMaxLux": 10000, "growsWellMinLux": 5000, "growsWellMaxLux": 12000, "height": "50 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
     "tagline": "Popping with color",
-    "loveLanguage": "Needs pruning to remain bushy"
+    "loveLanguage": "Needs pruning to remain bushy",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Croton", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "120 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Vibrant leaf drama",
-    "loveLanguage": "Needs consistent warmth"
+    "loveLanguage": "Needs consistent warmth",
+    "tempMin": 18,
+    "tempMax": 29
   },
   { "name": "Cyclamen", "lightLevel": "Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3000, "growsWellMaxLux": 12000, "height": "25 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Delicate winter charm",
-    "loveLanguage": "Likes cool temperatures"
+    "loveLanguage": "Likes cool temperatures",
+    "tempMin": 10,
+    "tempMax": 18
   },
   { "name": "Dieffenbachia", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 4000, "growsWellMinLux": 500, "growsWellMaxLux": 6000, "height": "90 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic and irritable",
     "looks": "catching",
     "loveLevel": "Zero",
     "tagline": "Big striking leaves",
-    "loveLanguage": "Needs careful handling, its sap irritates"
+    "loveLanguage": "Likes leaves wiped to remove dust",
+    "tempMin": 16,
+    "tempMax": 27
   },
   { "name": "Dracaena", "lightLevel": "Medium Light", "thrivesMinLux": 2500, "thrivesMaxLux": 6000, "growsWellMinLux": 1000, "growsWellMaxLux": 8000, "height": "150 cm", "size": "large", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Elegant leafy spire",
-    "loveLanguage": "Likes dead tips removed to stay neat"
+    "loveLanguage": "Likes dead tips removed to stay neat",
+    "tempMin": 15,
+    "tempMax": 27
   },
   { "name": "Fern", "lightLevel": "Low Light", "thrivesMinLux": 500, "thrivesMaxLux": 5000, "growsWellMinLux": 100, "growsWellMaxLux": 7000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Feathery shade lover",
-    "loveLanguage": "Likes dead tips removed to stay neat"
+    "loveLanguage": "Likes dead tips removed to stay neat",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Fiddle Leaf Fig", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "180 cm", "size": "large", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Architectural leaf statement",
-    "loveLanguage": "Needs stable environment to prevent leaf drop"
+    "loveLanguage": "Needs stable environment to prevent leaf drop",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Gardenia", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 12000, "growsWellMinLux": 6000, "growsWellMaxLux": 15000, "height": "90 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Fragrant white bloom",
-    "loveLanguage": "Needs acidic soil and high humidity"
+    "loveLanguage": "Needs acidic soil and high humidity",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Hibiscus", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 20000, "growsWellMinLux": 8000, "growsWellMaxLux": 25000, "height": "150 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Tropical flower explosion",
-    "loveLanguage": "Likes regular fertilizing"
+    "loveLanguage": "Likes regular fertilizing",
+    "tempMin": 16,
+    "tempMax": 32
   },
   { "name": "Hoya", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "30 cm", "size": "hanging", "waterRequirement": "Bi-weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Waxy trailing star",
-    "loveLanguage": "Likes light trimming for more bloom"
+    "loveLanguage": "Likes light trimming for more bloom",
+    "tempMin": 16,
+    "tempMax": 27
   },
   { "name": "Jasmine", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 15000, "growsWellMinLux": 6000, "growsWellMaxLux": 18000, "height": "180 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Fragrant climbing beauty",
-    "loveLanguage": "Needs support to climb"
+    "loveLanguage": "Needs support to climb",
+    "tempMin": 16,
+    "tempMax": 27
   },
   { "name": "Lavender", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 20000, "growsWellMinLux": 8000, "growsWellMaxLux": 25000, "height": "60 cm", "size": "medium", "waterRequirement": "Rarely", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Fragrant purple serenity",
-    "loveLanguage": "Likes well-drained soil"
+    "loveLanguage": "Likes well-drained soil",
+    "tempMin": 13,
+    "tempMax": 27
   },
   { "name": "Maranta", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "30 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Praying leaf wonder",
-    "loveLanguage": "Needs mist often for humidity"
+    "loveLanguage": "Needs mist often for humidity",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Monstera", "lightLevel": "Medium Light", "thrivesMinLux": 5000, "thrivesMaxLux": 7000, "growsWellMinLux": 3000, "growsWellMaxLux": 9000, "height": "200 cm", "size": "large", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Bold jungle vibes",
-    "loveLanguage": "Likes moss pole to climb tall"
+    "loveLanguage": "Likes moss pole to climb tall",
+    "tempMin": 18,
+    "tempMax": 29
   },
   { "name": "Nerve Plant", "lightLevel": "Medium Light", "thrivesMinLux": 2000, "thrivesMaxLux": 5000, "growsWellMinLux": 1500, "growsWellMaxLux": 7000, "height": "20 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
     "tagline": "Veiny leaf wonder",
-    "loveLanguage": "Needs frequent misting"
+    "loveLanguage": "Needs frequent misting",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Orchid", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 20000, "height": "50 cm", "size": "medium", "waterRequirement": "Bi-weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "flowery",
     "loveLevel": "Lots of",
     "tagline": "Exotic blooming beauty",
-    "loveLanguage": "Needs roots misted to bloom"
+    "loveLanguage": "Needs roots misted to bloom",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Palm", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 17000, "height": "180 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Tropical elegance",
-    "loveLanguage": "Likes dead leaves removed to look neat"
+    "loveLanguage": "Likes dead leaves removed to look neat",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Parlor Palm", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 4000, "growsWellMinLux": 500, "growsWellMaxLux": 6000, "height": "120 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Gentle indoor palm",
-    "loveLanguage": "Likes consistent moisture"
+    "loveLanguage": "Likes consistent moisture",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Persian Shield", "lightLevel": "Bright Light", "thrivesMinLux": 7000, "thrivesMaxLux": 12000, "growsWellMinLux": 5000, "growsWellMaxLux": 15000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Purple leaf magic",
-    "loveLanguage": "Needs pruning to maintain color"
+    "loveLanguage": "Needs pruning to maintain color",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Peace Lily", "lightLevel": "Low Light", "thrivesMinLux": 500, "thrivesMaxLux": 5000, "growsWellMinLux": 300, "growsWellMaxLux": 7000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Zero",
     "tagline": "Graceful bloom serenity",
-    "loveLanguage": "Likes dead flowers removed"
+    "loveLanguage": "Likes dead flowers removed",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Peperomia", "lightLevel": "Medium Light", "thrivesMinLux": 2000, "thrivesMaxLux": 6000, "growsWellMinLux": 1000, "growsWellMaxLux": 8000, "height": "20 cm", "size": "small", "waterRequirement": "Rarely", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Petite leafy gem",
-    "loveLanguage": "Likes to be repotted yearly for root health"
+    "loveLanguage": "Likes to be repotted yearly for root health",
+    "tempMin": 15,
+    "tempMax": 26
   },
   { "name": "Philodendron", "lightLevel": "Medium Light", "thrivesMinLux": 2500, "thrivesMaxLux": 6000, "growsWellMinLux": 1500, "growsWellMaxLux": 8000, "height": "30 cm", "size": "small", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Versatile leafy climber",
-    "loveLanguage": "Needs light trimming to remain bushy"
+    "loveLanguage": "Needs light trimming to remain bushy",
+    "tempMin": 18,
+    "tempMax": 27
   },
   { "name": "Polka Dot Plant", "lightLevel": "Medium Light", "thrivesMinLux": 3000, "thrivesMaxLux": 7000, "growsWellMinLux": 2000, "growsWellMaxLux": 9000, "height": "30 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Lots of",
     "tagline": "Spotted leaf delight",
-    "loveLanguage": "Needs regular pruning to stay compact"
+    "loveLanguage": "Needs regular pruning to stay compact",
+    "tempMin": 18,
+    "tempMax": 24
   },
   { "name": "Pothos", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "30 cm", "size": "hanging", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Devilish trailing charm",
-    "loveLanguage": "Needs vines trimmed to remain bushy"
+    "loveLanguage": "Needs vines trimmed to remain bushy",
+    "tempMin": 15,
+    "tempMax": 29
   },
   { "name": "Rubber Plant", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 12000, "growsWellMinLux": 6000, "growsWellMaxLux": 15000, "height": "180 cm", "size": "large", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Bold leafy statement",
-    "loveLanguage": "Likes consistent environment"
+    "loveLanguage": "Likes consistent environment",
+    "tempMin": 16,
+    "tempMax": 27
   },
   { "name": "Scindapsus", "lightLevel": "Medium Light", "thrivesMinLux": 2500, "thrivesMaxLux": 6000, "growsWellMinLux": 1500, "growsWellMaxLux": 8000, "height": "30 cm", "size": "hanging", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Some",
     "tagline": "Satin-leaved trailer",
-    "loveLanguage": "Likes light trimming to stay in shape"
+    "loveLanguage": "Likes light trimming to stay in shape",
+    "tempMin": 15,
+    "tempMax": 27
   },
   { "name": "Snake Plant", "lightLevel": "Low Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 10000, "height": "90 cm", "size": "medium", "waterRequirement": "Rarely", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Tough upright survivor",
-    "loveLanguage": "Likes leaves wiped to remain neat"
+    "loveLanguage": "Likes leaves wiped to remain neat",
+    "tempMin": 13,
+    "tempMax": 32
   },
   { "name": "Spider Plant", "lightLevel": "Medium Light", "thrivesMinLux": 3000, "thrivesMaxLux": 7000, "growsWellMinLux": 2000, "growsWellMaxLux": 9000, "height": "30 cm", "size": "hanging", "waterRequirement": "Bi-weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Cascading green ribbons",
-    "loveLanguage": "Likes occasional pruning of baby plantlets"
+    "loveLanguage": "Likes occasional pruning of baby plantlets",
+    "tempMin": 13,
+    "tempMax": 27
   },
   { "name": "Strelitzia", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 20000, "growsWellMinLux": 8000, "growsWellMaxLux": 25000, "height": "180 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Some",
     "tagline": "Exotic bird of paradise",
-    "loveLanguage": "Needs spacious pot and consistent care"
+    "loveLanguage": "Needs spacious pot and consistent care",
+    "tempMin": 18,
+    "tempMax": 29
   },
   { "name": "Syngonium", "lightLevel": "Medium Light", "thrivesMinLux": 2500, "thrivesMaxLux": 6000, "growsWellMinLux": 1500, "growsWellMaxLux": 8000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Arrow-shaped leaf charm",
-    "loveLanguage": "Likes regular pruning to stay bushy"
+    "loveLanguage": "Likes regular pruning to stay bushy",
+    "tempMin": 16,
+    "tempMax": 27
   },
   { "name": "Succulents", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 20000, "growsWellMinLux": 8000, "growsWellMaxLux": 22000, "height": "30 cm", "size": "small", "waterRequirement": "Rarely", "petsafe": false, "petSafetyDetail": "Mildly toxic",
     "looks": "green",
     "loveLevel": "Zero",
     "tagline": "Desert survivor",
-    "loveLanguage": "Likes dead leaves removed to stay neat"
+    "loveLanguage": "Likes dead leaves removed to stay neat",
+    "tempMin": 10,
+    "tempMax": 32
   },
-  { "name": "Tradescantia", "lightLevel": "Bright Light", "thrivesMinLux": 7000, "thrivesMaxLux": 10000, "growsWellMinLux": 5000, "growsWellMaxLux": 12000, "height": "30 cm", "size": "hanging", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic",
-    "looks": "catching",
-    "loveLevel": "Lots of",
-    "tagline": "Colorful trailing wonder",
-    "loveLanguage": "Needs pruning to prevent legginess"
-  },
-  { "name": "Yucca", "lightLevel": "Bright Direct", "thrivesMinLux": 15000, "thrivesMaxLux": 30000, "growsWellMinLux": 12000, "growsWellMaxLux": 35000, "height": "150 cm", "size": "large", "waterRequirement": "Rarely", "petsafe": false, "petSafetyDetail": "Toxic",
-    "looks": "green",
-    "loveLevel": "Zero",
-    "tagline": "Desert architectural beauty",
-    "loveLanguage": "Likes minimal intervention"
-  },
-  { "name": "ZZ Plant", "lightLevel": "Low Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "90 cm", "size": "medium", "waterRequirement": "Rarely", "petsafe": true, "petSafetyDetail": "Pet-safe",
-    "looks": "green",
-    "loveLevel": "Zero",
-    "tagline": "Indestructible beauty",
-    "loveLanguage": "Likes dead leaves removed to stay neat"
-  }
+    { 
+      "name": "Tradescantia", 
+      "lightLevel": "Bright Light", 
+      "thrivesMinLux": 7000, 
+      "thrivesMaxLux": 10000, 
+      "growsWellMinLux": 5000, 
+      "growsWellMaxLux": 12000, 
+      "height": "30 cm", 
+      "size": "hanging", 
+      "waterRequirement": "Weekly", 
+      "petsafe": false, 
+      "petSafetyDetail": "Mildly toxic",     
+      "looks": "catching",     
+      "loveLevel": "Lots of",     
+      "tagline": "Colorful trailing wonder",     
+      "loveLanguage": "Needs pruning to prevent legginess",
+      "tempMin": 15,
+      "tempMax": 30
+    },   
+    { 
+      "name": "Yucca", 
+      "lightLevel": "Bright Direct", 
+      "thrivesMinLux": 15000, 
+      "thrivesMaxLux": 30000, 
+      "growsWellMinLux": 12000, 
+      "growsWellMaxLux": 35000, 
+      "height": "150 cm", 
+      "size": "large", 
+      "waterRequirement": "Rarely", 
+      "petsafe": false, 
+      "petSafetyDetail": "Toxic",     
+      "looks": "green",     
+      "loveLevel": "Zero",     
+      "tagline": "Desert architectural beauty",     
+      "loveLanguage": "Likes minimal intervention",
+      "tempMin": 10,
+      "tempMax": 35
+    },   
+    { 
+      "name": "ZZ Plant", 
+      "lightLevel": "Low Light", 
+      "thrivesMinLux": 1000, 
+      "thrivesMaxLux": 5000, 
+      "growsWellMinLux": 500, 
+      "growsWellMaxLux": 7000, 
+      "height": "90 cm", 
+      "size": "medium", 
+      "waterRequirement": "Rarely", 
+      "petsafe": true, 
+      "petSafetyDetail": "Pet-safe",     
+      "looks": "green",     
+      "loveLevel": "Zero",     
+      "tagline": "Indestructible beauty",     
+      "loveLanguage": "Likes dead leaves removed to stay neat",
+      "tempMin": 15,
+      "tempMax": 30
+    }
 ]

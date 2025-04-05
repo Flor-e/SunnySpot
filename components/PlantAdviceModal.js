@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Modal, Animated, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Modal, Animated, TouchableOpacity } from 'react-native';
 import { PanGestureHandler, State, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
 import { getPlantsForLux } from '../utils/plantAdvice';
-import { getImageSource } from '../utils/imageMap';
+import PlantDetailCard from './PlantDetailCard';
 
 const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'This Spot' }) => {
   const [plantDeck, setPlantDeck] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [lastSkippedPlant, setLastSkippedPlant] = useState(null);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const { favoritePlants, setFavoritePlants } = useFavorites();
 
@@ -17,6 +19,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   const rotate = new Animated.Value(0);
   const opacity = new Animated.Value(1);
   const closeButtonOpacity = new Animated.Value(1);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (visible && plantAdvice?.lux !== null && plantAdvice?.lux !== undefined) {
@@ -27,8 +30,36 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       rotate.setValue(0);
       opacity.setValue(1);
       closeButtonOpacity.setValue(1);
+      // Hide any active snackbar when modal becomes visible
+      setSnackbarVisible(false);
     }
   }, [visible, plantAdvice, filters]);
+
+  // Snackbar animation
+  useEffect(() => {
+    if (snackbarVisible) {
+      Animated.timing(fadeAnim, { 
+        toValue: 1, 
+        duration: 300, 
+        useNativeDriver: true 
+      }).start();
+      
+      const timeout = setTimeout(() => {
+        Animated.timing(fadeAnim, { 
+          toValue: 0, 
+          duration: 300, 
+          useNativeDriver: true 
+        }).start(() => {
+          setSnackbarVisible(false);
+          setLastSkippedPlant(null);
+        });
+      }, 5000);
+      
+      return () => clearTimeout(timeout);
+    } else {
+      fadeAnim.setValue(0); // Reset animation when hidden
+    }
+  }, [snackbarVisible, fadeAnim]);
 
   const onGesture = ({ nativeEvent }) => {
     const { translationX } = nativeEvent;
@@ -38,6 +69,14 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     // Immediately hide the close button when any swipe begins
     if (Math.abs(translationX) > 0) {
       closeButtonOpacity.setValue(0);
+    }
+  };
+
+  const handleUndo = () => {
+    if (lastSkippedPlant !== null && currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setSnackbarVisible(false);
+      setLastSkippedPlant(null);
     }
   };
 
@@ -63,7 +102,12 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
             if (plant && !favoritePlants.some((fav) => fav.name === plant.name)) {
               setFavoritePlants((prev) => [...prev, plant]);
             }
+          } else if (direction === 'left' && currentIndex < plantDeck.length) {
+            // Store the plant that was swiped left (passed)
+            setLastSkippedPlant(plantDeck[currentIndex]);
+            setSnackbarVisible(true);
           }
+          
           setCurrentIndex((prev) => prev + 1);
           translateX.setValue(0);
           rotate.setValue(0);
@@ -96,14 +140,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     outputRange: ['-15deg', '15deg'],
   });
 
-  const getLuxLabel = (luxValue) => {
-    if (luxValue <= 500) return 'very low light';
-    if (luxValue <= 2000) return 'low light';
-    if (luxValue <= 10000) return 'moderate light';
-    if (luxValue <= 20000) return 'bright light';
-    return 'direct sunlight';
-  };
-
   return (
     <Modal
       visible={visible}
@@ -114,7 +150,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       <GestureHandlerRootView style={styles.modalOverlay}>
         <View style={styles.backdrop} />
         <View style={styles.modalContainer}>
-          {/* Close button with separate opacity animation */}
           {currentPlant && (
             <View style={{
               position: 'absolute',
@@ -150,80 +185,28 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                 onHandlerStateChange={onHandlerStateChange}
                 activeOffsetX={[-10, 10]}
               >
-                <View style={styles.cardContainer}>
-                  <Animated.View
-                    style={[
-                      styles.plantCard,
-                      {
-                        transform: [
-                          { translateX },
-                          { rotate: rotateInterpolate },
-                        ],
-                      },
-                    ]}
-                  >
-                    <View style={styles.cardWrapper}>
-                      <View style={[styles.cardSide, styles.frontSide]}>
-                        <Image
-                          source={getImageSource(currentPlant.name)}
-                          style={styles.plantImage}
-                        />
-                        <View style={styles.luxContainer}>
-                          <View style={styles.luxBadge}>
-                            <Icon name="flash-outline" size={normalize(14)} color="#757575" style={styles.luxIcon} />
-                            <Text style={styles.luxText}>
-                              {`${label}: ${getLuxLabel(plantAdvice?.lux || 0)} (${plantAdvice?.lux || 0} lux)`}
-                            </Text>
-                          </View>
-                        </View>
-                        <Text style={styles.plantName}>{currentPlant.name}</Text>
-                        <Text style={[styles.plantStandout, styles.italicTagline]}>{currentPlant.tagline}</Text>
-                        <View style={styles.infoGrid}>
-                          <View style={styles.infoRow}>
-                            <View style={styles.infoTile}>
-                              <Icon name="resize-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                              <Text style={styles.infoText}>{`Up to ${currentPlant.height || 'Unknown height'}`}</Text>
-                            </View>
-                            <View style={styles.infoTile}>
-                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Icon name="water-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                                <Text style={styles.infoText}>{currentPlant.waterRequirement || 'Unknown'}</Text>
-                              </View>
-                            </View>
-                          </View>
-                          <View style={styles.infoRow}>
-                            <View style={styles.infoTile}>
-                              <Icon name="checkmark-circle-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                              <Text style={styles.infoText}>{`${currentPlant.matchPercentage || 0}% match`}</Text>
-                            </View>
-                            <View style={styles.infoTile}>
-                              <Icon name="paw-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                              <Text style={styles.infoText}>{currentPlant.petSafetyDetail || 'Unknown'}</Text>
-                            </View>
-                          </View>
-                          <View style={styles.infoRow}>
-                            <View style={styles.infoTile}>
-                              <Icon name="heart-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                              <Text style={styles.infoText}>{currentPlant.loveLanguage || 'Unknown'}</Text>
-                            </View>
-                          </View>
-                        </View>
-                        <View style={styles.swipeHint}>
-                          <Icon name="arrow-back-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
-                          <Text style={styles.swipeText}>swipe to pass</Text>
-                          <Text style={styles.separator}> | </Text>
-                          <Text style={styles.swipeText}>swipe to save</Text>
-                          <Icon name="arrow-forward-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
-                        </View>
-                        <View style={styles.cardCounter}>
-                          <Text style={styles.counterText}>
-                            {currentIndex + 1}/{plantDeck.length}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </Animated.View>
-                </View>
+                <Animated.View
+                  style={[
+                    styles.cardContainer,
+                    {
+                      transform: [
+                        { translateX },
+                        { rotate: rotateInterpolate },
+                      ],
+                    },
+                  ]}
+                >
+                  <PlantDetailCard 
+                    plant={currentPlant} 
+                    showLuxBadge={true}
+                    luxLabel={label}
+                    luxValue={plantAdvice?.lux}
+                    matchPercentage={currentPlant.matchPercentage}
+                    currentIndex={currentIndex}
+                    totalPlants={plantDeck.length}
+                    showSwipeHint={true}
+                  />
+                </Animated.View>
               </PanGestureHandler>
             </View>
           ) : (
@@ -234,6 +217,16 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
               </TouchableOpacity>
             </View>
           )}
+
+          {/* Undo Snackbar */}
+          {snackbarVisible && lastSkippedPlant && (
+            <Animated.View style={[styles.snackbar, { opacity: fadeAnim }]}>
+              <Text style={styles.snackbarText}>{`${lastSkippedPlant.name} passed`}</Text>
+              <TouchableOpacity onPress={handleUndo}>
+                <Text style={styles.undoText}>Undo</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          )}
         </View>
       </GestureHandlerRootView>
     </Modal>
@@ -241,14 +234,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
 };
 
 const styles = StyleSheet.create({
-  luxHighlight: {
-    color: colors.accent,
-    fontFamily: FONT_FAMILY.BOLD,
-  },
-  matchPercentage: {
-    color: colors.accent,
-    fontFamily: FONT_FAMILY.BOLD,
-  },
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
@@ -276,142 +261,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  plantCard: {
-    width: '100%',
-    flexDirection: 'column',
-    borderRadius: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  cardWrapper: {
-    width: '100%',
-  },
-  cardSide: {
-    width: '100%',
-    borderRadius: 20,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
-  },
-  frontSide: {
-    flexDirection: 'column',
-    padding: normalize(20),
-    alignItems: 'center',
-  },
-  plantImage: {
-    width: '100%',
-    height: normalize(200),
-    resizeMode: 'cover',
-    borderRadius: 10,
-    marginBottom: normalize(15),
-  },
-  luxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: normalize(10),
-  },
-  luxBadge: {
-    backgroundColor: colors.background,
+  closeIconButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 15,
-    paddingVertical: normalize(3),
-    paddingHorizontal: normalize(10),
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
-    flexDirection: 'row',
+    width: normalize(30),
+    height: normalize(30),
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  luxIcon: {
-    marginRight: normalize(8),
-  },
-  luxText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    textAlign: 'center',
-  },
-  plantName: {
-    fontSize: FONT_SIZE.HEADER,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  plantStandout: {
-    fontSize: FONT_SIZE.REGULAR,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    textAlign: 'center',
-    marginBottom: normalize(15),
-    lineHeight: normalize(22),
-    paddingHorizontal: normalize(10),
-  },
-  italicTagline: {
-    fontStyle: 'italic',
-  },
-  infoGrid: {
-    width: '100%',
-    marginBottom: normalize(15),
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: normalize(10),
-  },
-  infoTile: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: normalize(5),
-    paddingVertical: normalize(5),
-    paddingHorizontal: normalize(10),
-    backgroundColor: colors.primaryLighter,
-    borderRadius: 8,
+    zIndex: 10,
     borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  infoIcon: {
-    marginRight: normalize(8),
-  },
-  infoText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-  },
-  swipeHint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: normalize(10),
-  },
-  swipeText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-  },
-  hintIcon: {
-    marginRight: normalize(4),
-  },
-  separator: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    marginHorizontal: normalize(5),
-  },
-  cardCounter: {
-    marginTop: normalize(15),
-    marginBottom: 0,
-    backgroundColor: colors.accent,
-    paddingVertical: normalize(2),
-    paddingHorizontal: normalize(10),
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.accent,
-  },
-  counterText: {
-    fontSize: FONT_SIZE.SMALL,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textLight,
+    borderColor: colors.accentMedium,
   },
   noMorePlants: {
     alignItems: 'center',
@@ -434,16 +293,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: normalize(20),
     borderRadius: 8,
   },
-  closeIconButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 15,
-    width: normalize(30),
-    height: normalize(30),
-    justifyContent: 'center',
+  snackbar: {
+    position: 'absolute',
+    bottom: normalize(-60),
+    left: normalize(20),
+    right: normalize(20),
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(16),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    zIndex: 10,
+    elevation: 3,
     borderWidth: 1,
-    borderColor: colors.accentMedium,
+    borderColor: colors.cardBorder,
+  },
+  snackbarText: {
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: '#757575',
+  },
+  undoText: {
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.BOLD,
+    color: colors.textPrimary,
   },
 });
 

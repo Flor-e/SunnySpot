@@ -235,12 +235,12 @@ const globalStyles = StyleSheet.create({
   },
   
   modalBox: {
-    width: '90%',
+    width: '85%',
     backgroundColor: colors.background,
     borderRadius: 12,
     padding: normalize(20),
     alignItems: 'center',
-    maxHeight: '80%',
+    maxHeight: '100%',
   },
   
   modalScroll: {
@@ -398,9 +398,14 @@ const globalStyles = StyleSheet.create({
   
   heartIcon: {
     position: 'absolute',
-    top: normalize(5),
-    right: normalize(5),
-    padding: normalize(3),
+    top: normalize(10),
+    right: normalize(10),
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Semi-transparent white background
+    borderRadius: normalize(15), // Make it circular
+    width: normalize(30),
+    height: normalize(30),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   
   // Plant Profile (Filter Dropdowns)

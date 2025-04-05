@@ -573,7 +573,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         {nerdMode ? (
           <>
             <Text style={globalStyles.instructionPanelText}>
-            ☀️ Light changes during the day, and one measurement might not be accurate enough to pick the perfect plant. So for all you plant nerds out there, there's logbook mode.
+            ☀️ Light changes during the day and one measurement might not be accurate enough to pick the perfect plant. So for all you plant nerds out there, there's logbook mode.
             </Text>
             <Text style={globalStyles.instructionPanelText}>
               Log multiple measurements throughout the day, on one day, or several. For an accurate result, make sure you have an equal amount of morning, afternoon, and evening measurements. 🕰️
@@ -842,7 +842,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     width: normalize(170),
     height: normalize(36),
-    paddingVertical: normalize(5),
+    paddingVertical: normalize(3),
     paddingHorizontal: normalize(6),
     justifyContent: 'center',
     flexDirection: 'row',

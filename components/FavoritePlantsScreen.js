@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Animated, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Animated, Image, Modal, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 import { getImageSource } from '../utils/imageMap';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
+import PlantDetailCard from './PlantDetailCard';
 
 // Embedded PlantCard Component
-const PlantCard = ({ plant, toggleFavorite, isFavorite }) => (
+const PlantCard = ({ plant, toggleFavorite, isFavorite, onDetailPress }) => (
   <View style={globalStyles.favCard}>
-    <View style={globalStyles.imageContainer}>
+    <TouchableOpacity onPress={() => onDetailPress(plant)} style={globalStyles.imageContainer}>
       <Image source={getImageSource(plant.name)} style={globalStyles.image} />
-    </View>
+    </TouchableOpacity>
     <View style={globalStyles.cardInfo}>
       <Text style={globalStyles.plantName}>{plant.name}</Text>
       <Text style={globalStyles.standout}>{plant.tagline}</Text>
@@ -29,6 +30,8 @@ export default function FavoritePlantsScreen() {
   const { favoritePlants, setFavoritePlants } = useFavorites();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [lastDeletedPlant, setLastDeletedPlant] = useState(null);
+  const [selectedPlant, setSelectedPlant] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
   const toggleFavorite = (plant) => {
@@ -48,6 +51,11 @@ export default function FavoritePlantsScreen() {
     }
   };
 
+  const handlePlantDetailPress = (plant) => {
+    setSelectedPlant(plant);
+    setModalVisible(true);
+  };
+
   useEffect(() => {
     if (snackbarVisible) {
       Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }).start();
@@ -64,7 +72,12 @@ export default function FavoritePlantsScreen() {
   }, [snackbarVisible, fadeAnim]);
 
   const renderItem = ({ item }) => (
-    <PlantCard plant={item} toggleFavorite={toggleFavorite} isFavorite={true} /> 
+    <PlantCard 
+      plant={item} 
+      toggleFavorite={toggleFavorite} 
+      isFavorite={true} 
+      onDetailPress={handlePlantDetailPress}
+    /> 
   );
 
   return (
@@ -84,6 +97,57 @@ export default function FavoritePlantsScreen() {
           ListEmptyComponent={<Text style={styles.emptyText}>No favourite plants yet!</Text>}
         />
       </View>
+      
+      {/* Favorite Plant Details Modal */}
+      <Modal
+        visible={modalVisible}
+        animationType="none"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.backdrop} />
+          <View style={styles.modalContainer}>
+            {selectedPlant && (
+              <View style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 10,
+              }}>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: normalize(10),
+                    right: normalize(10),
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(false)}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.closeIconButton}>
+                      <Icon name="close-outline" size={normalize(20)} color="#757575" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
+            {selectedPlant && (
+              <View style={styles.contentWrapper}>
+                <View style={styles.cardContainer}>
+                  <PlantDetailCard 
+                    plant={selectedPlant} 
+                    matchPercentage={100}
+                  />
+                </View>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
       
       {snackbarVisible && (
         <Animated.View style={[styles.snackbar, { opacity: fadeAnim }]}>
@@ -116,6 +180,44 @@ const styles = StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
     padding: normalize(20),
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '90%',
+    maxHeight: '90%',
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardContainer: {
+    width: '100%',
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeIconButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 15,
+    width: normalize(30),
+    height: normalize(30),
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    borderWidth: 1,
+    borderColor: colors.accentMedium,
   },
   snackbar: {
     position: 'absolute',
