@@ -4,9 +4,6 @@ import { Modal, View, Text, TouchableOpacity, ScrollView, FlatList, TextInput, D
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 
-// Get screen dimensions for the modal
-const { width: screenWidth } = Dimensions.get('window');
-
 // Reusable AnimatedModal component with error fix
 const AnimatedModal = ({ visible, onRequestClose, children }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -57,8 +54,12 @@ const AnimatedModal = ({ visible, onRequestClose, children }) => {
 // Styling for modals
 const styles = {
   modalOption: { 
-    paddingVertical: normalize(10), 
-    alignItems: 'center' 
+    paddingVertical: normalize(10),
+    paddingHorizontal: normalize(10), // Add horizontal padding
+    alignItems: 'center',
+    width: '100%', // Take up full width
+    minWidth: '85%', // Ensure a minimum width
+    alignSelf: 'center' // Center itself
   },
   modalOptionText: { 
     fontSize: FONT_SIZE.REGULAR,
@@ -78,7 +79,6 @@ const styles = {
     gap: normalize(10) 
   },
   spotNameInput: {
-    width: '70%',
     height: normalize(40),
     borderWidth: 1,
     borderColor: '#97B598',
@@ -102,10 +102,10 @@ export const LuxInfoModal = ({ visible, onClose }) => (
           <Text style={globalStyles.modalBoldText}>Lux measures light intensity.</Text> It shows how much light hits a surface, like your plant spot. Higher lux = brighter light.
         </Text>
         {[
-          ['Very Low Light', '0–500 lux'],
-          ['Low Light', '500–2.000 lux'],
-          ['Medium Light', '2.000–10.000 lux'],
-          ['Bright Light', '10.000–20.000 lux'],
+          ['Very Low Light', '0 – 500 lux'],
+          ['Low Light', '500 – 2.000 lux'],
+          ['Medium Light', '2.000 – 10.000 lux'],
+          ['Bright Light', '10.000 – 20.000 lux'],
           ['Direct Sunlight', '20.000+ lux'],
         ].map(([label, range]) => (
           <Text key={label} style={globalStyles.modalText}>
@@ -557,8 +557,7 @@ export const PlantDetailModal = ({
   favoritePlants 
 }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={[globalStyles.modalBox, { 
-    }]}>
+    <View style={globalStyles.modalBox}>
       <ScrollView contentContainerStyle={{ paddingBottom: normalize(20), alignItems: 'center' }} style={{ width: '100%' }}>
         {selectedPlant ? (
           <>
