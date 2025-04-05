@@ -88,26 +88,6 @@ export const saveNerdModeFirstOpen = async () => {
   }
 };
 
-// Load whether NormalMode has been opened before
-export const loadNormalModeFirstOpen = async () => {
-  try {
-    const value = await AsyncStorage.getItem('isNormalModeFirstOpen');
-    return value === null; 
-  } catch (error) {
-    console.error('Error loading Normal Mode first open state:', error);
-    return false;
-  }
-};
-
-// Save whether NormalMode has been opened
-export const saveNormalModeFirstOpen = async () => {
-  try {
-    await AsyncStorage.setItem('isNormalModeFirstOpen', 'false');
-  } catch (error) {
-    console.error('Error saving Normal Mode first open state:', error);
-  }
-};
-
 // Load NormalMode filters from AsyncStorage
 export const loadNormalModeFilters = async () => {
   try {

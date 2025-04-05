@@ -8,6 +8,7 @@ import FavoritePlantsScreen from './components/FavoritePlantsScreen';
 import AboutScreen from './components/AboutScreen';
 import { FavoriteProvider } from './contexts/FavoriteContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { normalize } from './utils/fontScaling';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   },
   paginationContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: normalize(20),
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -111,13 +112,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 20,
+    padding: normalize(20),
     borderRadius: 10,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 5,
+    width: normalize(8),
+    height: normalize(8),
+    borderRadius: normalize(4),
+    marginHorizontal: normalize(5),
   },
 });

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Modal, Animated, Image, TouchableOpacity } from
 import { PanGestureHandler, State, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 import { getPlantsForLux } from '../utils/plantAdvice';
 import { getImageSource } from '../utils/imageMap';
 
@@ -126,8 +126,8 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
               <Animated.View
                 style={{
                   position: 'absolute',
-                  top: 10,
-                  right: 10,
+                  top: normalize(10),
+                  right: normalize(10),
                   opacity: closeButtonOpacity,
                 }}
               >
@@ -136,7 +136,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                   activeOpacity={0.7}
                 >
                   <View style={styles.closeIconButton}>
-                    <Icon name="close-outline" size={20} color="#757575" />
+                    <Icon name="close-outline" size={normalize(20)} color="#757575" />
                   </View>
                 </TouchableOpacity>
               </Animated.View>
@@ -170,7 +170,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                         />
                         <View style={styles.luxContainer}>
                           <View style={styles.luxBadge}>
-                            <Icon name="flash-outline" size={14} color="#757575" style={styles.luxIcon} />
+                            <Icon name="flash-outline" size={normalize(14)} color="#757575" style={styles.luxIcon} />
                             <Text style={styles.luxText}>
                               {`${label}: ${getLuxLabel(plantAdvice?.lux || 0)} (${plantAdvice?.lux || 0} lux)`}
                             </Text>
@@ -181,39 +181,39 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                         <View style={styles.infoGrid}>
                           <View style={styles.infoRow}>
                             <View style={styles.infoTile}>
-                              <Icon name="resize-outline" size={16} color="#757575" style={styles.infoIcon} />
+                              <Icon name="resize-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
                               <Text style={styles.infoText}>{`Up to ${currentPlant.height || 'Unknown height'}`}</Text>
                             </View>
                             <View style={styles.infoTile}>
                               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Icon name="water-outline" size={16} color="#757575" style={styles.infoIcon} />
+                                <Icon name="water-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
                                 <Text style={styles.infoText}>{currentPlant.waterRequirement || 'Unknown'}</Text>
                               </View>
                             </View>
                           </View>
                           <View style={styles.infoRow}>
                             <View style={styles.infoTile}>
-                              <Icon name="checkmark-circle-outline" size={16} color="#757575" style={styles.infoIcon} />
+                              <Icon name="checkmark-circle-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
                               <Text style={styles.infoText}>{`${currentPlant.matchPercentage || 0}% match`}</Text>
                             </View>
                             <View style={styles.infoTile}>
-                              <Icon name="paw-outline" size={16} color="#757575" style={styles.infoIcon} />
+                              <Icon name="paw-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
                               <Text style={styles.infoText}>{currentPlant.petSafetyDetail || 'Unknown'}</Text>
                             </View>
                           </View>
                           <View style={styles.infoRow}>
                             <View style={styles.infoTile}>
-                              <Icon name="heart-outline" size={16} color="#757575" style={styles.infoIcon} />
+                              <Icon name="heart-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
                               <Text style={styles.infoText}>{currentPlant.loveLanguage || 'Unknown'}</Text>
                             </View>
                           </View>
                         </View>
                         <View style={styles.swipeHint}>
-                          <Icon name="arrow-back-outline" size={14} color="#757575" style={styles.hintIcon} />
+                          <Icon name="arrow-back-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
                           <Text style={styles.swipeText}>swipe to pass</Text>
                           <Text style={styles.separator}> | </Text>
                           <Text style={styles.swipeText}>swipe to save</Text>
-                          <Icon name="arrow-forward-outline" size={14} color="#757575" style={styles.hintIcon} />
+                          <Icon name="arrow-forward-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
                         </View>
                         <View style={styles.cardCounter}>
                           <Text style={styles.counterText}>
@@ -243,11 +243,11 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
 const styles = StyleSheet.create({
   luxHighlight: {
     color: colors.accent,
-    fontFamily: 'NunitoSansBold',
+    fontFamily: FONT_FAMILY.BOLD,
   },
   matchPercentage: {
     color: colors.accent,
-    fontFamily: 'NunitoSansBold',
+    fontFamily: FONT_FAMILY.BOLD,
   },
   modalOverlay: {
     flex: 1,
@@ -298,147 +298,147 @@ const styles = StyleSheet.create({
   },
   frontSide: {
     flexDirection: 'column',
-    padding: 20,
+    padding: normalize(20),
     alignItems: 'center',
   },
   plantImage: {
     width: '100%',
-    height: 200,
+    height: normalize(200),
     resizeMode: 'cover',
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: normalize(15),
   },
   luxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
   luxBadge: {
     backgroundColor: colors.background,
     borderRadius: 15,
-    paddingVertical: 3,
-    paddingHorizontal: 10,
+    paddingVertical: normalize(3),
+    paddingHorizontal: normalize(10),
     borderWidth: 1,
     borderColor: colors.cardBorder,
     flexDirection: 'row',
     alignItems: 'center',
   },
   luxIcon: {
-    marginRight: 8,
+    marginRight: normalize(8),
   },
   luxText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
     textAlign: 'center',
   },
   plantName: {
-    fontSize: 24,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.HEADER,
+    fontFamily: FONT_FAMILY.BOLD,
     color: colors.textPrimary,
     textAlign: 'center',
   },
   plantStandout: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
     textAlign: 'center',
-    marginBottom: 15,
-    lineHeight: 22,
-    paddingHorizontal: 10,
+    marginBottom: normalize(15),
+    lineHeight: normalize(22),
+    paddingHorizontal: normalize(10),
   },
   italicTagline: {
     fontStyle: 'italic',
   },
   infoGrid: {
     width: '100%',
-    marginBottom: 15,
+    marginBottom: normalize(15),
   },
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
   infoTile: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    marginHorizontal: normalize(5),
+    paddingVertical: normalize(5),
+    paddingHorizontal: normalize(10),
     backgroundColor: colors.primaryLighter,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.primaryBorder,
   },
   infoIcon: {
-    marginRight: 8,
+    marginRight: normalize(8),
   },
   infoText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
   },
   swipeHint: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
   swipeText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
   },
   hintIcon: {
-    marginRight: 4,
+    marginRight: normalize(4),
   },
   separator: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
-    marginHorizontal: 5,
+    marginHorizontal: normalize(5),
   },
   cardCounter: {
-    marginTop: 15,
+    marginTop: normalize(15),
     marginBottom: 0,
     backgroundColor: colors.accent,
-    paddingVertical: 2,
-    paddingHorizontal: 10,
+    paddingVertical: normalize(2),
+    paddingHorizontal: normalize(10),
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.accent,
   },
   counterText: {
-    fontSize: 12,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.SMALL,
+    fontFamily: FONT_FAMILY.BOLD,
     color: colors.textLight,
   },
   noMorePlants: {
     alignItems: 'center',
     backgroundColor: colors.background,
-    padding: 20,
+    padding: normalize(20),
     borderRadius: 20,
     elevation: 3,
     borderWidth: 1,
     borderColor: colors.cardBorder,
   },
   noMoreText: {
-    fontSize: 18,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.LARGE,
+    fontFamily: FONT_FAMILY.BOLD,
     color: colors.textPrimary,
-    marginBottom: 20,
+    marginBottom: normalize(20),
   },
   closeButton: {
     backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(20),
     borderRadius: 8,
   },
   closeIconButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 15,
-    width: 30,
-    height: 30,
+    width: normalize(30),
+    height: normalize(30),
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,

@@ -2,7 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 
 const NormalModeContent = ({ 
   filters,
@@ -30,7 +30,12 @@ const NormalModeContent = ({
               style={[globalStyles.storyButton, filters.size ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, size: true }))}
             >
-              <Icon name="resize-outline" size={16} color={filters.size ? colors.textLight : colors.textPrimary} style={globalStyles.storyButtonIcon} />
+              <Icon 
+                name="resize-outline" 
+                size={normalize(16)} 
+                color={filters.size ? colors.textLight : colors.textPrimary} 
+                style={globalStyles.storyButtonIcon} 
+              />
               <Text style={[globalStyles.storyButtonLabel, filters.size ? globalStyles.activeStoryButtonLabel : null]}>
                 {filters.size ? 
                   filters.size.replace(/ \(<\d+ cm\)|\(50-\d+ cm\)|\(>\d+ cm\)/, '') : 
@@ -44,7 +49,12 @@ const NormalModeContent = ({
               style={[globalStyles.storyButton, filters.looks ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, looks: true }))}
             >
-              <Icon name="flower-outline" size={16} color={filters.looks ? colors.textLight : colors.textPrimary} style={globalStyles.storyButtonIcon} />
+              <Icon 
+                name="flower-outline" 
+                size={normalize(16)} 
+                color={filters.looks ? colors.textLight : colors.textPrimary} 
+                style={globalStyles.storyButtonIcon} 
+              />
               <Text style={[globalStyles.storyButtonLabel, filters.looks ? globalStyles.activeStoryButtonLabel : null]}>
                 {filters.looks || '___'}
               </Text>
@@ -58,7 +68,12 @@ const NormalModeContent = ({
               style={[globalStyles.storyButton, filters.watering ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, watering: true }))}
             >
-              <Icon name="water-outline" size={16} color={filters.watering ? colors.textLight : colors.textPrimary} style={globalStyles.storyButtonIcon} />
+              <Icon 
+                name="water-outline" 
+                size={normalize(16)} 
+                color={filters.watering ? colors.textLight : colors.textPrimary} 
+                style={globalStyles.storyButtonIcon} 
+              />
               <Text style={[globalStyles.storyButtonLabel, filters.watering ? globalStyles.activeStoryButtonLabel : null]}>
                 {filters.watering || '___'}
               </Text>
@@ -71,7 +86,12 @@ const NormalModeContent = ({
               style={[globalStyles.storyButton, filters.loveLevel ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, loveLevel: true }))}
             >
-              <Icon name="heart-outline" size={16} color={filters.loveLevel ? colors.textLight : colors.textPrimary} style={globalStyles.storyButtonIcon} />
+              <Icon 
+                name="heart-outline" 
+                size={normalize(16)} 
+                color={filters.loveLevel ? colors.textLight : colors.textPrimary} 
+                style={globalStyles.storyButtonIcon} 
+              />
               <Text style={[globalStyles.storyButtonLabel, filters.loveLevel ? globalStyles.activeStoryButtonLabel : null]}>
                 {filters.loveLevel || '___'}
               </Text>
@@ -84,7 +104,12 @@ const NormalModeContent = ({
               style={[globalStyles.storyButton, filters.pets ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, pets: true }))}
             >
-              <Icon name="paw-outline" size={16} color={filters.pets ? colors.textLight : colors.textPrimary} style={globalStyles.storyButtonIcon} />
+              <Icon 
+                name="paw-outline" 
+                size={normalize(16)} 
+                color={filters.pets ? colors.textLight : colors.textPrimary} 
+                style={globalStyles.storyButtonIcon} 
+              />
               <Text style={[globalStyles.storyButtonLabel, filters.pets ? globalStyles.activeStoryButtonLabel : null]}>
                 {filters.pets ? (filters.pets === 'hell yeah!' ? 'Yes' : filters.pets) : '___'}
               </Text>
@@ -105,7 +130,12 @@ const NormalModeContent = ({
               ]}
               onPress={clearFilters}
             >
-              <Icon name="refresh-outline" size={14} color={colors.textPrimary} style={globalStyles.clearButtonIcon} />
+              <Icon 
+                name="refresh-outline" 
+                size={normalize(14)} 
+                color={colors.textPrimary} 
+                style={globalStyles.clearButtonIcon} 
+              />
               <Text style={[globalStyles.clearButtonText, styles.accentClearButtonText]}>Clear filters</Text>
             </TouchableOpacity>
           </View>
@@ -120,9 +150,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dividerContainer: {
-    paddingVertical: 10,
-    marginTop: 8,
-},
+    paddingVertical: normalize(10),
+    marginTop: normalize(8),
+  },
+  accentClearButton: {
+    // This style is empty in the original code, but kept for consistency
+  },
+  accentClearButtonText: {
+    // This style is empty in the original code, but kept for consistency
+  },
 });
 
 export default NormalModeContent;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Modal, ScrollView, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { plantsData } from '../utils/plantAdvice';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
 import { getImageSource } from '../utils/imageMap';
 import { Linking } from 'react-native';
 
@@ -52,7 +52,7 @@ const AboutScreen = () => {
         <Text style={globalStyles.title}>Search plant database</Text>
       </View>
   
-      <View style={{ paddingTop: 20 }} />
+      <View style={{ paddingTop: normalize(20) }} />
   
       {/* Intro Section */}
       <View style={styles.introSection}>
@@ -64,14 +64,14 @@ const AboutScreen = () => {
       >
          @Lavie_Flori
       </Text>
-        ), coded by Grok 2 and refined by Claude 3.7. Grok also created all of the plant artwork.
+        ) and coded by AI (Grok 2 and Claude 3.7). Grok also created all of the plant artwork.
       </Text>
       </View>
 
       {/* Body Section */}
       <View style={globalStyles.bodySection}>
         <View style={[styles.searchContainer, { width: '85%', alignSelf: 'center' }]}>
-          <Icon name="search-outline" size={20} color="#757575" style={styles.searchIcon} />
+          <Icon name="search-outline" size={normalize(20)} color="#757575" style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, globalStyles.fontRegular]}
             placeholder="Search plants..."
@@ -88,7 +88,7 @@ const AboutScreen = () => {
             renderItem={renderPlantItem}
             keyExtractor={(item, index) => `${item.name}-${index}`}
             style={[styles.resultsList, { width: '85%', alignSelf: 'center' }]}
-            contentContainerStyle={{ paddingBottom: 80 }}
+            contentContainerStyle={{ paddingBottom: normalize(80) }}
           />
         ) : (
           <Text style={[globalStyles.instructionText, { width: '85%', alignSelf: 'center' }]}>
@@ -163,10 +163,11 @@ const AboutScreen = () => {
 
 const styles = StyleSheet.create({
   headerSection: {
+    // Keep empty to inherit from globalStyles
   },
   introSection: {
     backgroundColor: '#F5F5F5', 
-    paddingBottom: 10,
+    paddingBottom: normalize(10),
     alignItems: 'center',
   },
   introText: {
@@ -178,29 +179,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    marginTop: 20,
+    paddingHorizontal: normalize(10),
+    marginBottom: normalize(20),
+    marginTop: normalize(20),
     borderWidth: 1,
     borderColor: '#97B598',
   },
-  searchIcon: { marginRight: 8 },
-  searchInput: { flex: 1, height: 40, fontSize: 16, color: '#000000' },
-  resultsList: { flex: 1 },
+  searchIcon: { 
+    marginRight: normalize(8) 
+  },
+  searchInput: { 
+    flex: 1, 
+    height: normalize(40), 
+    fontSize: FONT_SIZE.REGULAR, 
+    color: '#000000',
+    fontFamily: FONT_FAMILY.REGULAR,
+  },
+  resultsList: { 
+    flex: 1 
+  },
   horizontalCardContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     width: 'auto',
   },
   cardImage: {
-    width: 80,
-    height: 60,
+    width: normalize(80),
+    height: normalize(60),
     borderRadius: 8,
-    marginRight: 2,
+    marginRight: normalize(2),
   },
   cardTextContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: normalize(10),
     justifyContent: 'flex-start',
   },
   // Modal Styles
@@ -210,20 +221,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: normalize(20),
     alignItems: 'center', 
   },
   modalTitle: {
-    marginBottom: 20,
+    marginBottom: normalize(20),
   },
   detailsCard: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#97B598',
     borderRadius: 8,
-    padding: 15,
+    padding: normalize(15),
     width: '100%',
-    marginBottom: 20,
+    marginBottom: normalize(20),
   },
   detailRow: {
     flexDirection: 'row',
@@ -231,21 +242,21 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   detailLabel: {
-    width: 100,
+    width: normalize(100),
   },
   detailValue: {
-    fontSize: 14,
+    fontSize: FONT_SIZE.MEDIUM,
     color: '#757575',
-    fontFamily: 'NunitoSansRegular',
+    fontFamily: FONT_FAMILY.REGULAR,
     flex: 1,
-    marginLeft: 10,
+    marginLeft: normalize(10),
     textAlign: 'left',
     flexWrap: 'wrap',
   },
   divider: {
     height: 1,
     backgroundColor: '#E0E0E0',
-    marginVertical: 10,
+    marginVertical: normalize(10),
   },
 });
 

@@ -2,41 +2,41 @@
 import React, { useMemo, useState } from 'react'; 
 import { Modal, View, Text, TouchableOpacity, ScrollView, FlatList, TextInput, Dimensions, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 
 // Styling for modals
 const styles = {
   modalOption: { 
-    paddingVertical: 10, 
+    paddingVertical: normalize(10), 
     alignItems: 'center' 
   },
   modalOptionText: { 
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular', 
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR, 
     color: '#425f29' 
   },
   modalContent: { 
     width: '100%', 
-    marginBottom: 15, 
+    marginBottom: normalize(15), 
     flex: 1 
   },
   modalButtonRow: { 
     flexDirection: 'row', 
     justifyContent: 'center', 
     width: '100%', 
-    marginTop: 10, 
-    gap: 10 
+    marginTop: normalize(10), 
+    gap: normalize(10) 
   },
   spotNameInput: {
     width: '70%',
-    height: 40,
+    height: normalize(40),
     borderWidth: 1,
     borderColor: '#97B598',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    fontSize: 16,
+    paddingHorizontal: normalize(10),
+    fontSize: FONT_SIZE.REGULAR,
     backgroundColor: '#FFFFFF',
-    fontFamily: 'NunitoSansRegular',
+    fontFamily: FONT_FAMILY.REGULAR,
     alignSelf: 'center',
   },
 };
@@ -80,32 +80,32 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
   const styles = StyleSheet.create({
     modalContent: {
       flex: 1,
-      paddingHorizontal: 15,
+      paddingHorizontal: normalize(15),
     },
     timeOfDayTitle: {
-      fontSize: 18,
-      fontFamily: 'NunitoSansBold',
+      fontSize: FONT_SIZE.LARGE,
+      fontFamily: FONT_FAMILY.BOLD,
       color: colors.textPrimary,
       textAlign: 'left',
-      marginBottom: 10,
-      marginTop: 10,
-      paddingHorizontal: 15,
+      marginBottom: normalize(10),
+      marginTop: normalize(10),
+      paddingHorizontal: normalize(15),
     },
     divider: {
       height: 1,
       backgroundColor: colors.accentMedium,
       width: '75%',
       alignSelf: 'center',
-      marginVertical: 15,
+      marginVertical: normalize(15),
     },
     historyEntry: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       alignSelf: 'center',
-      marginBottom: 5,
-      paddingVertical: 10,
-      paddingHorizontal: 15,
+      marginBottom: normalize(5),
+      paddingVertical: normalize(10),
+      paddingHorizontal: normalize(15),
       width: '95%',
       borderWidth: 1,
       borderRadius: 6,
@@ -113,27 +113,27 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
     },
     historyTextContainer: {
       flex: 1,
-      marginRight: 10,
+      marginRight: normalize(10),
     },
     historyText: {
-      fontSize: 15,
-      fontFamily: 'NunitoSansRegular',
+      fontSize: FONT_SIZE.MEDIUM,
+      fontFamily: FONT_FAMILY.REGULAR,
       color: '#757575',
       flexWrap: 'wrap',
     },
     lastHistoryText: {
-      fontSize: 16,
-      fontFamily: 'NunitoSansRegular',
-      fontWeight: 'bold',
+      fontSize: FONT_SIZE.REGULAR,
+      fontFamily: FONT_FAMILY.REGULAR,
+      fontWeight: FONT_WEIGHT.BOLD,
       color: '#425f29',
       letterSpacing: 0.5,
     },
     trashIcon: {
-      padding: 5,
+      padding: normalize(5),
     },
     modalScrollContent: {
       flexGrow: 1,
-      paddingBottom: 20,
+      paddingBottom: normalize(20),
     },
   });
 
@@ -242,7 +242,7 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
                               style={styles.trashIcon}
                               onPress={() => promptDelete(measurement)}
                             >
-                              <Icon name="trash-outline" size={18} color="#757575" />
+                              <Icon name="trash-outline" size={normalize(18)} color="#757575" />
                             </TouchableOpacity>
                           </View>
                         );
@@ -287,7 +287,7 @@ export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLog
     <View style={globalStyles.modalOverlay}>
       <View style={globalStyles.modalBox}>
         <Text style={globalStyles.modalTitle}>Create New Logbook</Text>
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical: 20 }}>
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: normalize(20) }}>
           <TextInput
             style={styles.spotNameInput}
             value={newLogbookName}
@@ -473,7 +473,7 @@ export const ConfirmDeleteMeasurementModal = ({
         </Text>
         {timestamp ? (
           <>
-            <Text style={[globalStyles.modalText, { fontWeight: 'bold', marginVertical: 10 }]}>
+            <Text style={[globalStyles.modalText, { fontWeight: FONT_WEIGHT.BOLD, marginVertical: normalize(10) }]}>
               {formatTimestamp(timestamp)} ({getTimeOfDay(timestamp)})
             </Text>
             <Text style={globalStyles.modalText}>
@@ -515,7 +515,7 @@ export const NoMatchesAfterMeasurementModal = ({ visible, onClose }) => (
       <View style={globalStyles.modalBox}>
         <Text style={globalStyles.modalTitle}>No plants match your criteria</Text>
         <Text style={globalStyles.modalText}>
-          Sorry, we couldn’t find any plants that match your criteria. Try adjusting your filters or taking a measurement in a different spot with more light.
+          Sorry, we couldn't find any plants that match your criteria. Try adjusting your filters or taking a measurement in a different spot with more light.
         </Text>
         <TouchableOpacity
           style={globalStyles.modalClose}
@@ -540,7 +540,7 @@ export const NoMoreMatchesAfterSwipingModal = ({ visible, onClose }) => (
       <View style={globalStyles.modalBox}>
         <Text style={globalStyles.modalTitle}>No more matches</Text>
         <Text style={globalStyles.modalText}>
-          You’ve swiped through all the plants for this spot. Take a new measurement or adjust your filters to find more matches.
+          You've swiped through all the plants for this spot. Take a new measurement or adjust your filters to find more matches.
         </Text>
         <TouchableOpacity
           style={globalStyles.modalClose}

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 
 const NerdModeContent = ({ 
   selectedLogbook,
@@ -27,7 +27,7 @@ const NerdModeContent = ({
     return (
       <ScrollView style={styles.scrollContainer}>
         <View style={globalStyles.contentWrapper}>
-          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: 20 }]}>
+          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: normalize(20) }]}>
             <Text style={globalStyles.nerdCardTitle}>No logbooks</Text>
             <Text style={globalStyles.nerdCardBodyText}>
               Create your first light logbook!
@@ -43,7 +43,7 @@ const NerdModeContent = ({
     return (
       <ScrollView style={styles.scrollContainer}>
         <View style={globalStyles.contentWrapper}>
-          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: 20 }]}>
+          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: normalize(20) }]}>
             <Text style={globalStyles.nerdCardTitle}>No Logbook Selected</Text>
             <Text style={globalStyles.nerdCardBodyText}>
               Please select or create a logbook using the dropdown menu at the top.
@@ -70,7 +70,7 @@ const NerdModeContent = ({
           >
             <Icon 
               name={viewMode === 'plantProfile' ? 'chevron-back' : 'chevron-forward'} 
-              size={20} 
+              size={normalize(20)} 
               color={colors.textLight}  
             />
           </TouchableOpacity>
@@ -96,7 +96,7 @@ const NerdModeContent = ({
                 >
                   <Icon 
                     name="resize-outline" 
-                    size={16} 
+                    size={normalize(16)} 
                     color={currentFilters.size ? colors.textLight : colors.textPrimary} 
                     style={globalStyles.storyButtonIcon} 
                   />
@@ -115,7 +115,7 @@ const NerdModeContent = ({
                 >
                   <Icon 
                     name="flower-outline" 
-                    size={16} 
+                    size={normalize(16)} 
                     color={currentFilters.looks ? colors.textLight : colors.textPrimary} 
                     style={globalStyles.storyButtonIcon} 
                   />
@@ -134,7 +134,7 @@ const NerdModeContent = ({
                 >
                   <Icon 
                     name="water-outline" 
-                    size={16} 
+                    size={normalize(16)} 
                     color={currentFilters.watering ? colors.textLight : colors.textPrimary} 
                     style={globalStyles.storyButtonIcon} 
                   />
@@ -152,7 +152,7 @@ const NerdModeContent = ({
                 >
                   <Icon 
                     name="heart-outline" 
-                    size={16} 
+                    size={normalize(16)} 
                     color={currentFilters.loveLevel ? colors.textLight : colors.textPrimary} 
                     style={globalStyles.storyButtonIcon} 
                   />
@@ -170,7 +170,7 @@ const NerdModeContent = ({
                 >
                   <Icon 
                     name="paw-outline" 
-                    size={16} 
+                    size={normalize(16)} 
                     color={currentFilters.pets ? colors.textLight : colors.textPrimary} 
                     style={globalStyles.storyButtonIcon} 
                   />
@@ -182,7 +182,7 @@ const NerdModeContent = ({
 
               {/* Soft lavender divider */}
               <View style={styles.dividerContainer}>
-                <View style={[globalStyles.divider, { marginTop: 7 }]} />
+                <View style={[globalStyles.divider, { marginTop: normalize(7) }]} />
               </View>
 
               {/* Clear filters button */}
@@ -191,7 +191,7 @@ const NerdModeContent = ({
                   style={globalStyles.clearButton} 
                   onPress={clearFilters}
                 >
-                  <Icon name="refresh-outline" size={14} color={colors.textPrimary} style={globalStyles.clearButtonIcon} />
+                  <Icon name="refresh-outline" size={normalize(14)} color={colors.textPrimary} style={globalStyles.clearButtonIcon} />
                   <Text style={globalStyles.clearButtonText}>Clear filters</Text>
                 </TouchableOpacity>
               </View>
@@ -207,7 +207,7 @@ const NerdModeContent = ({
                   style={styles.binIcon}
                   onPress={() => setModalVisible(prev => ({ ...prev, deleteLogbook: true }))}
                 >
-                  <Icon name="trash-outline" size={18} color={colors.textPrimary} />
+                  <Icon name="trash-outline" size={normalize(18)} color={colors.textPrimary} />
                 </TouchableOpacity>
               </View>
               <View style={globalStyles.subtitleBadge}>
@@ -224,14 +224,14 @@ const NerdModeContent = ({
                 <>
                   <View style={globalStyles.infoContainer}>
                     <Text style={globalStyles.storyText}>This spot receives on average </Text>
-                    <Text style={{ fontSize: 16, fontFamily: 'NunitoSansBold', color: colors.textPrimary, fontWeight: 'bold' }}>{getLightLevel(selectedLogbook.average)}</Text>
+                    <Text style={styles.highlightedText}>{getLightLevel(selectedLogbook.average)}</Text>
                     <Text style={globalStyles.storyText}> ({Math.round(selectedLogbook.average)} lux),</Text>
                     <Text style={globalStyles.storyText}> based on </Text>
-                    <Text style={{ fontSize: 16, fontFamily: 'NunitoSansBold', color: colors.textPrimary, fontWeight: 'bold' }}>{slotCounts.morning}</Text>
+                    <Text style={styles.highlightedText}>{slotCounts.morning}</Text>
                     <Text style={globalStyles.storyText}> morning, </Text>
-                    <Text style={{ fontSize: 16, fontFamily: 'NunitoSansBold', color: colors.textPrimary, fontWeight: 'bold' }}>{slotCounts.afternoon}</Text>
+                    <Text style={styles.highlightedText}>{slotCounts.afternoon}</Text>
                     <Text style={globalStyles.storyText}> afternoon, </Text>
-                    <Text style={{ fontSize: 16, fontFamily: 'NunitoSansBold', color: colors.textPrimary, fontWeight: 'bold' }}>{slotCounts.evening}</Text>
+                    <Text style={styles.highlightedText}>{slotCounts.evening}</Text>
                     <Text style={globalStyles.storyText}> evening</Text>
                     <Text style={globalStyles.storyText}> measurements.</Text>
                   </View>
@@ -250,7 +250,7 @@ const NerdModeContent = ({
                       
                       {/* Last measurement value on its own line */}
                       <View style={globalStyles.lastMeasurementValueContainer}>
-                        <Text style={{ fontSize: 16, fontFamily: 'NunitoSansBold', color: colors.textPrimary, fontWeight: 'bold' }}>{getLightLevel(selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux)}</Text>
+                        <Text style={styles.highlightedText}>{getLightLevel(selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux)}</Text>
                         <Text style={globalStyles.storyText}> ({selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux} lux)</Text>
                       </View>
                     </>
@@ -265,7 +265,7 @@ const NerdModeContent = ({
                   disabled={!selectedLogbook.measurements.length}
                 >
                   <View style={globalStyles.logbookButtonContent}>
-                    <Icon name="leaf-outline" size={16} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
+                    <Icon name="leaf-outline" size={normalize(16)} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
                     <Text style={globalStyles.logbookButtonText}>Matches</Text>
                   </View>
                 </TouchableOpacity>
@@ -279,7 +279,7 @@ const NerdModeContent = ({
                   disabled={!selectedLogbook.measurements.length}
                 >
                   <View style={globalStyles.logbookButtonContent}>
-                    <Icon name="document-outline" size={16} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
+                    <Icon name="document-outline" size={normalize(16)} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
                     <Text style={globalStyles.logbookButtonText}>History</Text>
                   </View>
                 </TouchableOpacity>
@@ -296,26 +296,29 @@ const styles = StyleSheet.create({
   scrollContainer: { 
     flex: 1,
   },
+  scrollContent: {
+    // We keep this empty but define it to ensure consistent styling
+  },
   cardContainer: {
     position: 'relative', 
   },
   dividerContainer: {
-    paddingVertical: 10, 
+    paddingVertical: normalize(10), 
     marginTop: 0,
   },
   binIcon: {
-    marginLeft: 3, 
-    marginBottom: 2,
+    marginLeft: normalize(3), 
+    marginBottom: normalize(2),
   },
   toggleChevron: {
     position: 'absolute',
-    right: -12, 
+    right: normalize(-12), 
     top: '50%', 
-    transform: [{ translateY: -12 }], 
+    transform: [{ translateY: normalize(-12) }], 
     backgroundColor: colors.accent,
-    width: 25,
-    height: 25,
-    borderRadius: 15,
+    width: normalize(25),
+    height: normalize(25),
+    borderRadius: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -324,6 +327,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
     zIndex: 10
+  },
+  highlightedText: {
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
+    color: colors.textPrimary,
   },
 });
 

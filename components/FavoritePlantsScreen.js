@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Animated, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
 import { getImageSource } from '../utils/imageMap';
 
 // Embedded PlantCard Component
@@ -16,7 +16,11 @@ const PlantCard = ({ plant, toggleFavorite, isFavorite }) => (
       <Text style={globalStyles.standout}>{plant.tagline}</Text>
     </View>
     <TouchableOpacity style={globalStyles.heartIcon} onPress={() => toggleFavorite(plant)}>
-      <Icon name={isFavorite ? 'heart' : 'heart-outline'} size={20} color={isFavorite ? colors.primary : colors.textDark} />
+      <Icon 
+        name={isFavorite ? 'heart' : 'heart-outline'} 
+        size={normalize(20)} 
+        color={isFavorite ? colors.primary : colors.textDark} 
+      />
     </TouchableOpacity>
   </View>
 );
@@ -96,45 +100,45 @@ export default function FavoritePlantsScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingTop: 20, 
+    paddingTop: normalize(20), 
   },
   columnWrapper: { 
     justifyContent: 'flex-start', 
-    paddingHorizontal: 10 
+    paddingHorizontal: normalize(10) 
   },
   listContentContainer: { 
-    paddingVertical: 10, 
-    paddingBottom: 80 
+    paddingVertical: normalize(10), 
+    paddingBottom: normalize(80) 
   },
   emptyText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
     textAlign: 'center',
-    padding: 20,
+    padding: normalize(20),
   },
   snackbar: {
     position: 'absolute',
-    bottom: 80,
-    left: 20,
-    right: 20,
+    bottom: normalize(80),
+    left: normalize(20),
+    right: normalize(20),
     backgroundColor: '#F5F5F5',
     borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(16),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     elevation: 3,
   },
   snackbarText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: '#757575',
   },
   undoText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.BOLD,
     color: '#425f29',
   },
 });

@@ -1,8 +1,12 @@
 // utils/globalStyles.js
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, LINE_HEIGHT } from './fontScaling';
+
+// Get screen dimensions
+const { width } = Dimensions.get('window');
 
 // Calculate the header height to use consistently throughout the app
-const HEADER_HEIGHT = StatusBar.currentHeight + 66; 
+const HEADER_HEIGHT = StatusBar.currentHeight + normalize(66);
 
 // App colors - Enhanced color system
 const colors = {
@@ -23,6 +27,7 @@ const colors = {
   textLight: '#FFFFFF',      // Light text
   textPrimary: '#425f29',    // Primary green text
   textHeader: '#425f29',     // Header text (slightly different green)
+  textDisabled: '#B0B0B0',   // Disabled text
   
   // Background colors
   background: '#FFFFFF',     // Background white
@@ -33,6 +38,58 @@ const colors = {
   inputBorder: '#97B598',    // Input field border
 };
 
+// Typography styles - centralized for consistent use across the app
+const typography = {
+  // Base text styles
+  baseText: {
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: colors.textDark,
+  },
+  
+  // Font sizes
+  title: {
+    fontSize: FONT_SIZE.HEADER,
+    fontFamily: FONT_FAMILY.EXTRA_BOLD,
+    fontWeight: FONT_WEIGHT.EXTRA_BOLD,
+    color: colors.textHeader,
+    letterSpacing: 0.5,
+  },
+  
+  subtitle: {
+    fontSize: FONT_SIZE.LARGE,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
+    color: colors.textPrimary,
+  },
+  
+  body: {
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
+    lineHeight: LINE_HEIGHT.MEDIUM,
+    color: colors.textDark,
+  },
+  
+  button: {
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
+    color: colors.textLight,
+  },
+  
+  caption: {
+    fontSize: FONT_SIZE.SMALL,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: colors.textDark,
+  },
+  
+  count: {
+    fontSize: FONT_SIZE.COUNT,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
+    color: colors.textLight,
+  },
+};
+
 const globalStyles = StyleSheet.create({
   // Core container
   container: {
@@ -40,17 +97,19 @@ const globalStyles = StyleSheet.create({
     backgroundColor: colors.background,
     paddingTop: HEADER_HEIGHT, 
   },
+  
   // Content wrapper for body on Home and NerdMode
   contentWrapper: {
     width: '85%',
     alignSelf: 'center',
-    paddingTop: 15, 
+    paddingTop: normalize(15), 
   },
+  
   // Header section
   headerSection: {
     backgroundColor: colors.secondaryBg,
-    paddingTop: StatusBar.currentHeight + 15,
-    paddingBottom: 15,
+    paddingTop: StatusBar.currentHeight + normalize(15),
+    paddingBottom: normalize(15),
     paddingHorizontal: 0,
     width: '100%',
     position: 'absolute',
@@ -59,257 +118,269 @@ const globalStyles = StyleSheet.create({
     right: 0,
     zIndex: 30,
     elevation: 2, 
-    height: StatusBar.currentHeight + 66, 
+    height: HEADER_HEIGHT, 
   },
+  
   // Header icon button - UPDATED for active state with accent
   headerIconButton: {
-    width: 36,
-    height: 36,
+    width: normalize(36),
+    height: normalize(36),
     backgroundColor: colors.background, 
     borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.primary, 
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
-    marginLeft: 15,
+    marginRight: normalize(15),
+    marginLeft: normalize(15),
   },
-  headerIconButtonActive: {
-    backgroundColor: colors.primary, 
-    borderColor: colors.primary, 
-  },
+  
   // Optional body section
   bodySection: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingHorizontal: normalize(20),
+    paddingTop: normalize(20),
   },
+  
   // Text styles
-  fontRegular: { fontFamily: 'NunitoSans' },
+  fontRegular: { 
+    fontFamily: FONT_FAMILY.REGULAR 
+  },
+  
   title: {
-    fontSize: 25,
-    fontWeight: '700',
-    color: colors.textHeader,
+    ...typography.title,
     width: '85%',
     alignSelf: 'center',
-    letterSpacing: 0.5,
     textAlign: 'center',
-    fontFamily: 'NunitoSansExtraBold',
-    paddingBottom: 2,
+    paddingBottom: normalize(2),
   },
+  
   instructionText: {
-    fontSize: 14,
-    color: colors.textDark,
+    ...typography.body,
     textAlign: 'center',
     width: '85%',
     alignSelf: 'center',
-    fontFamily: 'NunitoSans',
-    paddingBottom: 15,
-    paddingTop: 15,
+    paddingBottom: normalize(15),
+    paddingTop: normalize(15),
   },
+  
   buttonText: {
-    fontSize: 16,
-    color: colors.textLight,
-    fontWeight: '600',
-    fontFamily: 'NunitoSansBold',
+    ...typography.button,
   },
+  
   plantName: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: normalize(15),
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textHeader,
-    fontFamily: 'NunitoSansBold',
-    maxWidth: 155,
+    maxWidth: normalize(155),
   },
+  
   standout: {
-    fontSize: 12,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.SMALL,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
-    marginBottom: 3,
+    marginBottom: normalize(3),
   },
+  
   // Title style for nerdCard
   nerdCardTitle: {
-    fontSize: 18,
-    fontFamily: 'NunitoSansBold',
-    color: colors.textPrimary,
+    ...typography.subtitle,
     textAlign: 'center',
-    marginBottom: 5,
+    marginBottom: normalize(2),
   },
+  
   // Body text style for nerdCard (lightLevelText)
   nerdCardBodyText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
     textAlign: 'center',
-    lineHeight: 30,
+    lineHeight: LINE_HEIGHT.MEDIUM,
   },
+  
   // Button and modal styles
   measureButton: {
     backgroundColor: colors.primary,
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: normalize(120),
+    height: normalize(120),
+    borderRadius: normalize(60),
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-    marginTop: 20,
+    marginTop: normalize(20),
   },
+  
   disabledMeasureButton: {
     backgroundColor: colors.textPrimary,
   },
+  
   buttonLabel: {
-    fontSize: 20,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.EXTRA_LARGE,
+    fontFamily: FONT_FAMILY.BOLD,
     color: colors.textPrimary,
     textAlign: 'center',
-    marginVertical: 15,
+    marginTop: normalize(15),
   },
+  
   countdownText: {
-    fontSize: 50,
-    fontFamily: 'NunitoSansBold',
-    color: colors.textLight,
+    ...typography.count,
   },
+  
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+  
   modalBox: {
     width: '90%',
     backgroundColor: colors.background,
     borderRadius: 12,
-    padding: 20,
+    padding: normalize(20),
     alignItems: 'center',
     maxHeight: '80%',
   },
+  
   modalScroll: {
     width: '100%',
-    marginBottom: 15,
+    marginBottom: normalize(15),
   },
+  
   modalTitle: {
-    fontSize: 18,
-    fontFamily: 'NunitoSansBold',
-    color: colors.textHeader,
-    marginBottom: 15,
+    ...typography.subtitle,
+    marginBottom: normalize(15),
     textAlign: 'center',
   },
+  
   // New style for accent header in modals
   modalTitleContainer: {
     backgroundColor: colors.accentLight,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
+    paddingVertical: normalize(8),
+    paddingHorizontal: normalize(15),
     borderRadius: 8,
-    marginBottom: 15,
+    marginBottom: normalize(15),
     width: '100%',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.accentMedium,
   },
+  
   modalText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
-    color: colors.textDark,
-    lineHeight: 24,
-    paddingHorizontal: 10,
-    marginVertical: 5,
+    fontSize: FONT_SIZE.REGULAR,
+    paddingHorizontal: normalize(10),
+    marginVertical: normalize(5),
   },
+  
   modalBoldText: {
-    fontFamily: 'NunitoSansBold',
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textHeader,
   },
+  
   // Primary and secondary action buttons
   modalClose: {
     backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(15),
     borderRadius: 8,
     alignItems: 'center',
     width: '50%',
-    marginTop: 10,
+    marginTop: normalize(10),
   },
+  
   modalPositiveButton: {
     backgroundColor: colors.accent,
-    paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(15),
     borderRadius: 8,
     alignItems: 'center',
     width: '40%',
-    marginTop: 10,
+    marginTop: normalize(10),
   },
+  
   // Updated secondary button with accent
   modalNegativeButton: {
     backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(15),
     borderRadius: 8,
     alignItems: 'center',
     width: '40%',
-    marginTop: 10,
+    marginTop: normalize(10),
     borderWidth: 1,
     borderColor: colors.accentDark,
   },
+  
   // Card styles
   cardTile: {
     backgroundColor: colors.background,
     borderRadius: 12,
-    marginVertical: 5,
+    marginVertical: normalize(5),
     elevation: 3,
     borderWidth: 1,
     borderColor: colors.inputBorder,
-    padding: 8,
+    padding: normalize(8),
   },
+  
   favCard: {
     width: '47%',
     backgroundColor: colors.background,
     borderRadius: 12,
-    margin: 5,
+    margin: normalize(5),
     elevation: 3,
     borderWidth: 1,
     borderColor: colors.cardBorder,
-    padding: 8,
+    padding: normalize(8),
     position: 'relative',
   },
+  
   nerdCard: {
     width: '100%',
     backgroundColor: colors.background,
     borderRadius: 12,
-    marginVertical: 15,
-    marginHorizontal: 0,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 15,
-    paddingBottom: 20,
+    margin: normalize(15),
+    paddingLeft: normalize(12),
+    paddingVertical: normalize(15),
     position: 'relative',
+    alignSelf: 'center',
   },
+  
   // Container for nerdCard content
   nerdCardContent: {
-    paddingHorizontal: 5,
+    paddingHorizontal: normalize(5),
   },
+  
   // Container for nerdCard title
   nerdCardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: normalize(5),
   },
+  
   // Container for plant profile filter dropdowns
   plantProfileContainer: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: normalize(10),
+    marginBottom: normalize(10),
   },
+  
   // Bin icon for nerdCard
   binIcon: {
     position: 'absolute',
-    top: 18,
-    right: 70,
+    top: normalize(18),
+    right: normalize(70),
   },
+  
   imageContainer: {
     width: '100%',
-    height: 100,
+    height: normalize(100),
   },
+  
   image: {
     width: '100%',
     height: '100%',
@@ -317,103 +388,122 @@ const globalStyles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
+  
   cardInfo: {
     flex: 1,
-    paddingTop: 8,
+    paddingTop: normalize(8),
     alignItems: 'center',
   },
+  
   heartIcon: {
     position: 'absolute',
-    top: 5,
-    right: 5,
-    padding: 3,
+    top: normalize(5),
+    right: normalize(5),
+    padding: normalize(3),
   },
+  
   // Plant Profile (Filter Dropdowns)
   filterDropdown: {
-    marginHorizontal: 2,
-    marginTop: 2,
+    marginHorizontal: normalize(2),
+    marginTop: normalize(2),
     borderBottomWidth: 2,
     borderBottomColor: colors.textPrimary,
     backgroundColor: colors.primaryLighter,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 7,
-    height: 26,
+    paddingHorizontal: normalize(7),
+    height: normalize(26),
   },
+  
   filterDropdownText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textPrimary,
-    fontWeight: 'bold',
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: normalize(5),
   },
+  
   chevronIcon: {
     alignSelf: 'center',
-    marginRight: 5,
+    marginRight: normalize(5),
   },
+  
   // Bottom Section for Measurement Button
   bottomSection: {
     position: 'absolute',
-    bottom: 30,
+    bottom: normalize(30),
     left: 0,
     right: 0,
     alignItems: 'center',
   },
+  
   // Lux Display Styles
   luxDisplay: {
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: normalize(50),
+    marginTop: normalize(15)
   },
+  
   luxRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   luxText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textPrimary,
-    fontWeight: 'bold',
-    marginRight: 3,
+    marginRight: normalize(3),
   },
+  
   lightLevelText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
-    marginTop: 2,
+    marginTop: normalize(2),
   },
+  
   // Instruction Panel
   instructionPanel: {
     position: 'absolute',
     top: StatusBar.currentHeight + 0,
     left: 0,
     right: 0,
-    padding: 20,
+    padding: normalize(20),
+    paddingBottom: normalize(20),
     alignItems: 'center',
     backgroundColor: colors.background,
     zIndex: 20,
-  },
+    hadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 }, // Increases the bottom shadow
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2, // Lower elevation for a subtler effect
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.cardBorder, 
+    },
+  
   instructionPanelTitle: {
-    fontSize: 18,
-    fontFamily: 'NunitoSansBold',
-    color: colors.textHeader,
+    ...typography.subtitle,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
+  
   instructionPanelText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
-    color: colors.textDark,
+    ...typography.body,
     textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 10,
+    marginBottom: normalize(10),
   },
+  
   // General utility styles
   alignItemsCenter: {
     alignItems: 'center',
   },
+  
   flexRow: {
     flexDirection: 'row',
   },
@@ -424,43 +514,50 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    marginVertical: 3,
+    marginVertical: normalize(3),
   },
+  
   profileLabel: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
   },
+  
   profileText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textPrimary,
-    fontWeight: 'bold',
   },
+  
   // Updated with accent styling
   highlightText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.accent,
   },
+  
   cardBorder: {
     borderWidth: 1,
     borderColor: colors.cardBorder,
   },
 
   subtitleBadge: {
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     borderRadius: 12,
-    paddingVertical: 2,
-    paddingHorizontal: 10,
+    paddingVertical: normalize(2),
+    paddingHorizontal: normalize(10),
     alignSelf: 'center',
-    marginBottom: 10,
+    marginBottom: normalize(10),
     borderWidth: 1,
-    borderColor: colors.accentMedium,
+    borderColor: colors.primary,
   },
+  
   badgeText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.SMALL,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textLight,
   },
   
@@ -470,70 +567,79 @@ const globalStyles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    marginTop: 10,
+    paddingHorizontal: normalize(12),
+    marginTop: normalize(10),
     gap: 3,
   },
+  
   storyText: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
-    marginVertical: 2,
+    marginVertical: normalize(2),
   },
+  
   storyButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.primaryLighter,
     borderRadius: 6,
-    paddingVertical: 3,
-    paddingHorizontal: 6,
+    paddingVertical: normalize(3),
+    paddingHorizontal: normalize(6),
     borderWidth: 1,
     borderColor: colors.primaryBorder,
-    marginVertical: 2,
+    marginVertical: normalize(2),
   },
+  
   storyButtonAlt: {
     backgroundColor: colors.accentLight,
     borderColor: colors.accentMedium,
   },
+  
   // Clear filters button
   clearButtonContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: normalize(10),
   },
+  
   clearButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 3,
-    paddingHorizontal: 8,
+    paddingVertical: normalize(3),
+    paddingHorizontal: normalize(8),
     borderRadius: 6,
     borderWidth: 1,
     borderColor: colors.primaryBorder,
     backgroundColor: colors.background,
   },
+  
   clearButtonIcon: {
-    marginRight: 5,
+    marginRight: normalize(5),
   },
+  
   clearButtonText: {
-    fontSize: 12,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.SMALL,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textPrimary, 
   },
+  
   // Active state for buttons
   activeStoryButton: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
+  
   storyButtonIcon: {
-    marginRight: 6,
+    marginRight: normalize(6),
   },
+  
   storyButtonLabel: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textPrimary,
   },
-  storyButtonLabelAlt: {
-    color: colors.accent,
-  },
+  
   activeStoryButtonLabel: {
     color: colors.textLight,
   },
@@ -544,61 +650,74 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    marginVertical: 5,
+    marginVertical: normalize(5),
   },
+  
   statNumber: {
-    fontSize: 16,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.REGULAR,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.accent,
   },
+  
   lastMeasurementLabelContainer: {
     width: '100%',
     alignItems: 'center',
   },
+  
   lastMeasurementValueContainer: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   logbookButtonContainer: { 
     flexDirection: 'row', 
     justifyContent: 'center', 
-    marginTop: 15,
-    gap: 15,
+    marginTop: normalize(15),
+    gap: normalize(15),
   },
+  
   logbookActionButton: { 
     backgroundColor: colors.accent, 
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: normalize(10),
+    paddingHorizontal: normalize(20),
     borderRadius: 8,
-    minWidth: 120,
+    minWidth: normalize(120),
   },
+  
   logbookActionButtonSecondary: {
     backgroundColor: colors.primary,
   },
+  
   logbookDisabledButton: {
     backgroundColor: '#B0B0B0',
   },
+  
   logbookButtonContent: { 
     flexDirection: 'row', 
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   logbookButtonIcon: { 
-    marginRight: 6,
+    marginRight: normalize(6),
   },
+  
   logbookButtonText: { 
-    fontSize: 14,
-    fontFamily: 'NunitoSansBold', 
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.BOLD, 
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.textLight,
   },
+  
   // Navigation styles
   chevronToggle: {
     backgroundColor: colors.accent,
-    width: 25,
-    height: 25,
-    borderRadius: 15,
+    width: normalize(25),
+    height: normalize(25),
+    borderRadius: normalize(15),
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -607,44 +726,47 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
+  
   // Snackbar notification
   snackbar: {
     position: 'absolute',
-    bottom: 80,
-    left: 20,
-    right: 20,
+    bottom: normalize(80),
+    left: normalize(20),
+    right: normalize(20),
     backgroundColor: colors.accentLight,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.accentMedium,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: normalize(12),
+    paddingHorizontal: normalize(16),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     elevation: 3,
   },
+  
   snackbarText: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansRegular',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: colors.textDark,
   },
+  
   snackbarAction: {
-    fontSize: 14,
-    fontFamily: 'NunitoSansBold',
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
     color: colors.accent,
   },
+  
   // Bottom navigation dots
   navDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: normalize(8),
+    height: normalize(8),
+    borderRadius: normalize(4),
     backgroundColor: colors.primary,
-    marginHorizontal: 4,
+    marginHorizontal: normalize(4),
   },
-  navDotAlt: {
-    backgroundColor: colors.accent,
-  },
+  
   divider: {
     height: 1,
     backgroundColor: colors.accentMedium,
@@ -654,4 +776,4 @@ const globalStyles = StyleSheet.create({
 });
 
 export default globalStyles;
-export { colors };
+export { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, LINE_HEIGHT, typography };

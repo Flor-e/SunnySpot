@@ -1,4 +1,3 @@
-// HomeScreen.js - Main component with unified header
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -13,7 +12,7 @@ import {
 } from 'react-native';
 import { LightSensor } from 'expo-sensors';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
 
 // Import content components
 import NormalModeContent from './NormalModeContent';
@@ -299,7 +298,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
     ).start();
 
     Animated.timing(slideAnim, {
-      toValue: instructionVisible ? 70 : -400,
+      toValue: instructionVisible ? normalize(70) : -400,
       duration: 600,
       useNativeDriver: true,
     }).start();
@@ -315,18 +314,6 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
       }
     };
     checkNerdModeFirstOpen();
-  }, [nerdMode]);
-
-  // Check NormalMode first open
-  useEffect(() => {
-    const checkNormalModeFirstOpen = async () => {
-      const hasSeen = await loadNormalModeFirstOpen();
-      if (!hasSeen && !nerdMode) {
-        setInstructionVisible(true);
-        await saveNormalModeFirstOpen(true);
-      }
-    };
-    checkNormalModeFirstOpen();
   }, [nerdMode]);
 
   // Function to clear filters
@@ -441,40 +428,40 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   };
 
   // Function to delete a measurement in HomeScreen.js
-const deleteMeasurement = (timestamp) => {
-  if (!selectedLogbook) return;
-  
-  // Update the logbooks state
-  setLogbooks((prev) => {
-    const updatedLogbooks = prev.map((lb) => {
-      if (lb.id === selectedLogbook.id) {
-        const updatedMeasurements = lb.measurements.filter((m) => m.timestamp !== timestamp);
-        const newAverage = updatedMeasurements.length
-          ? Math.round(updatedMeasurements.reduce((sum, m) => sum + m.lux, 0) / updatedMeasurements.length)
-          : 0;
-        return { ...lb, measurements: updatedMeasurements, average: newAverage };
-      }
-      return lb;
+  const deleteMeasurement = (timestamp) => {
+    if (!selectedLogbook) return;
+    
+    // Update the logbooks state
+    setLogbooks((prev) => {
+      const updatedLogbooks = prev.map((lb) => {
+        if (lb.id === selectedLogbook.id) {
+          const updatedMeasurements = lb.measurements.filter((m) => m.timestamp !== timestamp);
+          const newAverage = updatedMeasurements.length
+            ? Math.round(updatedMeasurements.reduce((sum, m) => sum + m.lux, 0) / updatedMeasurements.length)
+            : 0;
+          return { ...lb, measurements: updatedMeasurements, average: newAverage };
+        }
+        return lb;
+      });
+      return updatedLogbooks;
     });
-    return updatedLogbooks;
-  });
-  
-  // Also update the selectedLogbook state directly to ensure UI updates immediately
-  setSelectedLogbook((prev) => {
-    if (!prev) return null;
     
-    const updatedMeasurements = prev.measurements.filter((m) => m.timestamp !== timestamp);
-    const newAverage = updatedMeasurements.length
-      ? Math.round(updatedMeasurements.reduce((sum, m) => sum + m.lux, 0) / updatedMeasurements.length)
-      : 0;
-    
-    return {
-      ...prev,
-      measurements: updatedMeasurements,
-      average: newAverage
-    };
-  });
-};
+    // Also update the selectedLogbook state directly to ensure UI updates immediately
+    setSelectedLogbook((prev) => {
+      if (!prev) return null;
+      
+      const updatedMeasurements = prev.measurements.filter((m) => m.timestamp !== timestamp);
+      const newAverage = updatedMeasurements.length
+        ? Math.round(updatedMeasurements.reduce((sum, m) => sum + m.lux, 0) / updatedMeasurements.length)
+        : 0;
+      
+      return {
+        ...prev,
+        measurements: updatedMeasurements,
+        average: newAverage
+      };
+    });
+  };
 
   // Function to update filters for NerdMode (updates the selected logbook's plantProfile)
   const updateNerdFilters = (newFilters) => {
@@ -518,14 +505,14 @@ const deleteMeasurement = (timestamp) => {
             { backgroundColor: colors.background, borderColor: colors.primary },
             nerdMode && { backgroundColor: colors.primary, borderColor: colors.primary }
           ]}>
-            <Icon name="book-outline" size={20} color={nerdMode ? colors.textLight : colors.textDark} />
+            <Icon name="book-outline" size={normalize(20)} color={nerdMode ? colors.textLight : colors.textDark} />
           </View>
         </TouchableOpacity>
         
         {/* Center - Only visible in Nerd Mode */}
         {nerdMode ? (
           <View style={styles.headerCenter}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', height: 36 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', height: normalize(36) }}>
               <TouchableOpacity 
                 onPress={() => setModalVisible(prev => ({ ...prev, logbooks: true }))}
                 disabled={!selectedLogbook && logbooks.length === 0}
@@ -539,14 +526,14 @@ const deleteMeasurement = (timestamp) => {
                   </Text>
                   <Icon 
                     name="chevron-down" 
-                    size={12} 
+                    size={normalize(12)} 
                     color={(!selectedLogbook && logbooks.length === 0) ? colors.textDisabled : colors.textPrimary} 
                     style={globalStyles.chevronIcon} 
                   />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity style={styles.createButton} onPress={() => setModalVisible(prev => ({ ...prev, createLogbook: true }))}>
-                <Icon name="add" size={20} color={colors.textLight} />
+                <Icon name="add" size={normalize(20)} color={colors.textLight} />
               </TouchableOpacity>
             </View>
           </View>
@@ -554,16 +541,8 @@ const deleteMeasurement = (timestamp) => {
           <View style={{ flex: 1 }} />
         )}
         
-        {/* Right Side - Bulb Icon */}
-        <TouchableOpacity onPress={() => setInstructionVisible((prev) => !prev)} style={styles.headerButton}>
-          <View style={[
-            globalStyles.headerIconButton, 
-            { backgroundColor: colors.background, borderColor: colors.primary },
-            instructionVisible && { backgroundColor: colors.primary, borderColor: colors.primary }
-          ]}>
-            <Icon name="bulb-outline" size={20} color={instructionVisible ? colors.textLight : colors.textDark} />
-          </View>
-        </TouchableOpacity>
+        {/* Right side - empty to maintain layout since we moved the help button */}
+        <View style={styles.headerButton} />
       </View>
 
       {/* Instruction Panel */}
@@ -571,19 +550,22 @@ const deleteMeasurement = (timestamp) => {
         {/* Close instruction panel icon */}
         <TouchableOpacity 
           style={{
-            position: 'absolute', 
-            top: 10, 
-            right: 10,
-            zIndex: 10
-          }} 
-          onPress={() => setInstructionVisible(false)}
-        >
-          <Icon 
-            name="close-outline" 
-            size={24} 
-            color={colors.textDark} 
-          />
-        </TouchableOpacity>
+          position: 'absolute', 
+         top: normalize(10), 
+         right: normalize(10),
+         zIndex: 50, // Ensure it's above other elements
+         padding: normalize(10), // Increase touch area
+         backgroundColor: 'transparent' // Optional: helps with touch detection
+       }} 
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} // Increases touch area
+        onPress={() => setInstructionVisible(false)}
+      >
+        <Icon 
+          name="close-outline" 
+          size={normalize(24)} 
+         color={colors.textDark} 
+        />
+      </TouchableOpacity>
 
         <Text style={globalStyles.instructionPanelTitle}>
           {nerdMode ? 'Welcome to logbook mode!' : 'How to Find Your Plant Match?'}
@@ -639,62 +621,80 @@ const deleteMeasurement = (timestamp) => {
       )}
 
       {/* Bottom Section */}
-      {nerdMode ? (
-        <View style={globalStyles.bottomSection}>
-          <Animated.View 
-            style={[
-              globalStyles.measureButton, 
-              logbooks.length === 0 && globalStyles.logbookDisabledButton,
-              logbooks.length > 0 && { transform: [{ scale: pulseAnim }] }
-            ]}
-          >
-            <TouchableOpacity 
-              onPress={takeMeasurement} 
-              disabled={isMeasuring || logbooks.length === 0}
-            >
-              {isMeasuring && countdown !== null ? (
-                <Text style={globalStyles.countdownText}>{countdown}</Text>
-              ) : (
-                <Icon name="flash-outline" size={50} color={colors.textLight} />
-              )}
-            </TouchableOpacity>
-          </Animated.View>
-          <Text style={globalStyles.buttonLabel}>
-            {isMeasuring ? 'Measuring...' : logbooks.length === 0 ? 'Take light measurement' : 'Take light measurement'}
-          </Text>
-          <View style={globalStyles.luxDisplay}>
-            <View style={globalStyles.luxRow}>
-              <Text style={globalStyles.luxText}>{luxValue} lux</Text>
-              <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
-                <Icon name="information-circle-outline" size={16} color={colors.textPrimary} />
-              </TouchableOpacity>
-            </View>
-            <Text style={globalStyles.lightLevelText}>{getLightLevel(luxValue) || 'Unknown'}</Text>
-          </View>
-        </View>
-      ) : (
-        <View style={globalStyles.bottomSection}>
-          <Animated.View style={[globalStyles.measureButton, { transform: [{ scale: pulseAnim }], opacity: isMeasuring ? 0.5 : 1 }]}>
-            <TouchableOpacity onPress={triggerHomeAdvice} disabled={isMeasuring}>
-              {isMeasuring && countdown !== null ? (
-                <Text style={globalStyles.countdownText}>{countdown}</Text>
-              ) : (
-                <Icon name="leaf-outline" size={50} color={colors.textLight} />
-              )}
-            </TouchableOpacity>
-          </Animated.View>
-          <Text style={globalStyles.buttonLabel}>{isMeasuring ? 'Measuring...' : 'Tap to find match'}</Text>
-          <View style={globalStyles.luxDisplay}>
-            <View style={globalStyles.luxRow}>
-              <Text style={globalStyles.luxText}>{luxValue} lux</Text>
-              <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
-                <Icon name="information-circle-outline" size={16} color={colors.textPrimary} />
-              </TouchableOpacity>
-            </View>
-            <Text style={globalStyles.lightLevelText}>{lightLevel.trim()}</Text>
-          </View>
-        </View>
-      )}
+{nerdMode ? (
+  <View style={globalStyles.bottomSection}>
+    <Animated.View 
+      style={[
+        globalStyles.measureButton, 
+        logbooks.length === 0 && globalStyles.logbookDisabledButton,
+        logbooks.length > 0 && { transform: [{ scale: pulseAnim }] }
+      ]}
+    >
+      <TouchableOpacity 
+        onPress={takeMeasurement} 
+        disabled={isMeasuring || logbooks.length === 0}
+      >
+        {isMeasuring && countdown !== null ? (
+          <Text style={globalStyles.countdownText}>{countdown}</Text>
+        ) : (
+          <Icon name="flash-outline" size={normalize(50)} color={colors.textLight} />
+        )}
+      </TouchableOpacity>
+    </Animated.View>
+    <View style={styles.helpButtonContainer}>
+  <Text style={globalStyles.buttonLabel}>
+    {isMeasuring ? 'Measuring...' : 'Tap to find match'}
+  </Text>
+  <TouchableOpacity 
+    style={styles.helpBadge}
+    onPress={() => setInstructionVisible((prev) => !prev)}
+  >
+    <Text style={styles.helpBadgeText}>Help</Text>
+  </TouchableOpacity>
+</View>
+    <View style={globalStyles.luxDisplay}>
+      <View style={globalStyles.luxRow}>
+        <Text style={globalStyles.luxText}>{luxValue} lux</Text>
+        <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
+          <Icon name="information-circle-outline" size={normalize(16)} color={colors.textPrimary} />
+        </TouchableOpacity>
+      </View>
+      <Text style={globalStyles.lightLevelText}>{getLightLevel(luxValue) || 'Unknown'}</Text>
+    </View>
+  </View>
+) : (
+  <View style={globalStyles.bottomSection}>
+    <Animated.View style={[globalStyles.measureButton, { transform: [{ scale: pulseAnim }], opacity: isMeasuring ? 0.5 : 1 }]}>
+      <TouchableOpacity onPress={triggerHomeAdvice} disabled={isMeasuring}>
+        {isMeasuring && countdown !== null ? (
+          <Text style={globalStyles.countdownText}>{countdown}</Text>
+        ) : (
+          <Icon name="leaf-outline" size={normalize(50)} color={colors.textLight} />
+        )}
+      </TouchableOpacity>
+    </Animated.View>
+    <View style={styles.helpButtonContainer}>
+  <Text style={globalStyles.buttonLabel}>
+    {isMeasuring ? 'Measuring...' : 'Tap to find match'}
+  </Text>
+  <TouchableOpacity 
+    style={styles.helpBadge}
+    onPress={() => setInstructionVisible((prev) => !prev)}
+  >
+    <Text style={styles.helpBadgeText}>Help</Text>
+  </TouchableOpacity>
+</View>
+    <View style={globalStyles.luxDisplay}>
+      <View style={globalStyles.luxRow}>
+        <Text style={globalStyles.luxText}>{luxValue} lux</Text>
+        <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
+          <Icon name="information-circle-outline" size={normalize(16)} color={colors.textPrimary} />
+        </TouchableOpacity>
+      </View>
+      <Text style={globalStyles.lightLevelText}>{lightLevel.trim()}</Text>
+    </View>
+  </View>
+)}
 
       {/* Modals */}
       <LuxInfoModal 
@@ -780,8 +780,8 @@ const deleteMeasurement = (timestamp) => {
         // Update the selected logbook using the updateNerdFilters function
         updateNerdFilters(updatedPlantProfile);
       } else {
-        // In NormalMode, clear the specific filter in normalFilters
-        setNormalFilters(prev => ({ ...prev, [type]: '' }));
+        // In NormalMode, update normalFilters
+        setNormalFilters(prev => ({ ...prev, [type]: option }));
       }
       setModalVisible(prev => ({ ...prev, [type]: false }));
     }}
@@ -824,31 +824,32 @@ const deleteMeasurement = (timestamp) => {
 
 const styles = StyleSheet.create({
   headerButton: {
-    marginHorizontal: 10,
+    marginHorizontal: normalize(10),
     paddingVertical: 0,
+    width: normalize(36), // Ensure consistent layout with both sides
   },
   headerCenter: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    height: 36,
+    height: normalize(36),
   },
   logbookDropdown: {
     borderWidth: 2,
     borderColor: colors.primary,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-    width: 170,
-    height: 36,
-    paddingVertical: 5,
-    paddingHorizontal: 6,
+    width: normalize(170),
+    height: normalize(36),
+    paddingVertical: normalize(5),
+    paddingHorizontal: normalize(6),
     justifyContent: 'center',
     flexDirection: 'row',
   },
   createButton: {
-    width: 40,
-    height: 36,
+    width: normalize(40),
+    height: normalize(36),
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
     backgroundColor: colors.primary,
@@ -857,9 +858,27 @@ const styles = StyleSheet.create({
     marginLeft: -2,
   },
   navDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 4,
+    width: normalize(8),
+    height: normalize(8),
+    borderRadius: normalize(4),
+    marginHorizontal: normalize(4),
+  },
+  helpButtonContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  helpBadge: {
+    marginTop: normalize(5),
+    paddingHorizontal: normalize(12),
+    paddingVertical: normalize(4),
+    backgroundColor: colors.accent,
+    borderRadius: normalize(8),
+  },
+  helpBadgeText: {
+    color: '#FFFFFF',
+    fontSize: normalize(12),
+    fontFamily: FONT_FAMILY.BOLD,
+    fontWeight: FONT_WEIGHT.BOLD,
   },
 });
