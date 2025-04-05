@@ -552,7 +552,7 @@ const globalStyles = StyleSheet.create({
   subtitleBadge: {
     backgroundColor: colors.primary,
     borderRadius: 12,
-    paddingVertical: normalize(2),
+    paddingVertical: normalize(3),
     paddingHorizontal: normalize(10),
     alignSelf: 'center',
     marginBottom: normalize(10),

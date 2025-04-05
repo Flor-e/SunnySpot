@@ -516,7 +516,7 @@ export const ConfirmDeleteMeasurementModal = ({
 export const NoMatchesAfterMeasurementModal = ({ visible, onClose }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
     <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>No plants match your criteria</Text>
+      <Text style={globalStyles.modalTitle}>No plants found</Text>
       <Text style={globalStyles.modalText}>
         Sorry, we couldn't find any plants that match your criteria. Try adjusting your filters or taking a measurement in a different spot with more light.
       </Text>

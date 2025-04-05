@@ -568,7 +568,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
       </TouchableOpacity>
 
         <Text style={globalStyles.instructionPanelTitle}>
-          {nerdMode ? 'Welcome to logbook mode!' : 'How to Find Your Plant Match?'}
+          {nerdMode ? 'Welcome to logbook mode!' : 'How to find your plant match?'}
         </Text>
         {nerdMode ? (
           <>
