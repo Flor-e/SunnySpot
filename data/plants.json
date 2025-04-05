@@ -1,5 +1,5 @@
 [
-  { "name": "Aglaonema", "lightLevel": "Low to Medium Light", "thrivesMinLux": 0, "thrivesMaxLux": 4000, "growsWellMinLux": 300, "growsWellMaxLux": 6000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
+  { "name": "Aglaonema", "lightLevel": "Low to Medium Light", "thrivesMinLux": 500, "thrivesMaxLux": 4000, "growsWellMinLux": 300, "growsWellMaxLux": 6000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Zero",
     "tagline": "Colorful shade survivor",
