@@ -1,7 +1,7 @@
 {
   "name": "sunny-spot",
   "displayName": "SunnySpot",
-  "version": "1.0.0",
+  "version": "0.9.1",
   "main": "index.js",
   "scripts": {
     "start": "expo start --dev-client",
@@ -36,7 +36,7 @@
     "expo-sensors": "~14.0.2",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
-    "react-native": "0.76.8",
+    "react-native": "0.76.9",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-pager-view": "^6.7.0",
     "react-native-safe-area-context": "4.12.0",
