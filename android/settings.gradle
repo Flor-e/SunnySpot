@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'sunny-spot'
+rootProject.name = 'SunnySpot'
 
 dependencyResolutionManagement {
   versionCatalogs {

@@ -15,6 +15,14 @@
     "tempMin": 18,
     "tempMax": 24
   },
+  { "name": "Air Plant", "lightLevel": "Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3500, "growsWellMaxLux": 12000, "height": "5-15 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe", 
+    "looks": "green", 
+    "loveLevel": "Some", 
+    "tagline": "Soil-free wonder", 
+    "loveLanguage": "Needs occasional soaking to stay hydrated",
+     "tempMin": 12, 
+     "tempMax": 30 
+  },
   { "name": "Alocasia", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 18000, "height": "90 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "green",
     "loveLevel": "Zero",
@@ -78,6 +86,14 @@
     "loveLanguage": "Likes pot turned for even sun",
     "tempMin": 10,
     "tempMax": 32
+  },
+  { "name": "Caladium", "lightLevel": "Medium to Bright Light", "thrivesMinLux": 4000, "thrivesMaxLux": 8000, "growsWellMinLux": 2500, "growsWellMaxLux": 10000, "height": "40-60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic", 
+    "looks": "catching", 
+    "loveLevel": "Lots of", 
+    "tagline": "Patterened heart leaves", 
+    "loveLanguage": "Needs high humidity to thrive", 
+    "tempMin": 18, 
+    "tempMax": 30 
   },
   { "name": "Calathea", "lightLevel": "Medium Light", "thrivesMinLux": 2000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
@@ -207,6 +223,14 @@
     "tempMin": 13,
     "tempMax": 27
   },
+  { "name": "Lucky Bamboo", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1500, "thrivesMaxLux": 4000, "growsWellMinLux": 1000, "growsWellMaxLux": 5000, "height": "10-100 cm", "size": "medium", "waterRequirement": "weekly", "petsafe": false, "petSafetyDetail": "Toxic", 
+    "looks": "green", 
+    "loveLevel": "Zero", 
+    "tagline": "Spiraling fortune", 
+    "loveLanguage": "Likes to grow in water or moist soil", 
+    "tempMin": 18, 
+    "tempMax": 28 
+  },
   { "name": "Maranta", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "30 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "catching",
     "loveLevel": "Some",
@@ -238,6 +262,14 @@
     "loveLanguage": "Needs roots misted to bloom",
     "tempMin": 16,
     "tempMax": 24
+  },
+  { "name": "Oxalis", "lightLevel": "Bright Light", "thrivesMinLux": 6000, "thrivesMaxLux": 12000, "growsWellMinLux": 4000, "growsWellMaxLux": 15000, "height": "15-30 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic", 
+    "looks": "catching", 
+    "loveLevel": "Some", 
+    "tagline": "Purple butterfly leaves", 
+      "loveLanguage": "Likes to dry out between waterings", 
+      "tempMin": 15, 
+      "tempMax": 26
   },
   { "name": "Palm", "lightLevel": "Bright Light", "thrivesMinLux": 10000, "thrivesMaxLux": 15000, "growsWellMinLux": 8000, "growsWellMaxLux": 17000, "height": "180 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",
@@ -351,6 +383,14 @@
     "tempMin": 18,
     "tempMax": 29
   },
+  { "name": "String of Hearts", "lightLevel": "Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3000, "growsWellMaxLux": 12000, "height": "10-100 cm", "size": "hanging", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic", 
+    "looks": "catching", 
+    "loveLevel": "Some", 
+    "tagline": "Trailing heart vine", 
+    "loveLanguage": "Likes to dry out between waterings", 
+    "tempMin": 15, 
+    "tempMax": 27 
+  },
   { "name": "Syngonium", "lightLevel": "Medium Light", "thrivesMinLux": 2500, "thrivesMaxLux": 6000, "growsWellMinLux": 1500, "growsWellMaxLux": 8000, "height": "60 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "catching",
     "loveLevel": "Some",
@@ -385,7 +425,15 @@
       "loveLanguage": "Needs pruning to prevent legginess",
       "tempMin": 15,
       "tempMax": 30
-    },   
+    },
+    { "name": "Umbrella Plant", "lightLevel": "Medium to Bright Light", "thrivesMinLux": 4000, "thrivesMaxLux": 9000, "growsWellMinLux": 2500, "growsWellMaxLux": 12000, "height": "1-2 m", "size": "large", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Mildly toxic", 
+        "looks": "green", 
+        "loveLevel": "Zero", 
+        "tagline": "Tropical umbrella star", 
+        "loveLanguage": "Likes occasional misting for humidity", 
+        "tempMin": 16, 
+        "tempMax": 27 
+      },   
     { 
       "name": "Yucca", 
       "lightLevel": "Bright Direct", 
