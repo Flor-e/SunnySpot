@@ -81,7 +81,7 @@ const NormalModeContent = ({
             
             <Text style={globalStyles.storyText}> and</Text>
             <Text style={globalStyles.storyText}>give</Text>
-            <Text style={globalStyles.storyText}>it</Text>
+            <Text style={globalStyles.storyText}>it </Text>
             <TouchableOpacity 
               style={[globalStyles.storyButton, filters.loveLevel ? globalStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, loveLevel: true }))}

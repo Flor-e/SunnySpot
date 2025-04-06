@@ -8,22 +8,32 @@ import PlantDetailCard from './PlantDetailCard';
 
 // Embedded PlantCard Component
 const PlantCard = ({ plant, toggleFavorite, isFavorite, onDetailPress }) => (
-  <View style={globalStyles.favCard}>
-    <TouchableOpacity onPress={() => onDetailPress(plant)} style={globalStyles.imageContainer}>
+  <TouchableOpacity 
+    style={globalStyles.favCard}
+    onPress={() => onDetailPress(plant)}
+    activeOpacity={0.7}
+  >
+    <View style={globalStyles.imageContainer}>
       <Image source={getImageSource(plant.name)} style={globalStyles.image} />
-    </TouchableOpacity>
+    </View>
     <View style={globalStyles.cardInfo}>
       <Text style={globalStyles.plantName}>{plant.name}</Text>
       <Text style={globalStyles.standout}>{plant.tagline}</Text>
     </View>
-    <TouchableOpacity style={globalStyles.heartIcon} onPress={() => toggleFavorite(plant)}>
+    <TouchableOpacity 
+      style={globalStyles.heartIcon} 
+      onPress={(e) => {
+        e.stopPropagation(); // Prevent triggering the card's onPress
+        toggleFavorite(plant);
+      }}
+    >
       <Icon 
         name={isFavorite ? 'heart' : 'heart-outline'} 
         size={normalize(20)} 
         color={isFavorite ? colors.primary : colors.textDark} 
       />
     </TouchableOpacity>
-  </View>
+  </TouchableOpacity>
 );
 
 export default function FavoritePlantsScreen() {
@@ -54,6 +64,10 @@ export default function FavoritePlantsScreen() {
   const handlePlantDetailPress = (plant) => {
     setSelectedPlant(plant);
     setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -103,44 +117,19 @@ export default function FavoritePlantsScreen() {
         visible={modalVisible}
         animationType="none"
         transparent={true}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={handleCloseModal}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.backdrop} />
           <View style={styles.modalContainer}>
-            {selectedPlant && (
-              <View style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 10,
-              }}>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: normalize(10),
-                    right: normalize(10),
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => setModalVisible(false)}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.closeIconButton}>
-                      <Icon name="close-outline" size={normalize(20)} color="#757575" />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
-
             {selectedPlant && (
               <View style={styles.contentWrapper}>
                 <View style={styles.cardContainer}>
                   <PlantDetailCard 
                     plant={selectedPlant} 
                     matchPercentage={100}
+                    showCloseButton={true}
+                    onClose={handleCloseModal}
                   />
                 </View>
               </View>
@@ -207,17 +196,6 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  closeIconButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 15,
-    width: normalize(30),
-    height: normalize(30),
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    borderWidth: 1,
-    borderColor: colors.accentMedium,
   },
   snackbar: {
     position: 'absolute',

@@ -18,7 +18,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   const translateX = new Animated.Value(0);
   const rotate = new Animated.Value(0);
   const opacity = new Animated.Value(1);
-  const closeButtonOpacity = new Animated.Value(1);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       translateX.setValue(0);
       rotate.setValue(0);
       opacity.setValue(1);
-      closeButtonOpacity.setValue(1);
       // Hide any active snackbar when modal becomes visible
       setSnackbarVisible(false);
     }
@@ -65,11 +63,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     const { translationX } = nativeEvent;
     translateX.setValue(translationX);
     rotate.setValue(translationX / 300);
-    
-    // Immediately hide the close button when any swipe begins
-    if (Math.abs(translationX) > 0) {
-      closeButtonOpacity.setValue(0);
-    }
   };
 
   const handleUndo = () => {
@@ -111,7 +104,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
           setCurrentIndex((prev) => prev + 1);
           translateX.setValue(0);
           rotate.setValue(0);
-          closeButtonOpacity.setValue(1); 
         });
       } else {
         Animated.parallel([
@@ -121,11 +113,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
           }),
           Animated.spring(rotate, {
             toValue: 0,
-            useNativeDriver: true,
-          }),
-          Animated.timing(closeButtonOpacity, {
-            toValue: 1, 
-            duration: 200,
             useNativeDriver: true,
           }),
         ]).start();
@@ -140,44 +127,20 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     outputRange: ['-15deg', '15deg'],
   });
 
+  const handleCloseModal = () => {
+    onClose();
+  };
+
   return (
     <Modal
       visible={visible}
       animationType="none"
       transparent={true}
-      onRequestClose={onClose}
+      onRequestClose={handleCloseModal}
     >
       <GestureHandlerRootView style={styles.modalOverlay}>
         <View style={styles.backdrop} />
         <View style={styles.modalContainer}>
-          {currentPlant && (
-            <View style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 10,
-            }}>
-              <Animated.View
-                style={{
-                  position: 'absolute',
-                  top: normalize(10),
-                  right: normalize(10),
-                  opacity: closeButtonOpacity,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={onClose}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.closeIconButton}>
-                    <Icon name="close-outline" size={normalize(20)} color="#757575" />
-                  </View>
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
-          )}
-
           {currentPlant ? (
             <View style={styles.contentWrapper}>
               <PanGestureHandler
@@ -205,6 +168,8 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                     currentIndex={currentIndex}
                     totalPlants={plantDeck.length}
                     showSwipeHint={true}
+                    showCloseButton={true}
+                    onClose={handleCloseModal}
                   />
                 </Animated.View>
               </PanGestureHandler>
@@ -260,17 +225,6 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  closeIconButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 15,
-    width: normalize(30),
-    height: normalize(30),
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    borderWidth: 1,
-    borderColor: colors.accentMedium,
   },
   noMorePlants: {
     alignItems: 'center',

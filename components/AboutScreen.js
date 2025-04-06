@@ -86,7 +86,7 @@ const AboutScreen = () => {
           <Icon name="search-outline" size={normalize(20)} color="#757575" style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, globalStyles.fontRegular]}
-            placeholder="Search plants..."
+            placeholder="Type plant name"
             placeholderTextColor="#757575"
             value={searchQuery}
             onChangeText={handleSearch}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet, Animated } from 'react-native';
+import { View, Text, Image, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getImageSource } from '../utils/imageMap';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
@@ -12,7 +12,9 @@ const PlantDetailCard = ({
   matchPercentage = null,
   currentIndex = null,
   totalPlants = null,
-  showSwipeHint = false
+  showSwipeHint = false,
+  showCloseButton = false,
+  onClose = null
 }) => {
   // Create animated value references
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -50,6 +52,19 @@ const PlantDetailCard = ({
     >
       <View style={styles.cardWrapper}>
         <View style={[styles.cardSide, styles.frontSide]}>
+          {/* Close button (included in the animation) */}
+          {showCloseButton && onClose && (
+            <View style={styles.closeButtonContainer}>
+              <TouchableOpacity
+                onPress={onClose}
+                activeOpacity={0.7}
+                style={styles.closeIconButton}
+              >
+                <Icon name="close-outline" size={normalize(20)} color="#757575" />
+              </TouchableOpacity>
+            </View>
+          )}
+          
           <Image
             source={getImageSource(plant.name)}
             style={styles.plantImage}
@@ -221,6 +236,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: normalize(20),
     alignItems: 'center',
+  },
+  closeButtonContainer: {
+    position: 'absolute',
+    top: normalize(10),
+    right: normalize(10),
+    zIndex: 10,
+  },
+  closeIconButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 15,
+    width: normalize(30),
+    height: normalize(30),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.accentMedium,
   },
   plantImage: {
     width: '100%',

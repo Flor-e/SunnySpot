@@ -79,6 +79,7 @@ const styles = {
     gap: normalize(10) 
   },
   spotNameInput: {
+    width: 200,
     height: normalize(40),
     borderWidth: 1,
     borderColor: '#97B598',

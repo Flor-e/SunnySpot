@@ -58,7 +58,7 @@
   { "name": "Begonia", "lightLevel": "Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3000, "growsWellMaxLux": 12000, "height": "40 cm", "size": "small", "waterRequirement": "Bi-weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Lots of",
-    "tagline": "Dazzeling flower power",
+    "tagline": "Dazzling flower power",
     "loveLanguage": "Needs pruning to remain bushy",
     "tempMin": 16,
     "tempMax": 24
@@ -67,7 +67,7 @@
     "looks": "catching",
     "loveLevel": "Some",
     "tagline": "Tropical colour burst",
-    "loveLanguage": "Likes to be waterd in it's leafy cup",
+    "loveLanguage": "Likes to be watered in it's leafy cup",
     "tempMin": 18,
     "tempMax": 27
   },
@@ -183,6 +183,14 @@
     "tempMin": 16,
     "tempMax": 27
   },
+  { "name": "Ivy", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 5000, "growsWellMinLux": 500, "growsWellMaxLux": 7000, "height": "30 cm", "size": "hanging", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
+    "looks": "green",
+    "loveLevel": "Zero",
+    "tagline": "Classic trailing elegance",
+    "loveLanguage": "Likes occasional pruning to control growth",
+    "tempMin": 10,
+    "tempMax": 24
+  },
   { "name": "Jasmine", "lightLevel": "Bright Light", "thrivesMinLux": 8000, "thrivesMaxLux": 15000, "growsWellMinLux": 6000, "growsWellMaxLux": 18000, "height": "180 cm", "size": "large", "waterRequirement": "Weekly", "petsafe": false, "petSafetyDetail": "Toxic",
     "looks": "flowery",
     "loveLevel": "Some",
@@ -238,6 +246,14 @@
     "loveLanguage": "Likes dead leaves removed to look neat",
     "tempMin": 18,
     "tempMax": 27
+  },
+  { "name": "Pancake Plant", "lightLevel": "Medium to Bright Light", "thrivesMinLux": 5000, "thrivesMaxLux": 10000, "growsWellMinLux": 3000, "growsWellMaxLux": 12000, "height": "30 cm", "size": "small", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
+    "looks": "catching",
+    "loveLevel": "Some",
+    "tagline": "Quirky coin-leaf beauty",
+    "loveLanguage": "Likes to be rotated for even growth",
+    "tempMin": 16,
+    "tempMax": 24
   },
   { "name": "Parlor Palm", "lightLevel": "Low to Medium Light", "thrivesMinLux": 1000, "thrivesMaxLux": 4000, "growsWellMinLux": 500, "growsWellMaxLux": 6000, "height": "120 cm", "size": "medium", "waterRequirement": "Weekly", "petsafe": true, "petSafetyDetail": "Pet-safe",
     "looks": "green",

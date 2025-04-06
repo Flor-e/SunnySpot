@@ -31,7 +31,7 @@ export const normalize = (size) => {
 // Constants for consistent typography
 export const FONT_SIZE = {
   EXTRA_SMALL: normalize(10),
-  SMALL: normalize(12),
+  SMALL: normalize(13),
   MEDIUM: normalize(14),
   REGULAR: normalize(16),
   LARGE: normalize(18),
