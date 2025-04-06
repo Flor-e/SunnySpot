@@ -22,7 +22,7 @@ module.exports = {
         backgroundColor: "#ffffff"
       },
       package: "com.flori.sunnyspot",
-      versionCode: 4,
+      versionCode: 8,
       permissions: [
         "android.permission.INTERNET",
         "android.permission.SYSTEM_ALERT_WINDOW",

@@ -107,7 +107,7 @@ const globalStyles = StyleSheet.create({
   
   // Header section
   headerSection: {
-    backgroundColor: colors.secondaryBg,
+    backgroundColor: '#ECF7E6',
     paddingTop: StatusBar.currentHeight + normalize(15),
     paddingBottom: normalize(15),
     paddingHorizontal: 0,

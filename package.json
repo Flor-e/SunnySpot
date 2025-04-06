@@ -1,7 +1,7 @@
 {
   "name": "sunny-spot",
   "displayName": "SunnySpot",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "main": "index.js",
   "scripts": {
     "start": "expo start --dev-client",
