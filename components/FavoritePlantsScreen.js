@@ -108,9 +108,9 @@ export default function FavoritePlantsScreen() {
           renderItem={renderItem}
           keyExtractor={(item) => item.name} 
           numColumns={2}
-          columnWrapperStyle={styles.columnWrapper}
-          contentContainerStyle={styles.listContentContainer}
-          ListEmptyComponent={<Text style={styles.emptyText}>No favourite plants yet!</Text>}
+          columnWrapperStyle={favoriteCardStyles.columnWrapper}
+          contentContainerStyle={favoriteCardStyles.listContentContainer}
+          ListEmptyComponent={<Text style={favoriteCardStyles.emptyText}>No favourite plants yet!</Text>}
         />
       </View>
       
@@ -140,35 +140,13 @@ export default function FavoritePlantsScreen() {
       </Modal>
       
       {snackbarVisible && (
-        <Animated.View style={[styles.snackbar, { opacity: fadeAnim }]}>
-          <Text style={styles.snackbarText}>{`${lastDeletedPlant.name} removed`}</Text>
+        <Animated.View style={[favoriteCardStyles.snackbar, { opacity: fadeAnim }]}>
+          <Text style={favoriteCardStyles.snackbarText}>{`${lastDeletedPlant.name} removed`}</Text>
           <TouchableOpacity onPress={handleUndo}>
-            <Text style={styles.undoText}>Undo</Text>
+            <Text style={favoriteCardStyles.undoText}>Undo</Text>
           </TouchableOpacity>
         </Animated.View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-    paddingTop: normalize(20), 
-  },
-  columnWrapper: { 
-    justifyContent: 'flex-start', 
-    paddingHorizontal: normalize(10) 
-  },
-  listContentContainer: { 
-    paddingVertical: normalize(10), 
-    paddingBottom: normalize(80) 
-  },
-  emptyText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    textAlign: 'center',
-    padding: normalize(20),
-  },
-});

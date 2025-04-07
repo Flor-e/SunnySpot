@@ -6,10 +6,11 @@ import { colors, typography } from './globalStyles';
 const favoriteCardStyles = StyleSheet.create({
   // Card styles
   favCard: {
-    width: '47%',
+    width: '48%',
     backgroundColor: colors.secondaryBg,
     borderRadius: 12,
-    margin: normalize(8),
+    marginHorizontal: normalize(0),
+    marginVertical: normalize(8),
     elevation: 3,
     borderWidth: 1,
     borderColor: colors.primaryBorder,
@@ -66,17 +67,15 @@ const favoriteCardStyles = StyleSheet.create({
   
   // Page styles
   contentContainer: {
-    flex: 1,
-    paddingTop: normalize(20), 
+    flex: 1
   },
   
   columnWrapper: { 
-    justifyContent: 'flex-start', 
+    justifyContent: 'space-between', 
     paddingHorizontal: normalize(10) 
   },
   
-  listContentContainer: { 
-    paddingVertical: normalize(10), 
+  listContentContainer: {  
     paddingBottom: normalize(80) 
   },
   

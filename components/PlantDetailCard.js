@@ -9,6 +9,7 @@ const PlantDetailCard = ({
   showLuxBadge = false,
   luxLabel = '',
   luxValue = 0,
+  lightLevel = null,
   matchPercentage = null,
   currentIndex = null,
   totalPlants = null,
@@ -75,7 +76,7 @@ const PlantDetailCard = ({
               <View style={styles.luxBadge}>
                 <Icon name="flash-outline" size={normalize(14)} color="#757575" style={styles.luxIcon} />
                 <Text style={styles.luxText}>
-                  {`${luxLabel}: ${luxLabel} (${luxValue} lux)`}
+                  {`Measured: ${lightLevel} (${luxValue} lux)`}
                 </Text>
               </View>
             </View>

@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: "SunnySpot",
     slug: "sunny-spot",
-    version: "0.9.1",
+    version: "0.9.3",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -22,7 +22,7 @@ module.exports = {
         backgroundColor: "#ffffff"
       },
       package: "com.flori.sunnyspot",
-      versionCode: 8,
+      versionCode: 9,
       permissions: [
         "android.permission.INTERNET",
         "android.permission.SYSTEM_ALERT_WINDOW",

@@ -3,22 +3,23 @@ import { StyleSheet } from 'react-native';
 import { normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from './fontScaling';
 import { colors, typography } from './globalStyles';
 
-const searchScreenStyles = StyleSheet.create({
-    // Header styles
-    headerSection: {
-        // You can add specific header modifications here if needed
-    },
+const searchScreenStyles = StyleSheet.create({    
     
     // Intro section styles
     introSection: {
-        backgroundColor: colors.inputBg,
+        backgroundColor: colors.primaryMedium,
+        borderRadius: 10,
         paddingBottom: normalize(10),
+        marginBottom: normalize(10),
         alignItems: 'center',
+        alignSelf: 'center',
+        width: '85%',
     },
 
     introText: {
         width: '80%',
         textAlign: 'center',
+        color: colors.textPrimary,
     },
 
     linkText: {
@@ -26,13 +27,7 @@ const searchScreenStyles = StyleSheet.create({
         textDecorationLine: 'underline'
     },
 
-    // Search component styles
-    bodySection: {
-        flex: 1,
-        paddingHorizontal: normalize(20),
-        paddingTop: normalize(20),
-      },
-    
+    // Search component styles    
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -43,7 +38,7 @@ const searchScreenStyles = StyleSheet.create({
         marginTop: normalize(20),
         borderWidth: 1,
         borderColor: colors.primaryBorder,
-        width: '85%',
+        width: '75%',
         alignSelf: 'center'
     },
 
@@ -102,7 +97,7 @@ const searchScreenStyles = StyleSheet.create({
     },
 
     spacingView: {
-        paddingTop: normalize(20)
+        paddingTop: normalize(5)
     },
 
     // Text styles

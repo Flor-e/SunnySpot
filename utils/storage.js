@@ -1,6 +1,26 @@
 // sunny-spot-swipe/utils/storage.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Load whether light sensor hint has been shown
+export const loadLightSensorHintFirstTime = async () => {
+  try {
+    const value = await AsyncStorage.getItem('lightSensorHintShown');
+    return value === null; 
+  } catch (error) {
+    console.error('Error loading lightSensorHintFirstTime:', error);
+    return true;
+  }
+};
+
+// Save that light sensor hint has been shown
+export const saveLightSensorHintShown = async () => {
+  try {
+    await AsyncStorage.setItem('lightSensorHintShown', 'true');
+  } catch (error) {
+    console.error('Error saving lightSensorHintShown:', error);
+  }
+};
+
 // Load logbooks from AsyncStorage
 export const loadLogbooks = async () => {
   try {

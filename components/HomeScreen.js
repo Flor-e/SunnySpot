@@ -16,6 +16,10 @@ import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, t
 import lightLogbookStyles from '../utils/lightLogbookStyles';
 import measureSectionStyles from '../utils/measureSectionStyles.js';
 import instructionPanelStyles from '../utils/instructionPanelStyles.js';
+import { 
+  loadLightSensorHintFirstTime, 
+  saveLightSensorHintShown 
+} from '../utils/storage';
 
 // Import content components
 import NormalModeContent from './NormalModeContent';
@@ -63,6 +67,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   const [measuredLux, setMeasuredLux] = useState(null);
   const [luxInfoModalVisible, setLuxInfoModalVisible] = useState(false);
   const [normalFilters, setNormalFilters] = useState({ size: '', looks: '', loveLevel: '', watering: '', pets: '' }); // Filters for NormalMode
+  const [showLightSensorHint, setShowLightSensorHint] = useState(false);
   const [modalVisible, setModalVisible] = useState({
     size: false,
     looks: false,
@@ -215,6 +220,16 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
   
     initializeLogbooks();
   }, []);
+
+  // Function to check for light sensor hint
+  useEffect(() => {
+    const checkLightSensorHint = async () => {
+      const isFirstTime = await loadLightSensorHintFirstTime();
+      setShowLightSensorHint(isFirstTime);
+    };
+    
+    checkLightSensorHint();
+  }, []); 
 
   // Save logbooks when changed
   useEffect(() => {
@@ -626,6 +641,23 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         />
       )}
 
+      {showLightSensorHint && (
+         <View style={measureSectionStyles.lightSensorHint}>
+           <Text style={measureSectionStyles.lightSensorHintText}>
+              This app uses your phone's light sensor to find a match. Need help finding your light sensor? Click the help button below.
+           </Text>
+           <TouchableOpacity 
+              style={measureSectionStyles.lightSensorHintCloseButton}
+             onPress={() => {
+                setShowLightSensorHint(false);
+               saveLightSensorHintShown();
+             }}
+            >
+             <Icon name="close-outline" size={normalize(20)} color={colors.textPrimary} />
+            </TouchableOpacity>
+         </View>
+       )}
+
       {/* Bottom Section */}
 {nerdMode ? (
   <View style={measureSectionStyles.bottomSection}>
@@ -649,7 +681,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
     </Animated.View>
     <View style={measureSectionStyles.helpButtonContainer}>
   <Text style={measureSectionStyles.buttonSubtitle}>
-    {isMeasuring ? 'Measuring...' : 'Take light measurement'}
+    {isMeasuring ? 'Measuring light...' : 'Take light measurement'}
   </Text>
   <TouchableOpacity 
     style={measureSectionStyles.helpBadge}
@@ -681,7 +713,7 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
     </Animated.View>
     <View style={measureSectionStyles.helpButtonContainer}>
   <Text style={measureSectionStyles.buttonSubtitle}>
-    {isMeasuring ? 'Measuring...' : 'Tap to find match'}
+    {isMeasuring ? 'Measuring light...' : 'Tap to find match'}
   </Text>
   <TouchableOpacity 
     style={measureSectionStyles.helpBadge}

@@ -48,7 +48,7 @@ const measureSectionStyles = StyleSheet.create({
       helpBadge: {
         marginTop: normalize(5),
         paddingHorizontal: normalize(12),
-        paddingVertical: normalize(4),
+        paddingVertical: normalize(5),
         backgroundColor: colors.accent,
         borderRadius: normalize(8),
       },
@@ -62,8 +62,8 @@ const measureSectionStyles = StyleSheet.create({
       // Lux Display Styles
         luxDisplay: {
           alignItems: 'center',
-          marginBottom: normalize(50),
-          marginTop: normalize(15)
+          marginBottom: normalize(60),
+          marginTop: normalize(20)
         },
         
         luxRow: {
@@ -86,7 +86,33 @@ const measureSectionStyles = StyleSheet.create({
           color: colors.textDark,
           marginTop: normalize(2),
         },
-    });
 
+      // Styles for light sensor hint
+      lightSensorHint: {
+        backgroundColor: colors.primaryMedium,
+        borderRadius: 10,
+        padding: normalize(10),
+        marginHorizontal: normalize(10),
+        marginBottom: normalize(385),
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        position: 'relative',
+        width: '85%',
+      },
+      lightSensorHintText: {
+        flex: 1,
+        fontSize: FONT_SIZE.MEDIUM,
+        fontFamily: FONT_FAMILY.REGULAR,
+        color: colors.textPrimary,
+        padding: normalize(3),
+        marginRight: normalize(10),
+      },
+      lightSensorHintCloseButton: {
+        position: 'absolute',
+        top: normalize(4),
+        right: normalize(4),
+      },
+    });
 
 export default measureSectionStyles;

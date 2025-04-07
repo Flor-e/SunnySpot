@@ -4,7 +4,7 @@ import { PanGestureHandler, State, GestureHandlerRootView } from 'react-native-g
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
-import { getPlantsForLux } from '../utils/plantAdvice';
+import { getPlantsForLux, getLightLevel } from '../utils/plantAdvice';
 import PlantDetailCard from './PlantDetailCard';
 import modalStyles from '../utils/modalStyles.js';
 
@@ -13,6 +13,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastSkippedPlant, setLastSkippedPlant] = useState(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true); // Track if this is the initial load or after swiping
 
   const { favoritePlants, setFavoritePlants } = useFavorites();
 
@@ -26,6 +27,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       const matches = getPlantsForLux(plantAdvice.lux, filters) || [];
       setPlantDeck(matches);
       setCurrentIndex(0);
+      setInitialLoad(true); // Reset initialLoad when modal becomes visible
       translateX.setValue(0);
       rotate.setValue(0);
       opacity.setValue(1);
@@ -33,6 +35,13 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       setSnackbarVisible(false);
     }
   }, [visible, plantAdvice, filters]);
+
+  // When the user swipes, set initialLoad to false
+  useEffect(() => {
+    if (currentIndex > 0) {
+      setInitialLoad(false);
+    }
+  }, [currentIndex]);
 
   // Snackbar animation
   useEffect(() => {
@@ -164,6 +173,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                     plant={currentPlant} 
                     showLuxBadge={true}
                     luxLabel={label}
+                    lightLevel={getLightLevel(plantAdvice?.lux)}
                     luxValue={plantAdvice?.lux}
                     matchPercentage={currentPlant.matchPercentage}
                     currentIndex={currentIndex}
@@ -177,7 +187,18 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
             </View>
           ) : (
             <View style={styles.noMorePlants}>
-              <Text style={styles.noMoreText}>No more matches!</Text>
+              {plantDeck.length === 0 && initialLoad ? (
+                <>
+                  <Text style={styles.noMoreText}>No plants found</Text>
+                  <Text style={styles.noMatchExplanation}>
+                    Sorry, we couldn't find any plants that match your criteria. 
+                    Try adjusting your filters or taking a measurement in a different 
+                    spot with more light.
+                  </Text>
+                </>
+              ) : (
+                <Text style={styles.noMoreText}>No more matches!</Text>
+              )}
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={modalStyles.buttonText}>Close</Text>
               </TouchableOpacity>
@@ -236,6 +257,14 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.BOLD,
     color: colors.textPrimary,
     marginBottom: normalize(20),
+  },
+  noMatchExplanation: {
+    fontSize: FONT_SIZE.MEDIUM,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: colors.textDark,
+    textAlign: 'center',
+    marginBottom: normalize(20),
+    paddingHorizontal: normalize(10),
   },
   closeButton: {
     backgroundColor: colors.primary,

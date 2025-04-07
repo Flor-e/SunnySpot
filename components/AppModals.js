@@ -123,7 +123,7 @@ export const LuxInfoModal = ({ visible, onClose }) => (
 );
 
 // History Modal
-export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurement, getTimeOfDay, getLightLevel }) => {
+export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurement }) => {
   const screenHeight = Dimensions.get('window').height;
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [measurementToDelete, setMeasurementToDelete] = useState(null);
@@ -132,22 +132,6 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
     modalContent: {
       flex: 1,
       paddingHorizontal: normalize(15),
-    },
-    timeOfDayTitle: {
-      fontSize: FONT_SIZE.LARGE,
-      fontFamily: FONT_FAMILY.BOLD,
-      color: colors.textPrimary,
-      textAlign: 'left',
-      marginBottom: normalize(10),
-      marginTop: normalize(10),
-      paddingHorizontal: normalize(15),
-    },
-    divider: {
-      height: 1,
-      backgroundColor: colors.accentMedium,
-      width: '75%',
-      alignSelf: 'center',
-      marginVertical: normalize(15),
     },
     historyEntry: {
       flexDirection: 'row',
@@ -209,40 +193,46 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
     setConfirmDeleteVisible(false);
   };
 
-  // Memoize the grouped measurements to avoid repeated getTimeOfDay calls
-  const groupedMeasurements = useMemo(() => {
-    if (!selectedLogbook?.measurements?.length) return { morning: [], afternoon: [], evening: [] };
-    const sortedMeasurements = [...selectedLogbook.measurements].sort(
+  // Memoize the sorted measurements
+  const sortedMeasurements = useMemo(() => {
+    if (!selectedLogbook?.measurements?.length) return [];
+    return [...selectedLogbook.measurements].sort(
       (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
     );
-    return sortedMeasurements.reduce((acc, measurement) => {
-      const tod = getTimeOfDay(measurement.timestamp);
-      if (!acc[tod]) acc[tod] = [];
-      acc[tod].push(measurement);
-      return acc;
-    }, { morning: [], afternoon: [], evening: [] });
-  }, [selectedLogbook?.measurements, getTimeOfDay]);
-
-  // Find the most recent measurement timestamp
-  const findMostRecentTimestamp = useMemo(() => {
-    if (!selectedLogbook?.measurements?.length) return null;
-    const sortedMeasurements = [...selectedLogbook.measurements].sort(
-      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-    );
-    return sortedMeasurements[0].timestamp;
   }, [selectedLogbook?.measurements]);
 
-  // Function to format the timestamp as dd-mm-yyyy, hh:mm:ss
+  // // Function to format the timestamp and get light level
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${day}-${month}-${year}, ${hours}:${minutes}:${seconds}`;
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
+
+  const formatMeasurementEntry = (measurement) => {
+  const date = new Date(measurement.timestamp);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  // Determine light level based on lux value
+  const getLightLevel = (lux) => {
+    if (lux > 20000) return 'Direct Sunlight';
+    if (lux > 10000) return 'Bright Light';
+    if (lux > 2000) return 'Medium Light';
+    if (lux > 500) return 'Low Light';
+    return 'Very Low Light';
+  };
+
+  const lightLevel = getLightLevel(measurement.lux);
+
+  return `${day}-${month}-${year} ${hours}:${minutes} ${lightLevel} (${measurement.lux} lux)`;
+};
 
   return (
     <>
@@ -251,57 +241,40 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
           <Text style={modalStyles.modalTitle}>Measurement History</Text>
           {selectedLogbook?.measurements?.length > 0 && (
             <FlatList
-              data={['morning', 'afternoon', 'evening']}
+              data={sortedMeasurements}
               contentContainerStyle={styles.modalScrollContent}
               style={styles.modalContent}
-              renderItem={({ item: timeOfDay }) => {
-                const group = groupedMeasurements[timeOfDay];
-                if (group.length === 0) return null;
-
-                const mostRecentTimestamp = findMostRecentTimestamp;
+              renderItem={({ item: measurement, index }) => {
+                const isLatest = index === 0;
 
                 return (
-                  <>
-                    <Text style={styles.timeOfDayTitle}>
-                      {timeOfDay.charAt(0).toUpperCase() + timeOfDay.slice(1)}
+                  <View
+                    key={measurement.timestamp}
+                    style={[
+                      styles.historyEntry,
+                      index % 2 === 0 ? styles.historyEntryOdd : styles.historyEntryEven,
+                      isLatest && { backgroundColor: 'transparent' },
+                    ]}
+                  >
+                    <View style={styles.historyTextContainer}>
+                    <Text
+                      style={[styles.historyText, isLatest && styles.lastHistoryText]}
+                      numberOfLines={3}
+                      ellipsizeMode="tail"
+                    >
+                      {formatMeasurementEntry(measurement)}
                     </Text>
-                    {group.map((measurement, index) => {
-                      const isLatest = measurement.timestamp === mostRecentTimestamp;
-
-                      return (
-                        <View
-                          key={measurement.timestamp}
-                          style={[
-                            styles.historyEntry,
-                            index % 2 === 0 ? styles.historyEntryOdd : styles.historyEntryEven,
-                            isLatest && { backgroundColor: 'transparent' },
-                          ]}
-                        >
-                          <View style={styles.historyTextContainer}>
-                            <Text
-                              style={[styles.historyText, isLatest && styles.lastHistoryText]}
-                              numberOfLines={3}
-                              ellipsizeMode="tail"
-                            >
-                              {`${formatTimestamp(measurement.timestamp)} ${getTimeOfDay(
-                                measurement.timestamp
-                              )} ${getLightLevel(measurement.lux)} (${measurement.lux} lux)`}
-                            </Text>
-                          </View>
-                          <TouchableOpacity
-                            style={styles.trashIcon}
-                            onPress={() => promptDelete(measurement)}
-                          >
-                            <Icon name="trash-outline" size={normalize(18)} color="#757575" />
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    })}
-                    <View style={styles.divider} />
-                  </>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.trashIcon}
+                      onPress={() => promptDelete(measurement)}
+                    >
+                      <Icon name="trash-outline" size={normalize(18)} color="#757575" />
+                    </TouchableOpacity>
+                  </View>
                 );
               }}
-              keyExtractor={(item) => item}
+              keyExtractor={(item) => item.timestamp}
             />
           )}
           <TouchableOpacity style={modalStyles.modalClose} onPress={onClose}>
@@ -317,8 +290,6 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
         onConfirm={handleDeleteConfirm}
         timestamp={measurementToDelete?.timestamp}
         formatTimestamp={formatTimestamp}
-        getTimeOfDay={getTimeOfDay}
-        getLightLevel={getLightLevel}
         lux={measurementToDelete?.lux}
       />
     </>
@@ -462,15 +433,12 @@ export const FilterModal = ({ type, title, visible, onClose, options, onSelect, 
   </AnimatedModal>
 );
 
-// ConfirmDeleteMeasurementModal component with added safety checks and fixed font styling
 export const ConfirmDeleteMeasurementModal = ({ 
   visible, 
   onClose, 
   onConfirm, 
   timestamp,
   formatTimestamp,
-  getTimeOfDay,
-  getLightLevel,
   lux
 }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
@@ -486,10 +454,10 @@ export const ConfirmDeleteMeasurementModal = ({
             fontWeight: FONT_WEIGHT.BOLD, 
             marginVertical: normalize(10) 
           }]}>
-            {formatTimestamp(timestamp)} ({getTimeOfDay(timestamp)})
+            {formatTimestamp(timestamp)}
           </Text>
           <Text style={modalStyles.modalText}>
-            {getLightLevel(lux)} ({lux} lux)
+            {lux} lux
           </Text>
         </>
       ) : (

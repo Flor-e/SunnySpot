@@ -6,7 +6,7 @@ import { normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, LINE_HEIGHT } from './f
 const { width } = Dimensions.get('window');
 
 // Calculate the header height to use consistently throughout the app
-const HEADER_HEIGHT = StatusBar.currentHeight + normalize(66);
+const HEADER_HEIGHT = StatusBar.currentHeight + normalize(65);
 
 // App colors - Enhanced color system
 const colors = {
@@ -147,7 +147,6 @@ const globalStyles = StyleSheet.create({
   bodySection: {
     flex: 1,
     paddingHorizontal: normalize(10),
-    paddingTop: normalize(10),
   },
 });
 

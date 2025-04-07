@@ -126,8 +126,7 @@ const lightLogbookStyles = StyleSheet.create({
   
   // Divider styles
   dividerContainer: {
-    paddingVertical: normalize(10),
-    marginTop: 0,
+    paddingVertical: normalize(15),
   },
   
   divider: {
@@ -154,7 +153,7 @@ const lightLogbookStyles = StyleSheet.create({
   logbookButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: normalize(15),
+    marginTop: normalize(20),
     gap: normalize(15),
   },
   
@@ -163,7 +162,7 @@ const lightLogbookStyles = StyleSheet.create({
     paddingVertical: normalize(10),
     paddingHorizontal: normalize(20),
     borderRadius: 8,
-    minWidth: normalize(120),
+    width: '40%',
   },
   
   logbookActionButtonSecondary: {
@@ -193,14 +192,14 @@ const lightLogbookStyles = StyleSheet.create({
   
   // Toggle and action icons
   binIcon: {
-    marginLeft: normalize(3),
-    marginBottom: normalize(2),
+    marginLeft: normalize(8),
+    marginBottom: normalize(1),
   },
   
   toggleChevron: {
     position: 'absolute',
-    right: normalize(-12),
-    top: '50%',
+    right: normalize(0),
+    top: '55%',
     transform: [{ translateY: normalize(-12) }],
     backgroundColor: colors.accent,
     width: normalize(25),
