@@ -2,7 +2,8 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react'; 
 import { Modal, View, Text, TouchableOpacity, ScrollView, FlatList, TextInput, Dimensions, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import modalStyles from '../utils/modalStyles.js';
 
 // Reusable AnimatedModal component with error fix
 const AnimatedModal = ({ visible, onRequestClose, children }) => {
@@ -39,7 +40,7 @@ const AnimatedModal = ({ visible, onRequestClose, children }) => {
       onRequestClose={onRequestClose}
       animationType="none" // We'll handle animation ourselves
     >
-      <View style={globalStyles.modalOverlay}>
+      <View style={modalStyles.modalOverlay}>
         <Animated.View style={{
           opacity: fadeAnim,
           transform: [{ scale: scaleAnim }]
@@ -96,11 +97,11 @@ const styles = {
 // Lux Info Modal
 export const LuxInfoModal = ({ visible, onClose }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>What is Lux?</Text>
-      <ScrollView style={globalStyles.modalScroll}>
-        <Text style={globalStyles.modalText}>
-          <Text style={globalStyles.modalBoldText}>Lux measures light intensity.</Text> It shows how much light hits a surface, like your plant spot. Higher lux = brighter light.
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>What is Lux?</Text>
+      <ScrollView style={modalStyles.modalScroll}>
+        <Text style={modalStyles.modalText}>
+          <Text style={modalStyles.modalBoldText}>Lux measures light intensity.</Text> It shows how much light hits a surface, like your plant spot. Higher lux = brighter light.
         </Text>
         {[
           ['Very Low Light', '0 – 500 lux'],
@@ -109,13 +110,13 @@ export const LuxInfoModal = ({ visible, onClose }) => (
           ['Bright Light', '10.000 – 20.000 lux'],
           ['Direct Sunlight', '20.000+ lux'],
         ].map(([label, range]) => (
-          <Text key={label} style={globalStyles.modalText}>
-            <Text style={globalStyles.modalBoldText}>{label}:</Text> {range}
+          <Text key={label} style={modalStyles.modalText}>
+            <Text style={modalStyles.modalBoldText}>{label}:</Text> {range}
           </Text>
         ))}
       </ScrollView>
-      <TouchableOpacity style={globalStyles.modalClose} onPress={onClose}>
-        <Text style={globalStyles.buttonText}>Close</Text>
+      <TouchableOpacity style={modalStyles.modalClose} onPress={onClose}>
+        <Text style={modalStyles.buttonText}>Close</Text>
       </TouchableOpacity>
     </View>
   </AnimatedModal>
@@ -159,7 +160,7 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
       width: '95%',
       borderWidth: 1,
       borderRadius: 6,
-      borderColor: colors.cardBorder,
+      borderColor: colors.primaryBorder,
     },
     historyTextContainer: {
       flex: 1,
@@ -246,8 +247,8 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
   return (
     <>
       <AnimatedModal visible={visible} onRequestClose={onClose}>
-        <View style={[globalStyles.modalBox, { height: screenHeight * 0.85, paddingHorizontal: 0 }]}>
-          <Text style={globalStyles.modalTitle}>Measurement History</Text>
+        <View style={[modalStyles.modalBox, { height: screenHeight * 0.85, paddingHorizontal: 0 }]}>
+          <Text style={modalStyles.modalTitle}>Measurement History</Text>
           {selectedLogbook?.measurements?.length > 0 && (
             <FlatList
               data={['morning', 'afternoon', 'evening']}
@@ -303,8 +304,8 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
               keyExtractor={(item) => item}
             />
           )}
-          <TouchableOpacity style={globalStyles.modalClose} onPress={onClose}>
-            <Text style={globalStyles.buttonText}>Close</Text>
+          <TouchableOpacity style={modalStyles.modalClose} onPress={onClose}>
+            <Text style={modalStyles.buttonText}>Close</Text>
           </TouchableOpacity>
         </View>
       </AnimatedModal>
@@ -327,8 +328,8 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
 // Create Logbook Modal
 export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLogbookName, onCreate }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>Create New Logbook</Text>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>Create New Logbook</Text>
       <View style={{ width: '100%', alignItems: 'center', paddingVertical: normalize(20) }}>
         <TextInput
           style={styles.spotNameInput}
@@ -341,16 +342,16 @@ export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLog
       </View>
       <View style={styles.modalButtonRow}>
         <TouchableOpacity
-          style={globalStyles.modalNegativeButton}
+          style={modalStyles.modalNegativeButton}
           onPress={onClose}
         >
-          <Text style={globalStyles.buttonText}>Cancel</Text>
+          <Text style={modalStyles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.modalPositiveButton}
+          style={modalStyles.modalPositiveButton}
           onPress={onCreate}
         >
-          <Text style={globalStyles.buttonText}>Create</Text>
+          <Text style={modalStyles.buttonText}>Create</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -360,23 +361,23 @@ export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLog
 // Delete Logbook Modal
 export const DeleteLogbookModal = ({ visible, onClose, selectedLogbook, onDelete }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>Delete Logbook</Text>
-      <Text style={globalStyles.modalText}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>Delete Logbook</Text>
+      <Text style={modalStyles.modalText}>
         Are you sure you want to delete {selectedLogbook?.title || 'this logbook'}?
       </Text>
       <View style={styles.modalButtonRow}>
         <TouchableOpacity
-          style={globalStyles.modalNegativeButton}
+          style={modalStyles.modalNegativeButton}
           onPress={onClose}
         >
-          <Text style={globalStyles.buttonText}>Cancel</Text>
+          <Text style={modalStyles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.modalPositiveButton}
+          style={modalStyles.modalPositiveButton}
           onPress={onDelete}
         >
-          <Text style={globalStyles.buttonText}>Delete</Text>
+          <Text style={modalStyles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -386,9 +387,9 @@ export const DeleteLogbookModal = ({ visible, onClose, selectedLogbook, onDelete
 // Logbooks Modal
 export const LogbooksModal = ({ visible, onClose, logbooks, onSelect }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>Select Logbook</Text>
-      <ScrollView style={globalStyles.modalScroll}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>Select Logbook</Text>
+      <ScrollView style={modalStyles.modalScroll}>
         {logbooks.map((logbook) => (
           <TouchableOpacity
             key={logbook.id}
@@ -400,10 +401,10 @@ export const LogbooksModal = ({ visible, onClose, logbooks, onSelect }) => (
         ))}
       </ScrollView>
       <TouchableOpacity
-        style={globalStyles.modalClose}
+        style={modalStyles.modalClose}
         onPress={onClose}
       >
-        <Text style={globalStyles.buttonText}>Close</Text>
+        <Text style={modalStyles.buttonText}>Close</Text>
       </TouchableOpacity>
     </View>
   </AnimatedModal>
@@ -412,23 +413,23 @@ export const LogbooksModal = ({ visible, onClose, logbooks, onSelect }) => (
 // Imbalance Modal
 export const ImbalanceModal = ({ visible, onClose, onProceed }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>Matches may not be accurate</Text>
-      <Text style={globalStyles.modalText}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>Matches may not be accurate</Text>
+      <Text style={modalStyles.modalText}>
         Ensure an equal number of morning, afternoon, and evening measurements for more accurate results. Do you want to see your matches anyway?
       </Text>
       <View style={styles.modalButtonRow}>
         <TouchableOpacity
-          style={globalStyles.modalNegativeButton}
+          style={modalStyles.modalNegativeButton}
           onPress={onClose}
         >
-          <Text style={globalStyles.buttonText}>Cancel</Text>
+          <Text style={modalStyles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.modalPositiveButton}
+          style={modalStyles.modalPositiveButton}
           onPress={onProceed}
         >
-          <Text style={globalStyles.buttonText}>Go!</Text>
+          <Text style={modalStyles.buttonText}>Go!</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -438,9 +439,9 @@ export const ImbalanceModal = ({ visible, onClose, onProceed }) => (
 // Filter Modal
 export const FilterModal = ({ type, title, visible, onClose, options, onSelect, onClear }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>{title}</Text>
-      <ScrollView style={globalStyles.modalScroll}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>{title}</Text>
+      <ScrollView style={modalStyles.modalScroll}>
         {options.map((option) => (
           <TouchableOpacity
             key={option}
@@ -452,10 +453,10 @@ export const FilterModal = ({ type, title, visible, onClose, options, onSelect, 
         ))}
       </ScrollView>
       <TouchableOpacity
-        style={globalStyles.modalClose}
+        style={modalStyles.modalClose}
         onPress={onClear}
       >
-        <Text style={globalStyles.buttonText}>Clear filter</Text>
+        <Text style={modalStyles.buttonText}>Clear filter</Text>
       </TouchableOpacity>
     </View>
   </AnimatedModal>
@@ -473,40 +474,40 @@ export const ConfirmDeleteMeasurementModal = ({
   lux
 }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>Delete measurement</Text>
-      <Text style={globalStyles.modalText}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>Delete measurement</Text>
+      <Text style={modalStyles.modalText}>
         Are you sure you want to delete the measurement from:
       </Text>
       {timestamp ? (
         <>
-          <Text style={[globalStyles.modalText, { 
+          <Text style={[modalStyles.modalText, { 
             fontFamily: FONT_FAMILY.BOLD,
             fontWeight: FONT_WEIGHT.BOLD, 
             marginVertical: normalize(10) 
           }]}>
             {formatTimestamp(timestamp)} ({getTimeOfDay(timestamp)})
           </Text>
-          <Text style={globalStyles.modalText}>
+          <Text style={modalStyles.modalText}>
             {getLightLevel(lux)} ({lux} lux)
           </Text>
         </>
       ) : (
-        <Text style={globalStyles.modalText}>Loading measurement details...</Text>
+        <Text style={modalStyles.modalText}>Loading measurement details...</Text>
       )}
       <View style={styles.modalButtonRow}>
         <TouchableOpacity
-          style={globalStyles.modalNegativeButton}
+          style={modalStyles.modalNegativeButton}
           onPress={onClose}
         >
-          <Text style={globalStyles.buttonText}>Cancel</Text>
+          <Text style={modalStyles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.modalPositiveButton}
+          style={modalStyles.modalPositiveButton}
           onPress={onConfirm}
           disabled={!timestamp}
         >
-          <Text style={globalStyles.buttonText}>Delete</Text>
+          <Text style={modalStyles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -516,16 +517,16 @@ export const ConfirmDeleteMeasurementModal = ({
 // No Matches After Measurement Modal
 export const NoMatchesAfterMeasurementModal = ({ visible, onClose }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>No plants found</Text>
-      <Text style={globalStyles.modalText}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>No plants found</Text>
+      <Text style={modalStyles.modalText}>
         Sorry, we couldn't find any plants that match your criteria. Try adjusting your filters or taking a measurement in a different spot with more light.
       </Text>
       <TouchableOpacity
-        style={globalStyles.modalClose}
+        style={modalStyles.modalClose}
         onPress={onClose}
       >
-        <Text style={globalStyles.buttonText}>Close</Text>
+        <Text style={modalStyles.buttonText}>Close</Text>
       </TouchableOpacity>
     </View>
   </AnimatedModal>
@@ -534,16 +535,16 @@ export const NoMatchesAfterMeasurementModal = ({ visible, onClose }) => (
 // No More Matches After Swiping Modal
 export const NoMoreMatchesAfterSwipingModal = ({ visible, onClose }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
-      <Text style={globalStyles.modalTitle}>No more matches</Text>
-      <Text style={globalStyles.modalText}>
+    <View style={modalStyles.modalBox}>
+      <Text style={modalStyles.modalTitle}>No more matches</Text>
+      <Text style={modalStyles.modalText}>
         You've swiped through all the plants for this spot. Take a new measurement or adjust your filters to find more matches.
       </Text>
       <TouchableOpacity
-        style={globalStyles.modalClose}
+        style={modalStyles.modalClose}
         onPress={onClose}
       >
-        <Text style={globalStyles.buttonText}>Close</Text>
+        <Text style={modalStyles.buttonText}>Close</Text>
       </TouchableOpacity>
     </View>
   </AnimatedModal>
@@ -558,7 +559,7 @@ export const PlantDetailModal = ({
   favoritePlants 
 }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={globalStyles.modalBox}>
+    <View style={modalStyles.modalBox}>
       <ScrollView contentContainerStyle={{ paddingBottom: normalize(20), alignItems: 'center' }} style={{ width: '100%' }}>
         {selectedPlant ? (
           <>
@@ -575,7 +576,7 @@ export const PlantDetailModal = ({
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                <Text style={globalStyles.modalTitle}>{selectedPlant.name}</Text>
+                <Text style={modalStyles.modalTitle}>{selectedPlant.name}</Text>
               </View>
               <TouchableOpacity 
                 style={{
@@ -604,8 +605,8 @@ export const PlantDetailModal = ({
               <PlantDetailRows plant={selectedPlant} />
             </View>
             {/* Close Button */}
-            <TouchableOpacity style={globalStyles.modalClose} onPress={onClose}>
-              <Text style={globalStyles.buttonText}>Close</Text>
+            <TouchableOpacity style={modalStyles.modalClose} onPress={onClose}>
+              <Text style={modalStyles.buttonText}>Close</Text>
             </TouchableOpacity>
           </>
         ) : null}

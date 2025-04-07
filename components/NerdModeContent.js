@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import plantProfileStyles from '../utils/plantProfileStyles';
+import lightLogbookStyles from '../utils/lightLogbookStyles.js';
 
 const NerdModeContent = ({ 
   selectedLogbook,
@@ -14,6 +16,7 @@ const NerdModeContent = ({
   clearFilters,
   triggerPlantAdvice,
   getLightLevel,
+  getTimeOfDay,
   logbooks,
 }) => {
   const [viewMode, setViewMode] = useState('lightDetails');
@@ -25,11 +28,11 @@ const NerdModeContent = ({
   // If no logbooks exist, show a different message
   if (logbooks.length === 0) {
     return (
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={globalStyles.scrollContainer}>
         <View style={globalStyles.contentWrapper}>
-          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: normalize(20) }]}>
-            <Text style={globalStyles.nerdCardTitle}>No logbooks</Text>
-            <Text style={globalStyles.nerdCardBodyText}>
+          <View style={[lightLogbookStyles.container, { alignItems: 'center', padding: normalize(20) }]}>
+            <Text style={lightLogbookStyles.cardTitle}>No logbooks</Text>
+            <Text style={lightLogbookStyles.bodyText}>
               Create your first light logbook!
             </Text>
           </View>
@@ -41,12 +44,12 @@ const NerdModeContent = ({
   // If no logbook is selected but logbooks exist, show the original message
   if (!selectedLogbook) {
     return (
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={globalStyles.scrollContainer}>
         <View style={globalStyles.contentWrapper}>
-          <View style={[globalStyles.nerdCard, globalStyles.cardBorder, { alignItems: 'center', padding: normalize(20) }]}>
-            <Text style={globalStyles.nerdCardTitle}>No Logbook Selected</Text>
-            <Text style={globalStyles.nerdCardBodyText}>
-              Please select or create a logbook using the dropdown menu at the top.
+          <View style={[lightLogbookStyles.container, { alignItems: 'center', padding: normalize(20) }]}>
+            <Text style={lightLogbookStyles.cardTitle}>No Logbook Selected</Text>
+            <Text style={lightLogbookStyles.bodyText}>
+            Please select or create a logbook using the dropdown menu at the top.
             </Text>
           </View>
         </View>
@@ -59,13 +62,12 @@ const NerdModeContent = ({
 
   return (
     <ScrollView 
-      style={styles.scrollContainer} 
-      contentContainerStyle={styles.scrollContent}
+      style={globalStyles.scrollContainer} 
     >
       <View style={globalStyles.contentWrapper}>
-        <View style={[globalStyles.nerdCard, globalStyles.cardBorder, styles.cardContainer]}>
+        <View style={[viewMode === 'plantProfile' ? plantProfileStyles.container : lightLogbookStyles.container, lightLogbookStyles.cardContainer]}>
           <TouchableOpacity
-            style={styles.toggleChevron}
+            style={lightLogbookStyles.toggleChevron}
             onPress={() => setViewMode(viewMode === 'plantProfile' ? 'lightDetails' : 'plantProfile')}
           >
             <Icon 
@@ -76,211 +78,200 @@ const NerdModeContent = ({
           </TouchableOpacity>
           
           {viewMode === 'plantProfile' ? (
-            <View style={globalStyles.nerdCardContent}>
+            <View style={plantProfileStyles.contentContainer}>
               {/* Plant Profile Header with subtitle badge */}
-              <View style={globalStyles.nerdCardHeader}>
-                <Text style={globalStyles.nerdCardTitle}>My plant profile</Text>
-              </View>
-              <View style={globalStyles.subtitleBadge}>
-                <Text style={globalStyles.badgeText}>{selectedLogbook?.title || "New"}</Text>
+              <View style={plantProfileStyles.cardHeader}>
+                <Text style={plantProfileStyles.cardTitle}>My plant profile</Text>
               </View>
               
               {/* Plant profile story - using currentFilters from selectedLogbook */}
-              <View style={globalStyles.plantProfileStoryContainer}>
-                <Text style={globalStyles.storyText}>I'd</Text>
-                <Text style={globalStyles.storyText}>love</Text>
-                <Text style={globalStyles.storyText}>a </Text>
+              <View style={plantProfileStyles.storyContainer}>
+                <Text style={plantProfileStyles.storyText}>I'd</Text>
+                <Text style={plantProfileStyles.storyText}>love</Text>
+                <Text style={plantProfileStyles.storyText}>a </Text>
                 <TouchableOpacity 
-                  style={[globalStyles.storyButton, currentFilters.size ? globalStyles.activeStoryButton : null]} 
+                  style={[plantProfileStyles.storyButton, currentFilters.size ? plantProfileStyles.activeStoryButton : null]} 
                   onPress={() => setModalVisible(prev => ({ ...prev, size: true }))}
                 >
                   <Icon 
                     name="resize-outline" 
                     size={normalize(16)} 
                     color={currentFilters.size ? colors.textLight : colors.textPrimary} 
-                    style={globalStyles.storyButtonIcon} 
+                    style={plantProfileStyles.storyButtonIcon} 
                   />
-                  <Text style={[globalStyles.storyButtonLabel, currentFilters.size ? globalStyles.activeStoryButtonLabel : null]}>
+                  <Text style={[plantProfileStyles.storyButtonLabel, currentFilters.size ? plantProfileStyles.activeStoryButtonLabel : null]}>
                     {currentFilters.size ? 
                       currentFilters.size.replace(/ \(<\d+ cm\)|\(50-\d+ cm\)|\(>\d+ cm\)/, '') : 
                       '___'}
                   </Text>
                 </TouchableOpacity>
                 
-                <Text style={globalStyles.storyText}> plant</Text>
-                <Text style={globalStyles.storyText}>with </Text>
+                <Text style={plantProfileStyles.storyText}> plant</Text>
+                <Text style={plantProfileStyles.storyText}>with </Text>
                 <TouchableOpacity 
-                  style={[globalStyles.storyButton, currentFilters.looks ? globalStyles.activeStoryButton : null]} 
+                  style={[plantProfileStyles.storyButton, currentFilters.looks ? plantProfileStyles.activeStoryButton : null]} 
                   onPress={() => setModalVisible(prev => ({ ...prev, looks: true }))}
                 >
                   <Icon 
                     name="flower-outline" 
                     size={normalize(16)} 
                     color={currentFilters.looks ? colors.textLight : colors.textPrimary} 
-                    style={globalStyles.storyButtonIcon} 
+                    style={plantProfileStyles.storyButtonIcon} 
                   />
-                  <Text style={[globalStyles.storyButtonLabel, currentFilters.looks ? globalStyles.activeStoryButtonLabel : null]}>
+                  <Text style={[plantProfileStyles.storyButtonLabel, currentFilters.looks ? plantProfileStyles.activeStoryButtonLabel : null]}>
                     {currentFilters.looks || '___'}
                   </Text>
                 </TouchableOpacity>
                 
-                <Text style={globalStyles.storyText}> looks.</Text>
-                <Text style={globalStyles.storyText}>I'll</Text>
-                <Text style={globalStyles.storyText}>water</Text>
-                <Text style={globalStyles.storyText}>it </Text>
+                <Text style={plantProfileStyles.storyText}> looks.</Text>
+                <Text style={plantProfileStyles.storyText}>I'll</Text>
+                <Text style={plantProfileStyles.storyText}>water</Text>
+                <Text style={plantProfileStyles.storyText}>it </Text>
                 <TouchableOpacity 
-                  style={[globalStyles.storyButton, currentFilters.watering ? globalStyles.activeStoryButton : null]} 
+                  style={[plantProfileStyles.storyButton, currentFilters.watering ? plantProfileStyles.activeStoryButton : null]} 
                   onPress={() => setModalVisible(prev => ({ ...prev, watering: true }))}
                 >
                   <Icon 
                     name="water-outline" 
                     size={normalize(16)} 
                     color={currentFilters.watering ? colors.textLight : colors.textPrimary} 
-                    style={globalStyles.storyButtonIcon} 
+                    style={plantProfileStyles.storyButtonIcon} 
                   />
-                  <Text style={[globalStyles.storyButtonLabel, currentFilters.watering ? globalStyles.activeStoryButtonLabel : null]}>
+                  <Text style={[plantProfileStyles.storyButtonLabel, currentFilters.watering ? plantProfileStyles.activeStoryButtonLabel : null]}>
                     {currentFilters.watering || '___'}
                   </Text>
                 </TouchableOpacity>
                 
-                <Text style={globalStyles.storyText}> and</Text>
-                <Text style={globalStyles.storyText}>give</Text>
-                <Text style={globalStyles.storyText}>it </Text>
+                <Text style={plantProfileStyles.storyText}> and</Text>
+                <Text style={plantProfileStyles.storyText}>give</Text>
+                <Text style={plantProfileStyles.storyText}>it </Text>
                 <TouchableOpacity 
-                  style={[globalStyles.storyButton, currentFilters.loveLevel ? globalStyles.activeStoryButton : null]} 
+                  style={[plantProfileStyles.storyButton, currentFilters.loveLevel ? plantProfileStyles.activeStoryButton : null]} 
                   onPress={() => setModalVisible(prev => ({ ...prev, loveLevel: true }))}
                 >
                   <Icon 
                     name="heart-outline" 
                     size={normalize(16)} 
                     color={currentFilters.loveLevel ? colors.textLight : colors.textPrimary} 
-                    style={globalStyles.storyButtonIcon} 
+                    style={plantProfileStyles.storyButtonIcon} 
                   />
-                  <Text style={[globalStyles.storyButtonLabel, currentFilters.loveLevel ? globalStyles.activeStoryButtonLabel : null]}>
+                  <Text style={[plantProfileStyles.storyButtonLabel, currentFilters.loveLevel ? plantProfileStyles.activeStoryButtonLabel : null]}>
                     {currentFilters.loveLevel || '___'}
                   </Text>
                 </TouchableOpacity>
                 
-                <Text style={globalStyles.storyText}> love.</Text>
-                <Text style={globalStyles.storyText}>Pets</Text>
-                <Text style={globalStyles.storyText}>around? </Text>
+                <Text style={plantProfileStyles.storyText}> love.</Text>
+                <Text style={plantProfileStyles.storyText}>Pets</Text>
+                <Text style={plantProfileStyles.storyText}>around? </Text>
                 <TouchableOpacity 
-                  style={[globalStyles.storyButton, currentFilters.pets ? globalStyles.activeStoryButton : null]} 
+                  style={[plantProfileStyles.storyButton, currentFilters.pets ? plantProfileStyles.activeStoryButton : null]} 
                   onPress={() => setModalVisible(prev => ({ ...prev, pets: true }))}
                 >
                   <Icon 
                     name="paw-outline" 
                     size={normalize(16)} 
                     color={currentFilters.pets ? colors.textLight : colors.textPrimary} 
-                    style={globalStyles.storyButtonIcon} 
+                    style={plantProfileStyles.storyButtonIcon} 
                   />
-                  <Text style={[globalStyles.storyButtonLabel, currentFilters.pets ? globalStyles.activeStoryButtonLabel : null]}>
+                  <Text style={[plantProfileStyles.storyButtonLabel, currentFilters.pets ? plantProfileStyles.activeStoryButtonLabel : null]}>
                     {currentFilters.pets ? (currentFilters.pets === 'hell yeah!' ? 'Yes' : currentFilters.pets) : '___'}
                   </Text>
                 </TouchableOpacity>
               </View>
 
-              {/* Soft lavender divider */}
-              <View style={styles.dividerContainer}>
-                <View style={[globalStyles.divider, { marginTop: normalize(7) }]} />
-              </View>
-
               {/* Clear filters button */}
-              <View style={globalStyles.clearButtonContainer}>
+              <View style={plantProfileStyles.clearButtonContainer}>
                 <TouchableOpacity 
-                  style={globalStyles.clearButton} 
+                  style={plantProfileStyles.clearButton} 
                   onPress={clearFilters}
                 >
-                  <Icon name="refresh-outline" size={normalize(14)} color={colors.textPrimary} style={globalStyles.clearButtonIcon} />
-                  <Text style={globalStyles.clearButtonText}>Clear filters</Text>
+                  <Icon name="refresh-outline" size={normalize(14)} color={colors.textPrimary} style={plantProfileStyles.clearButtonIcon} />
+                  <Text style={plantProfileStyles.clearButtonText}>Clear filters</Text>
                 </TouchableOpacity>
               </View>
             </View>
           ) : (
-            <View style={globalStyles.nerdCardContent}>
+            <View style={lightLogbookStyles.contentContainer}>
               {/* Light Logbook Header with subtitle badge */}
-              <View style={globalStyles.nerdCardHeader}>
-                <Text style={globalStyles.nerdCardTitle}>My light logbook</Text>
+              <View style={lightLogbookStyles.cardHeader}>
+                <Text style={lightLogbookStyles.cardTitle}>My light logbook</Text>
                 
                 {/* Bin icon positioned beside the title with 3pts spacing */}
                 <TouchableOpacity
-                  style={styles.binIcon}
+                  style={lightLogbookStyles.binIcon}
                   onPress={() => setModalVisible(prev => ({ ...prev, deleteLogbook: true }))}
                 >
                   <Icon name="trash-outline" size={normalize(18)} color={colors.textPrimary} />
                 </TouchableOpacity>
               </View>
-              <View style={globalStyles.subtitleBadge}>
-                <Text style={globalStyles.badgeText}>{selectedLogbook?.title || "New"}</Text>
-              </View>
               
               {/* Main content */}
               {selectedLogbook.measurements.length === 0 ? (
-                <View style={globalStyles.infoContainer}>
-                  <Text style={globalStyles.storyText}>Take your first light measurement</Text>
-                  <Text style={globalStyles.storyText}>to start tracking this spot's light.</Text>
+                <View style={lightLogbookStyles.infoContainer}>
+                  <Text style={lightLogbookStyles.storyText}>Take your first light measurement</Text>
+                  <Text style={lightLogbookStyles.storyText}>to start tracking this spot's light.</Text>
                 </View>
               ) : (
                 <>
-                  <View style={globalStyles.infoContainer}>
-                    <Text style={globalStyles.storyText}>This spot receives on average </Text>
-                    <Text style={styles.highlightedText}>{getLightLevel(selectedLogbook.average)}</Text>
-                    <Text style={globalStyles.storyText}> ({Math.round(selectedLogbook.average)} lux),</Text>
-                    <Text style={globalStyles.storyText}> based on </Text>
-                    <Text style={styles.highlightedText}>{slotCounts.morning}</Text>
-                    <Text style={globalStyles.storyText}> morning, </Text>
-                    <Text style={styles.highlightedText}>{slotCounts.afternoon}</Text>
-                    <Text style={globalStyles.storyText}> afternoon, </Text>
-                    <Text style={styles.highlightedText}>{slotCounts.evening}</Text>
-                    <Text style={globalStyles.storyText}> evening</Text>
-                    <Text style={globalStyles.storyText}> measurements.</Text>
+                  <View style={lightLogbookStyles.infoContainer}>
+                    <Text style={lightLogbookStyles.storyText}>This spot receives on average </Text>
+                    <Text style={lightLogbookStyles.highlightedText}>{getLightLevel(selectedLogbook.average)}</Text>
+                    <Text style={lightLogbookStyles.storyText}> ({Math.round(selectedLogbook.average)} lux),</Text>
+                    <Text style={lightLogbookStyles.storyText}> based on </Text>
+                    <Text style={lightLogbookStyles.highlightedText}>{slotCounts.morning}</Text>
+                    <Text style={lightLogbookStyles.storyText}> morning, </Text>
+                    <Text style={lightLogbookStyles.highlightedText}>{slotCounts.afternoon}</Text>
+                    <Text style={lightLogbookStyles.storyText}> afternoon, </Text>
+                    <Text style={lightLogbookStyles.highlightedText}>{slotCounts.evening}</Text>
+                    <Text style={lightLogbookStyles.storyText}> evening</Text>
+                    <Text style={lightLogbookStyles.storyText}> measurements.</Text>
                   </View>
 
                   {selectedLogbook.measurements.length > 0 && (
                     <>
                       {/* Divider with consistent spacing */}
-                      <View style={styles.dividerContainer}>
-                        <View style={globalStyles.divider} />
+                      <View style={lightLogbookStyles.dividerContainer}>
+                        <View style={lightLogbookStyles.divider} />
                       </View>
                       
                       {/* Last measurement label */}
-                      <View style={globalStyles.lastMeasurementLabelContainer}>
-                        <Text style={globalStyles.storyText}>Last measurement:</Text>
+                      <View style={lightLogbookStyles.lastMeasurementLabelContainer}>
+                        <Text style={lightLogbookStyles.storyText}>Last measurement:</Text>
                       </View>
                       
                       {/* Last measurement value on its own line */}
-                      <View style={globalStyles.lastMeasurementValueContainer}>
-                        <Text style={styles.highlightedText}>{getLightLevel(selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux)}</Text>
-                        <Text style={globalStyles.storyText}> ({selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux} lux)</Text>
+                      <View style={lightLogbookStyles.lastMeasurementValueContainer}>
+                        <Text style={lightLogbookStyles.highlightedText}>{getLightLevel(selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux)}</Text>
+                        <Text style={lightLogbookStyles.storyText}> ({selectedLogbook.measurements[selectedLogbook.measurements.length - 1].lux} lux)</Text>
                       </View>
                     </>
                   )}
                 </>
               )}
               
-              <View style={globalStyles.logbookButtonContainer}>
+              <View style={lightLogbookStyles.logbookButtonContainer}>
                 <TouchableOpacity
-                  style={[globalStyles.logbookActionButton, !selectedLogbook.measurements.length && globalStyles.logbookDisabledButton]}
+                  style={[lightLogbookStyles.logbookActionButton, !selectedLogbook.measurements.length && lightLogbookStyles.logbookDisabledButton]}
                   onPress={triggerPlantAdvice}
                   disabled={!selectedLogbook.measurements.length}
                 >
-                  <View style={globalStyles.logbookButtonContent}>
-                    <Icon name="leaf-outline" size={normalize(16)} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
-                    <Text style={globalStyles.logbookButtonText}>Matches</Text>
+                  <View style={lightLogbookStyles.logbookButtonContent}>
+                    <Icon name="leaf-outline" size={normalize(16)} color={colors.textLight} style={lightLogbookStyles.logbookButtonIcon} />
+                    <Text style={lightLogbookStyles.logbookButtonText}>Matches</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
-                    globalStyles.logbookActionButton, 
-                    globalStyles.logbookActionButtonSecondary, 
-                    !selectedLogbook.measurements.length && globalStyles.logbookDisabledButton
+                    lightLogbookStyles.logbookActionButton, 
+                    lightLogbookStyles.logbookActionButtonSecondary, 
+                    !selectedLogbook.measurements.length && lightLogbookStyles.logbookDisabledButton
                   ]}
                   onPress={() => setModalVisible(prev => ({ ...prev, history: true }))}
                   disabled={!selectedLogbook.measurements.length}
                 >
-                  <View style={globalStyles.logbookButtonContent}>
-                    <Icon name="document-outline" size={normalize(16)} color={colors.textLight} style={globalStyles.logbookButtonIcon} />
-                    <Text style={globalStyles.logbookButtonText}>History</Text>
+                  <View style={lightLogbookStyles.logbookButtonContent}>
+                    <Icon name="document-outline" size={normalize(16)} color={colors.textLight} style={lightLogbookStyles.logbookButtonIcon} />
+                    <Text style={lightLogbookStyles.logbookButtonText}>History</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -289,51 +280,7 @@ const NerdModeContent = ({
         </View>
       </View>
     </ScrollView>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollContainer: { 
-    flex: 1,
-  },
-  scrollContent: {
-    // We keep this empty but define it to ensure consistent styling
-  },
-  cardContainer: {
-    position: 'relative', 
-  },
-  dividerContainer: {
-    paddingVertical: normalize(10), 
-    marginTop: 0,
-  },
-  binIcon: {
-    marginLeft: normalize(3), 
-    marginBottom: normalize(2),
-  },
-  toggleChevron: {
-    position: 'absolute',
-    right: normalize(-12), 
-    top: '50%', 
-    transform: [{ translateY: normalize(-12) }], 
-    backgroundColor: colors.accent,
-    width: normalize(25),
-    height: normalize(25),
-    borderRadius: normalize(15),
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-    zIndex: 10
-  },
-  highlightedText: {
-    fontSize: FONT_SIZE.REGULAR,
-    fontFamily: FONT_FAMILY.BOLD,
-    fontWeight: FONT_WEIGHT.BOLD,
-    color: colors.textPrimary,
-  },
-});
+);
+}
 
 export default NerdModeContent;

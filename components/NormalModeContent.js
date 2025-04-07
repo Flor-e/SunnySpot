@@ -2,7 +2,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import plantProfileStyles from '../utils/plantProfileStyles';
 
 const NormalModeContent = ({ 
   filters,
@@ -13,130 +14,122 @@ const NormalModeContent = ({
   filterOptions
 }) => {
   return (
-    <ScrollView style={styles.scrollContainer}>
+    <ScrollView style={globalStyles.scrollContainer}>
       <View style={globalStyles.contentWrapper}>
-        <View style={[globalStyles.nerdCard, globalStyles.cardBorder]}>
+        <View style={plantProfileStyles.container}>
           {/* Plant Profile Header with subtitle badge */}
-          <View style={globalStyles.nerdCardHeader}>
-            <Text style={globalStyles.nerdCardTitle}>My plant profile</Text>
+          <View style={plantProfileStyles.cardHeader}>
+            <Text style={plantProfileStyles.cardTitle}>My plant profile</Text>
           </View>
           
           {/* Plant profile story - keeping the original green buttons */}
-          <View style={globalStyles.plantProfileStoryContainer}>
-            <Text style={globalStyles.storyText}>I'd</Text>
-            <Text style={globalStyles.storyText}>love</Text>
-            <Text style={globalStyles.storyText}>a </Text>
+          <View style={plantProfileStyles.storyContainer}>
+            <Text style={plantProfileStyles.storyText}>I'd</Text>
+            <Text style={plantProfileStyles.storyText}>love</Text>
+            <Text style={plantProfileStyles.storyText}>a </Text>
             <TouchableOpacity 
-              style={[globalStyles.storyButton, filters.size ? globalStyles.activeStoryButton : null]} 
+              style={[plantProfileStyles.storyButton, filters.size ? plantProfileStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, size: true }))}
             >
               <Icon 
                 name="resize-outline" 
                 size={normalize(16)} 
                 color={filters.size ? colors.textLight : colors.textPrimary} 
-                style={globalStyles.storyButtonIcon} 
+                style={plantProfileStyles.storyButtonIcon} 
               />
-              <Text style={[globalStyles.storyButtonLabel, filters.size ? globalStyles.activeStoryButtonLabel : null]}>
+              <Text style={[plantProfileStyles.storyButtonLabel, filters.size ? plantProfileStyles.activeStoryButtonLabel : null]}>
                 {filters.size ? 
                   filters.size.replace(/ \(<\d+ cm\)|\(50-\d+ cm\)|\(>\d+ cm\)/, '') : 
                   '___'}
               </Text>
             </TouchableOpacity>
             
-            <Text style={globalStyles.storyText}> plant</Text>
-            <Text style={globalStyles.storyText}>with </Text>
+            <Text style={plantProfileStyles.storyText}> plant</Text>
+            <Text style={plantProfileStyles.storyText}>with </Text>
             <TouchableOpacity 
-              style={[globalStyles.storyButton, filters.looks ? globalStyles.activeStoryButton : null]} 
+              style={[plantProfileStyles.storyButton, filters.looks ? plantProfileStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, looks: true }))}
             >
               <Icon 
                 name="flower-outline" 
                 size={normalize(16)} 
                 color={filters.looks ? colors.textLight : colors.textPrimary} 
-                style={globalStyles.storyButtonIcon} 
+                style={plantProfileStyles.storyButtonIcon} 
               />
-              <Text style={[globalStyles.storyButtonLabel, filters.looks ? globalStyles.activeStoryButtonLabel : null]}>
+              <Text style={[plantProfileStyles.storyButtonLabel, filters.looks ? plantProfileStyles.activeStoryButtonLabel : null]}>
                 {filters.looks || '___'}
               </Text>
             </TouchableOpacity>
             
-            <Text style={globalStyles.storyText}> looks.</Text>
-            <Text style={globalStyles.storyText}>I'll</Text>
-            <Text style={globalStyles.storyText}>water</Text>
-            <Text style={globalStyles.storyText}>it </Text>
+            <Text style={plantProfileStyles.storyText}> looks.</Text>
+            <Text style={plantProfileStyles.storyText}>I'll</Text>
+            <Text style={plantProfileStyles.storyText}>water</Text>
+            <Text style={plantProfileStyles.storyText}>it </Text>
             <TouchableOpacity 
-              style={[globalStyles.storyButton, filters.watering ? globalStyles.activeStoryButton : null]} 
+              style={[plantProfileStyles.storyButton, filters.watering ? plantProfileStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, watering: true }))}
             >
               <Icon 
                 name="water-outline" 
                 size={normalize(16)} 
                 color={filters.watering ? colors.textLight : colors.textPrimary} 
-                style={globalStyles.storyButtonIcon} 
+                style={plantProfileStyles.storyButtonIcon} 
               />
-              <Text style={[globalStyles.storyButtonLabel, filters.watering ? globalStyles.activeStoryButtonLabel : null]}>
+              <Text style={[plantProfileStyles.storyButtonLabel, filters.watering ? plantProfileStyles.activeStoryButtonLabel : null]}>
                 {filters.watering || '___'}
               </Text>
             </TouchableOpacity>
             
-            <Text style={globalStyles.storyText}> and</Text>
-            <Text style={globalStyles.storyText}>give</Text>
-            <Text style={globalStyles.storyText}>it </Text>
+            <Text style={plantProfileStyles.storyText}> and</Text>
+            <Text style={plantProfileStyles.storyText}>give</Text>
+            <Text style={plantProfileStyles.storyText}>it </Text>
             <TouchableOpacity 
-              style={[globalStyles.storyButton, filters.loveLevel ? globalStyles.activeStoryButton : null]} 
+              style={[plantProfileStyles.storyButton, filters.loveLevel ? plantProfileStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, loveLevel: true }))}
             >
               <Icon 
                 name="heart-outline" 
                 size={normalize(16)} 
                 color={filters.loveLevel ? colors.textLight : colors.textPrimary} 
-                style={globalStyles.storyButtonIcon} 
+                style={plantProfileStyles.storyButtonIcon} 
               />
-              <Text style={[globalStyles.storyButtonLabel, filters.loveLevel ? globalStyles.activeStoryButtonLabel : null]}>
+              <Text style={[plantProfileStyles.storyButtonLabel, filters.loveLevel ? plantProfileStyles.activeStoryButtonLabel : null]}>
                 {filters.loveLevel || '___'}
               </Text>
             </TouchableOpacity>
             
-            <Text style={globalStyles.storyText}> love.</Text>
-            <Text style={globalStyles.storyText}>Pets</Text>
-            <Text style={globalStyles.storyText}>around? </Text>
+            <Text style={plantProfileStyles.storyText}> love.</Text>
+            <Text style={plantProfileStyles.storyText}>Pets</Text>
+            <Text style={plantProfileStyles.storyText}>around? </Text>
             <TouchableOpacity 
-              style={[globalStyles.storyButton, filters.pets ? globalStyles.activeStoryButton : null]} 
+              style={[plantProfileStyles.storyButton, filters.pets ? plantProfileStyles.activeStoryButton : null]} 
               onPress={() => setModalVisible(prev => ({ ...prev, pets: true }))}
             >
               <Icon 
                 name="paw-outline" 
                 size={normalize(16)} 
                 color={filters.pets ? colors.textLight : colors.textPrimary} 
-                style={globalStyles.storyButtonIcon} 
+                style={plantProfileStyles.storyButtonIcon} 
               />
-              <Text style={[globalStyles.storyButtonLabel, filters.pets ? globalStyles.activeStoryButtonLabel : null]}>
+              <Text style={[plantProfileStyles.storyButtonLabel, filters.pets ? plantProfileStyles.activeStoryButtonLabel : null]}>
                 {filters.pets ? (filters.pets === 'hell yeah!' ? 'Yes' : filters.pets) : '___'}
               </Text>
             </TouchableOpacity>
           </View>
           
-          {/* Soft lavender divider */}
-          <View style={styles.dividerContainer}>
-            <View style={globalStyles.divider} />
-          </View>
-          
-          {/* Clear filters button - Updated to use lavender accent */}
-          <View style={globalStyles.clearButtonContainer}>
+          {/* Clear filters button */}
+          <View style={plantProfileStyles.clearButtonContainer}>
             <TouchableOpacity 
-              style={[
-                globalStyles.clearButton,
-                styles.accentClearButton
-              ]}
+              style={plantProfileStyles.clearButton}
               onPress={clearFilters}
             >
               <Icon 
                 name="refresh-outline" 
                 size={normalize(14)} 
                 color={colors.textPrimary} 
-                style={globalStyles.clearButtonIcon} 
+                style={plantProfileStyles.clearButtonIcon} 
               />
-              <Text style={[globalStyles.clearButtonText, styles.accentClearButtonText]}>Clear filters</Text>
+              <Text style={plantProfileStyles.clearButtonText}>Clear filters</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -144,21 +137,5 @@ const NormalModeContent = ({
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flex: 1,
-  },
-  dividerContainer: {
-    paddingVertical: normalize(10),
-    marginTop: normalize(8),
-  },
-  accentClearButton: {
-    // This style is empty in the original code, but kept for consistency
-  },
-  accentClearButtonText: {
-    // This style is empty in the original code, but kept for consistency
-  },
-});
 
 export default NormalModeContent;

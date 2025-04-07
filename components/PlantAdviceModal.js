@@ -6,6 +6,7 @@ import { useFavorites } from '../contexts/FavoriteContext';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
 import { getPlantsForLux } from '../utils/plantAdvice';
 import PlantDetailCard from './PlantDetailCard';
+import modalStyles from '../utils/modalStyles.js';
 
 const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'This Spot' }) => {
   const [plantDeck, setPlantDeck] = useState([]);
@@ -138,7 +139,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       transparent={true}
       onRequestClose={handleCloseModal}
     >
-      <GestureHandlerRootView style={styles.modalOverlay}>
+      <GestureHandlerRootView style={modalStyles.modalOverlay}>
         <View style={styles.backdrop} />
         <View style={styles.modalContainer}>
           {currentPlant ? (
@@ -178,7 +179,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
             <View style={styles.noMorePlants}>
               <Text style={styles.noMoreText}>No more matches!</Text>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <Text style={globalStyles.buttonText}>Close</Text>
+                <Text style={modalStyles.buttonText}>Close</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -199,11 +200,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -228,12 +224,12 @@ const styles = StyleSheet.create({
   },
   noMorePlants: {
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: colors.secondaryBg,
     padding: normalize(20),
     borderRadius: 20,
     elevation: 3,
     borderWidth: 1,
-    borderColor: colors.cardBorder,
+    borderColor: colors.primaryBorder,
   },
   noMoreText: {
     fontSize: FONT_SIZE.LARGE,
@@ -261,7 +257,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 3,
     borderWidth: 1,
-    borderColor: colors.cardBorder,
+    borderColor: colors.primaryBorder,
   },
   snackbarText: {
     fontSize: FONT_SIZE.MEDIUM,

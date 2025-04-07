@@ -13,6 +13,9 @@ import {
 import { LightSensor } from 'expo-sensors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import lightLogbookStyles from '../utils/lightLogbookStyles';
+import measureSectionStyles from '../utils/measureSectionStyles.js';
+import instructionPanelStyles from '../utils/instructionPanelStyles.js';
 
 // Import content components
 import NormalModeContent from './NormalModeContent';
@@ -499,54 +502,57 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         zIndex: 30 
       }]}>
         {/* Left Side - Book Icon */}
-        <TouchableOpacity onPress={() => setNerdMode((prev) => !prev)} style={styles.headerButton}>
+        <TouchableOpacity onPress={() => setNerdMode((prev) => !prev)}>
           <View style={[
-            globalStyles.headerIconButton, 
-            { backgroundColor: colors.background, borderColor: colors.primary },
+            globalStyles.headerLeftButton, 
+            { backgroundColor: colors.primaryBg, borderColor: colors.primaryBorder },
             nerdMode && { backgroundColor: colors.primary, borderColor: colors.primary }
           ]}>
-            <Icon name="book-outline" size={normalize(20)} color={nerdMode ? colors.textLight : colors.textDark} />
-          </View>
+           <Icon name="book-outline" size={normalize(20)} color={nerdMode ? colors.textLight : colors.primary} />
+         </View>
         </TouchableOpacity>
         
         {/* Center - Only visible in Nerd Mode */}
         {nerdMode ? (
-          <View style={styles.headerCenter}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', height: normalize(36) }}>
-              <TouchableOpacity 
-                onPress={() => setModalVisible(prev => ({ ...prev, logbooks: true }))}
-                disabled={!selectedLogbook && logbooks.length === 0}
-              >
-                <View style={[
-                  styles.logbookDropdown, 
-                  (!selectedLogbook && logbooks.length === 0) && { opacity: 1 }
-                ]}>
-                  <Text style={[globalStyles.filterDropdownText, { flex: 1 }]} numberOfLines={1} ellipsizeMode="tail">
-                    {selectedLogbook?.title || (logbooks.length === 0 ? 'Create logbook' : 'Select Logbook')}
-                  </Text>
-                  <Icon 
-                    name="chevron-down" 
-                    size={normalize(12)} 
-                    color={(!selectedLogbook && logbooks.length === 0) ? colors.textDisabled : colors.textPrimary} 
-                    style={globalStyles.chevronIcon} 
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.createButton} onPress={() => setModalVisible(prev => ({ ...prev, createLogbook: true }))}>
-                <Icon name="add" size={normalize(20)} color={colors.textLight} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : (
-          <View style={{ flex: 1 }} />
-        )}
+  <View style={globalStyles.headerCenter}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', height: normalize(36) }}>
+      <TouchableOpacity 
+        onPress={() => setModalVisible(prev => ({ ...prev, logbooks: true }))}
+        disabled={!selectedLogbook && logbooks.length === 0}
+      >
+        <View style={[
+          lightLogbookStyles.logbookDropdown, 
+          (!selectedLogbook && logbooks.length === 0) && { opacity: 1 }
+        ]}>
+          <Text style={[lightLogbookStyles.filterDropdownText, { flex: 1 }]} numberOfLines={1} ellipsizeMode="tail">
+            {selectedLogbook?.title || (logbooks.length === 0 ? 'Create logbook' : 'Select Logbook')}
+          </Text>
+          <Icon 
+            name="chevron-down" 
+            size={normalize(12)} 
+            color={(!selectedLogbook && logbooks.length === 0) ? colors.textDisabled : colors.textPrimary} 
+            style={lightLogbookStyles.chevronIcon} 
+          />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={lightLogbookStyles.createButton} 
+        onPress={() => setModalVisible(prev => ({ ...prev, createLogbook: true }))}
+      >
+        <Icon name="add" size={normalize(20)} color={colors.textLight} />
+      </TouchableOpacity>
+    </View>
+  </View>
+) : (
+  <View style={{ flex: 1 }} />
+)}
         
         {/* Right side - empty to maintain layout since we moved the help button */}
-        <View style={styles.headerButton} />
+        <View style={globalStyles.headerRightButtonEmpty} />
       </View>
 
       {/* Instruction Panel */}
-      <Animated.View style={[globalStyles.instructionPanel, { transform: [{ translateY: slideAnim }] }]}>
+      <Animated.View style={[instructionPanelStyles.instructionPanel, { transform: [{ translateY: slideAnim }] }]}>
         {/* Close instruction panel icon */}
         <TouchableOpacity 
           style={{
@@ -567,27 +573,27 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         />
       </TouchableOpacity>
 
-        <Text style={globalStyles.instructionPanelTitle}>
+        <Text style={instructionPanelStyles.instructionPanelTitle}>
           {nerdMode ? 'Welcome to logbook mode!' : 'How to find your plant match?'}
         </Text>
         {nerdMode ? (
           <>
-            <Text style={globalStyles.instructionPanelText}>
+            <Text style={instructionPanelStyles.instructionPanelText}>
             ☀️ Light changes during the day and one measurement might not be accurate enough to pick the perfect plant. So for all you plant nerds out there, there's logbook mode.
             </Text>
-            <Text style={globalStyles.instructionPanelText}>
+            <Text style={instructionPanelStyles.instructionPanelText}>
               Log multiple measurements throughout the day, on one day, or several. For an accurate result, make sure you have an equal amount of morning, afternoon, and evening measurements. 🕰️
             </Text>
           </>
         ) : (
           <>
-            <Text style={globalStyles.instructionPanelText}>
+            <Text style={instructionPanelStyles.instructionPanelText}>
               Stand where your plant will go and point your phone's light sensor at the nearest window. Tap to start a 5 second measurement. 🌿
             </Text>
-            <Text style={globalStyles.instructionPanelText}>
-              💡 The light sensor is usually near your phone's front camera. Cover it with your hand. Does the lux value go to (near) zero? Yay, you've found it!
+            <Text style={instructionPanelStyles.instructionPanelText}>
+              💡 The light sensor is usually near your phone's front camera (selfie cam). Cover it with your hand. Does the lux value go to (near) zero? Yay, you've found it!
             </Text>
-            <Text style={globalStyles.instructionPanelText}>
+            <Text style={instructionPanelStyles.instructionPanelText}>
               For best results, measure at a moment that's not too shady or sunny, and at the time when your plant will soak up most of its light. ☀️
             </Text>
           </>
@@ -622,11 +628,11 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
 
       {/* Bottom Section */}
 {nerdMode ? (
-  <View style={globalStyles.bottomSection}>
+  <View style={measureSectionStyles.bottomSection}>
     <Animated.View 
       style={[
-        globalStyles.measureButton, 
-        logbooks.length === 0 && globalStyles.logbookDisabledButton,
+        measureSectionStyles.measureButton, 
+        logbooks.length === 0 && measureSectionStyles.disabledMeasureButton,
         logbooks.length > 0 && { transform: [{ scale: pulseAnim }] }
       ]}
     >
@@ -635,63 +641,63 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
         disabled={isMeasuring || logbooks.length === 0}
       >
         {isMeasuring && countdown !== null ? (
-          <Text style={globalStyles.countdownText}>{countdown}</Text>
+          <Text style={measureSectionStyles.countdownText}>{countdown}</Text>
         ) : (
           <Icon name="flash-outline" size={normalize(50)} color={colors.textLight} />
         )}
       </TouchableOpacity>
     </Animated.View>
-    <View style={styles.helpButtonContainer}>
-  <Text style={globalStyles.buttonLabel}>
+    <View style={measureSectionStyles.helpButtonContainer}>
+  <Text style={measureSectionStyles.buttonSubtitle}>
     {isMeasuring ? 'Measuring...' : 'Take light measurement'}
   </Text>
   <TouchableOpacity 
-    style={styles.helpBadge}
+    style={measureSectionStyles.helpBadge}
     onPress={() => setInstructionVisible((prev) => !prev)}
   >
-    <Text style={styles.helpBadgeText}>Help</Text>
+    <Text style={measureSectionStyles.helpBadgeText}>Help</Text>
   </TouchableOpacity>
 </View>
-    <View style={globalStyles.luxDisplay}>
-      <View style={globalStyles.luxRow}>
-        <Text style={globalStyles.luxText}>{luxValue} lux</Text>
+    <View style={measureSectionStyles.luxDisplay}>
+      <View style={measureSectionStyles.luxRow}>
+        <Text style={measureSectionStyles.luxText}>{luxValue} lux</Text>
         <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
           <Icon name="information-circle-outline" size={normalize(16)} color={colors.textPrimary} />
         </TouchableOpacity>
       </View>
-      <Text style={globalStyles.lightLevelText}>{getLightLevel(luxValue) || 'Unknown'}</Text>
+      <Text style={measureSectionStyles.lightLevelText}>{getLightLevel(luxValue) || 'Unknown'}</Text>
     </View>
   </View>
 ) : (
-  <View style={globalStyles.bottomSection}>
-    <Animated.View style={[globalStyles.measureButton, { transform: [{ scale: pulseAnim }], opacity: isMeasuring ? 0.5 : 1 }]}>
+  <View style={measureSectionStyles.bottomSection}>
+    <Animated.View style={[measureSectionStyles.measureButton, { transform: [{ scale: pulseAnim }], opacity: isMeasuring ? 0.5 : 1 }]}>
       <TouchableOpacity onPress={triggerHomeAdvice} disabled={isMeasuring}>
         {isMeasuring && countdown !== null ? (
-          <Text style={globalStyles.countdownText}>{countdown}</Text>
+          <Text style={measureSectionStyles.countdownText}>{countdown}</Text>
         ) : (
           <Icon name="leaf-outline" size={normalize(50)} color={colors.textLight} />
         )}
       </TouchableOpacity>
     </Animated.View>
-    <View style={styles.helpButtonContainer}>
-  <Text style={globalStyles.buttonLabel}>
+    <View style={measureSectionStyles.helpButtonContainer}>
+  <Text style={measureSectionStyles.buttonSubtitle}>
     {isMeasuring ? 'Measuring...' : 'Tap to find match'}
   </Text>
   <TouchableOpacity 
-    style={styles.helpBadge}
+    style={measureSectionStyles.helpBadge}
     onPress={() => setInstructionVisible((prev) => !prev)}
   >
-    <Text style={styles.helpBadgeText}>Help</Text>
+    <Text style={measureSectionStyles.helpBadgeText}>Help</Text>
   </TouchableOpacity>
 </View>
-    <View style={globalStyles.luxDisplay}>
-      <View style={globalStyles.luxRow}>
-        <Text style={globalStyles.luxText}>{luxValue} lux</Text>
+    <View style={measureSectionStyles.luxDisplay}>
+      <View style={measureSectionStyles.luxRow}>
+        <Text style={measureSectionStyles.luxText}>{luxValue} lux</Text>
         <TouchableOpacity onPress={() => setLuxInfoModalVisible(true)}>
           <Icon name="information-circle-outline" size={normalize(16)} color={colors.textPrimary} />
         </TouchableOpacity>
       </View>
-      <Text style={globalStyles.lightLevelText}>{lightLevel.trim()}</Text>
+      <Text style={measureSectionStyles.lightLevelText}>{lightLevel.trim()}</Text>
     </View>
   </View>
 )}
@@ -818,67 +824,6 @@ export default function HomeScreen({ searchHistory, setSearchHistory }) {
           }
         }}
       />
-    </View>
+   </View>
   );
 }
-
-const styles = StyleSheet.create({
-  headerButton: {
-    marginHorizontal: normalize(10),
-    paddingVertical: 0,
-    width: normalize(36), // Ensure consistent layout with both sides
-  },
-  headerCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    height: normalize(36),
-  },
-  logbookDropdown: {
-    borderWidth: 2,
-    borderColor: colors.primary,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-    width: normalize(170),
-    height: normalize(36),
-    paddingVertical: normalize(3),
-    paddingHorizontal: normalize(6),
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  createButton: {
-    width: normalize(40),
-    height: normalize(36),
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: -2,
-  },
-  navDot: {
-    width: normalize(8),
-    height: normalize(8),
-    borderRadius: normalize(4),
-    marginHorizontal: normalize(4),
-  },
-  helpButtonContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  helpBadge: {
-    marginTop: normalize(5),
-    paddingHorizontal: normalize(12),
-    paddingVertical: normalize(4),
-    backgroundColor: colors.accent,
-    borderRadius: normalize(8),
-  },
-  helpBadgeText: {
-    color: '#FFFFFF',
-    fontSize: normalize(12),
-    fontFamily: FONT_FAMILY.BOLD,
-    fontWeight: FONT_WEIGHT.BOLD,
-  },
-});

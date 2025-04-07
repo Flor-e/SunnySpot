@@ -3,25 +3,27 @@ import { View, Text, FlatList, TouchableOpacity, Animated, Image, Modal, StyleSh
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
 import { getImageSource } from '../utils/imageMap';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import favoriteCardStyles from '../utils/favoriteCardStyles';
 import PlantDetailCard from './PlantDetailCard';
+import modalStyles from '../utils/modalStyles.js';
 
 // Embedded PlantCard Component
 const PlantCard = ({ plant, toggleFavorite, isFavorite, onDetailPress }) => (
   <TouchableOpacity 
-    style={globalStyles.favCard}
+    style={favoriteCardStyles.favCard}
     onPress={() => onDetailPress(plant)}
     activeOpacity={0.7}
   >
-    <View style={globalStyles.imageContainer}>
-      <Image source={getImageSource(plant.name)} style={globalStyles.image} />
+    <View style={favoriteCardStyles.imageContainer}>
+      <Image source={getImageSource(plant.name)} style={favoriteCardStyles.image} />
     </View>
-    <View style={globalStyles.cardInfo}>
-      <Text style={globalStyles.plantName}>{plant.name}</Text>
-      <Text style={globalStyles.standout}>{plant.tagline}</Text>
+    <View style={favoriteCardStyles.cardInfo}>
+      <Text style={favoriteCardStyles.plantName}>{plant.name}</Text>
+      <Text style={favoriteCardStyles.standout}>{plant.tagline}</Text>
     </View>
     <TouchableOpacity 
-      style={globalStyles.heartIcon} 
+      style={favoriteCardStyles.heartIcon} 
       onPress={(e) => {
         e.stopPropagation(); // Prevent triggering the card's onPress
         toggleFavorite(plant);
@@ -100,7 +102,7 @@ export default function FavoritePlantsScreen() {
         <Text style={globalStyles.title}>Your favourites</Text>
       </View>
       
-      <View style={styles.contentContainer}>
+      <View style={globalStyles.bodySection}>
         <FlatList
           data={favoritePlants}
           renderItem={renderItem}
@@ -119,12 +121,11 @@ export default function FavoritePlantsScreen() {
         transparent={true}
         onRequestClose={handleCloseModal}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.backdrop} />
-          <View style={styles.modalContainer}>
+        <View style={modalStyles.modalOverlay}>
+          <View style={favoriteCardStyles.modalContainer}>
             {selectedPlant && (
-              <View style={styles.contentWrapper}>
-                <View style={styles.cardContainer}>
+              <View style={favoriteCardStyles.contentWrapper}>
+                <View style={favoriteCardStyles.cardContainer}>
                   <PlantDetailCard 
                     plant={selectedPlant} 
                     matchPercentage={100}
@@ -169,56 +170,5 @@ const styles = StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
     padding: normalize(20),
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    width: '90%',
-    maxHeight: '90%',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contentWrapper: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardContainer: {
-    width: '100%',
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  snackbar: {
-    position: 'absolute',
-    bottom: normalize(80),
-    left: normalize(20),
-    right: normalize(20),
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    paddingVertical: normalize(12),
-    paddingHorizontal: normalize(16),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    elevation: 3,
-  },
-  snackbarText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-  },
-  undoText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: '#425f29',
   },
 });

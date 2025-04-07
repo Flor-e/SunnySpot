@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
+import { View, Text, TextInput, FlatList, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { plantsData } from '../utils/plantAdvice';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
+import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import searchScreenStyles from '../utils/searchScreenStyles';
 import { getImageSource } from '../utils/imageMap';
-import { Linking } from 'react-native';
 import { useFavorites } from '../contexts/FavoriteContext';
 import { PlantDetailModal } from './AppModals';
 
@@ -43,16 +43,16 @@ const AboutScreen = () => {
   };
 
   const renderPlantItem = ({ item }) => (
-    <TouchableOpacity onPress={() => openPlantModal(item)} style={[globalStyles.cardTile, styles.horizontalCardContainer]}>
+    <TouchableOpacity onPress={() => openPlantModal(item)} style={[searchScreenStyles.cardTile, searchScreenStyles.horizontalCardContainer]}>
       <Image
         source={getImageSource(item.name)}
-        style={styles.cardImage}
+        style={searchScreenStyles.cardImage}
         resizeMode="contain"
         onError={(e) => console.log(`Image load error for ${item.name}:`, e.nativeEvent.error)}
       />
-      <View style={styles.cardTextContainer}>
-        <Text style={globalStyles.plantName}>{item.name}</Text>
-        <Text style={globalStyles.standout}>{item.tagline}</Text>
+      <View style={searchScreenStyles.cardTextContainer}>
+        <Text style={searchScreenStyles.plantName}>{item.name}</Text>
+        <Text style={searchScreenStyles.standout}>{item.tagline}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -60,18 +60,18 @@ const AboutScreen = () => {
   return (
     <View style={globalStyles.container}>
       {/* Header Section */}
-      <View style={[globalStyles.headerSection, styles.headerSection]}>
+      <View style={[globalStyles.headerSection, searchScreenStyles.headerSection]}>
         <Text style={globalStyles.title}>Search plant database</Text>
       </View>
 
-      <View style={{ paddingTop: normalize(20) }} />
+      <View style={searchScreenStyles.spacingView} />
 
       {/* Intro Section */}
-      <View style={styles.introSection}>
-        <Text style={[globalStyles.instructionText, styles.introText]}>
+      <View style={searchScreenStyles.introSection}>
+        <Text style={[searchScreenStyles.instructionText, searchScreenStyles.introText]}>
           I hope you found the perfect plant for your spot! This app was made with love by me (
           <Text
-            style={{ color: colors.textPrimary, textDecorationLine: 'underline' }}
+            style={searchScreenStyles.linkText}
             onPress={() => Linking.openURL('https://www.x.com/lavie_flori')}
           >
             @Lavie_Flori
@@ -80,12 +80,12 @@ const AboutScreen = () => {
         </Text>
       </View>
 
-      {/* Body Section */}
+      {/* Search resuls body */}
       <View style={globalStyles.bodySection}>
-        <View style={[styles.searchContainer, { width: '85%', alignSelf: 'center' }]}>
-          <Icon name="search-outline" size={normalize(20)} color="#757575" style={styles.searchIcon} />
+        <View style={searchScreenStyles.searchContainer}>
+          <Icon name="search-outline" size={normalize(20)} color="#757575" style={searchScreenStyles.searchIcon} />
           <TextInput
-            style={[styles.searchInput, globalStyles.fontRegular]}
+            style={searchScreenStyles.searchInput}
             placeholder="Type plant name"
             placeholderTextColor="#757575"
             value={searchQuery}
@@ -93,17 +93,17 @@ const AboutScreen = () => {
           />
         </View>
         {searchQuery.trim() === '' ? (
-          <Text style={[globalStyles.instructionText, { width: '85%', alignSelf: 'center' }]} />
+          <Text style={searchScreenStyles.instructionText} />
         ) : filteredPlants.length > 0 ? (
           <FlatList
             data={filteredPlants}
             renderItem={renderPlantItem}
             keyExtractor={(item, index) => `${item.name}-${index}`}
-            style={[styles.resultsList, { width: '85%', alignSelf: 'center' }]}
+            style={searchScreenStyles.resultsList}
             contentContainerStyle={{ paddingBottom: normalize(80) }}
           />
         ) : (
-          <Text style={[globalStyles.instructionText, { width: '85%', alignSelf: 'center' }]}>
+          <Text style={[searchScreenStyles.instructionText, searchScreenStyles.noResultsText]}>
             No plants found matching "{searchQuery}".
           </Text>
         )}
@@ -120,60 +120,5 @@ const AboutScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  headerSection: {
-    // Keep empty to inherit from globalStyles
-  },
-  introSection: {
-    backgroundColor: '#F5F5F5',
-    paddingBottom: normalize(10),
-    alignItems: 'center',
-  },
-  introText: {
-    width: '80%',
-    textAlign: 'center',
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    paddingHorizontal: normalize(10),
-    marginBottom: normalize(20),
-    marginTop: normalize(20),
-    borderWidth: 1,
-    borderColor: '#97B598',
-  },
-  searchIcon: {
-    marginRight: normalize(8),
-  },
-  searchInput: {
-    flex: 1,
-    height: normalize(40),
-    fontSize: FONT_SIZE.REGULAR,
-    color: '#000000',
-    fontFamily: FONT_FAMILY.REGULAR,
-  },
-  resultsList: {
-    flex: 1,
-  },
-  horizontalCardContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: 'auto',
-  },
-  cardImage: {
-    width: normalize(80),
-    height: normalize(60),
-    borderRadius: 8,
-    marginRight: normalize(2),
-  },
-  cardTextContainer: {
-    flex: 1,
-    marginLeft: normalize(10),
-    justifyContent: 'flex-start',
-  },
-});
 
 export default AboutScreen;
