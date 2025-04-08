@@ -19,6 +19,7 @@ const modalStyles = StyleSheet.create({
     padding: normalize(20),
     alignItems: 'center',
     maxHeight: '100%',
+    backgroundColor: colors.primaryBg,
   },
   
   modalScroll: {

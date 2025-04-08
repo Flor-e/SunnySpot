@@ -83,7 +83,7 @@ const styles = {
     width: 200,
     height: normalize(40),
     borderWidth: 1,
-    borderColor: '#97B598',
+    borderColor: colors.primaryBorder,
     borderRadius: 8,
     paddingHorizontal: normalize(10),
     fontSize: FONT_SIZE.REGULAR,
@@ -639,12 +639,15 @@ const PlantDetailRows = ({ plant }) => {
       {renderDetailRow('Light level', plant.lightLevel)}
       {renderDetailRow('Ideal', `${plant.thrivesMinLux} - ${plant.thrivesMaxLux} lux`)}
       {renderDetailRow('Tolerates', `${plant.growsWellMinLux} - ${plant.growsWellMaxLux} lux`)}
+      {plant.survivesMinLux && renderDetailRow('Survives', `${plant.survivesMinLux} - ${plant.growsWellMinLux} lux`)}
+      {plant.survivalNote && renderDetailRow('Survival note', plant.survivalNote)}
       {renderDetailRow('Height', plant.height)}
       {renderDetailRow('Watering', plant.waterRequirement)}
       {renderDetailRow('Temperature', getTemperatureText())}
+      {renderDetailRow('Origin', plant.origin || 'Unknown')}
       {renderDetailRow('Difficulty', getDifficultyText())}
       {renderDetailRow('Love language', plant.loveLanguage || 'Unknown')}
       {renderDetailRow('Pet safe', getPetSafeText())}
     </>
-  );
+)
 };

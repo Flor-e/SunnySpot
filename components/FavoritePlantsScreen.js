@@ -128,7 +128,6 @@ export default function FavoritePlantsScreen() {
                 <View style={favoriteCardStyles.cardContainer}>
                   <PlantDetailCard 
                     plant={selectedPlant} 
-                    matchPercentage={100}
                     showCloseButton={true}
                     onClose={handleCloseModal}
                   />

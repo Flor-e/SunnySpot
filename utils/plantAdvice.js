@@ -25,16 +25,22 @@ export const getPlantsForLux = (lux, filters = {}, skipFilters = false) => {
   const luxmatchingPlants = plantsData
     .map((plant) => {
       const thrivesMatch = lux >= plant.thrivesMinLux && lux <= plant.thrivesMaxLux;
-      const growsWellMatch = lux >= plant.growsWellMinLux && lux < plant.thrivesMinLux;
+      const growsWellMatch = lux >= plant.growsWellMinLux && lux <= plant.growsWellMaxLux && !thrivesMatch;
+      const survivesMatch = lux >= plant.survivesMinLux && lux < plant.growsWellMinLux;
 
       let matchPercentage = 0;
+      let survivalMode = false;
+
       if (thrivesMatch) {
         matchPercentage = 100;
       } else if (growsWellMatch) {
         matchPercentage = 80;
+      } else if (survivesMatch) {
+        matchPercentage = 50;
+        survivalMode = true;
       }
 
-      return matchPercentage > 0 ? { ...plant, matchPercentage } : null;
+      return matchPercentage > 0 ? { ...plant, matchPercentage, survivalMode } : null;
     })
     .filter((plant) => plant !== null);
 

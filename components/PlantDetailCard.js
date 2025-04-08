@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getImageSource } from '../utils/imageMap';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../utils/globalStyles';
+import plantCardStyles from '../utils/plantCardStyles.js';
 
 const PlantDetailCard = ({
   plant,
@@ -17,10 +18,15 @@ const PlantDetailCard = ({
   showCloseButton = false,
   onClose = null
 }) => {
+  // Add state for info modal
+  const [showSurvivalInfo, setShowSurvivalInfo] = useState(false);
+  const [currentInfoTitle, setCurrentInfoTitle] = useState("");
+  const [currentInfoMessage, setCurrentInfoMessage] = useState("");
+
   // Create animated value references
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.95)).current;
-  
+
   // Set up the combined animation when the component mounts
   useEffect(() => {
     // Use spring for scale animation for more natural feel
@@ -41,56 +47,136 @@ const PlantDetailCard = ({
     ]).start();
   }, []);
 
+  // Determine match badge color and icon
+  const getMatchStyle = () => {
+    if (matchPercentage === null) return {};
+
+    if (matchPercentage >= 90) {
+      // Perfect match - using your primary green
+      return {
+        backgroundColor: colors.primary,
+        borderColor: colors.primary,
+        iconName: 'checkmark-circle',
+        iconColor: colors.textLight,
+        textStyle: {
+          color: colors.textLight,
+          fontSize: FONT_SIZE.SMALL,
+          fontFamily: FONT_FAMILY.BOLD
+        },
+        showAdditionalInfo: false // No info icon needed for perfect match
+      };
+    } else if (matchPercentage >= 70) {
+      // Good match - using your accent lavender color
+      return {
+        backgroundColor: colors.accent,
+        borderColor: colors.accent,
+        iconName: null, // No icon for 80% match
+        iconColor: colors.textLight,
+        textStyle: {
+          color: colors.textLight,
+          fontSize: FONT_SIZE.SMALL,
+          fontFamily: FONT_FAMILY.BOLD
+        },
+        showAdditionalInfo: true, // Show info icon for 80% match
+        infoTitle: "Grows well, but...",
+        infoMessage: "This plant likes a bit more light to thrive."
+      };
+    } else {
+      // Survival match - a complementary orange/amber color
+      return {
+        backgroundColor: '#E57373', // Soft red for survival mode
+        borderColor: '#E57373',
+        iconName: null, // No icon for 50% match
+        iconColor: colors.textLight,
+        textStyle: {
+          color: colors.textLight,
+          fontSize: FONT_SIZE.SMALL,
+          fontFamily: FONT_FAMILY.BOLD
+        },
+        showAdditionalInfo: true, // Show info icon for survival mode
+        infoTitle: "Survives, but ...",
+        infoMessage: plant?.survivalNote || "This plant may only survive in these light conditions."
+      };
+    }
+  };
+
+  const matchStyle = getMatchStyle();
+
   return (
-    <Animated.View 
+    <Animated.View
       style={[
-        styles.plantCard, 
-        { 
+        plantCardStyles.plantCard,
+        {
           opacity: fadeAnim,
-          transform: [{ scale: scaleAnim }] 
+          transform: [{ scale: scaleAnim }]
         }
       ]}
     >
-      <View style={styles.cardWrapper}>
-        <View style={[styles.cardSide, styles.frontSide]}>
+      <View style={plantCardStyles.cardWrapper}>
+        <View style={[plantCardStyles.cardSide, plantCardStyles.frontSide]}>
           {/* Close button (included in the animation) */}
           {showCloseButton && onClose && (
-            <View style={styles.closeButtonContainer}>
+            <View style={plantCardStyles.closeButtonContainer}>
               <TouchableOpacity
                 onPress={onClose}
                 activeOpacity={0.7}
-                style={styles.closeIconButton}
+                style={plantCardStyles.closeIconButton}
               >
                 <Icon name="close-outline" size={normalize(20)} color="#757575" />
               </TouchableOpacity>
             </View>
           )}
-          
-          <Image
-            source={getImageSource(plant.name)}
-            style={styles.plantImage}
-          />
-  
-          {showLuxBadge && (
-            <View style={styles.luxContainer}>
-              <View style={styles.luxBadge}>
-                <Icon name="flash-outline" size={normalize(14)} color="#757575" style={styles.luxIcon} />
-                <Text style={styles.luxText}>
-                  {`Measured: ${lightLevel} (${luxValue} lux)`}
+
+          <View style={plantCardStyles.imageContainer}>
+            <Image
+              source={getImageSource(plant.name)}
+              style={plantCardStyles.plantImage}
+            />
+
+            {/* Match percentage badge with icons */}
+            {matchPercentage !== null && (
+              <View style={[plantCardStyles.matchBadge, { backgroundColor: matchStyle.backgroundColor, borderColor: matchStyle.borderColor }]}>
+                {matchStyle.iconName && (
+                  <Icon
+                    name={matchStyle.iconName}
+                    size={normalize(14)}
+                    color={matchStyle.iconColor}
+                    style={plantCardStyles.matchIcon}
+                  />
+                )}
+                <Text style={[plantCardStyles.matchText, matchStyle.textStyle]}>
+                  {`${matchPercentage}%`}
                 </Text>
+                {matchStyle.showAdditionalInfo && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setCurrentInfoTitle(matchStyle.infoTitle);
+                      setCurrentInfoMessage(matchStyle.infoMessage);
+                      setShowSurvivalInfo(!showSurvivalInfo);
+                    }}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <Icon
+                      name="information-circle"
+                      size={normalize(14)}
+                      color={matchStyle.iconColor}
+                      style={plantCardStyles.matchInfoIcon}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
-            </View>
-          )}
+            )}
+          </View>
 
-          <Text style={styles.plantName}>{plant.name}</Text>
-          <Text style={[styles.plantStandout, styles.italicTagline]}>{plant.tagline}</Text>
+          <Text style={plantCardStyles.plantName}>{plant.name}</Text>
+          <Text style={[plantCardStyles.plantStandout, plantCardStyles.italicTagline]}>{plant.tagline}</Text>
 
-          <View style={styles.infoGrid}>
-            <View style={styles.infoRow}>
-              <View style={styles.infoTile}>
-                <Icon name="resize-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
+          <View style={plantCardStyles.infoGrid}>
+            <View style={plantCardStyles.infoRow}>
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="resize-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
                 <Text
-                  style={styles.infoText}
+                  style={plantCardStyles.infoText}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}
                   minimumFontScale={0.9}
@@ -98,37 +184,10 @@ const PlantDetailCard = ({
                   {`Up to ${plant.height || 'Unknown height'}`}
                 </Text>
               </View>
-              <View style={styles.infoTile}>
-                <Icon name="water-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="school-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
                 <Text
-                  style={styles.infoText}
-                  numberOfLines={1}
-                  adjustsFontSizeToFit={true}
-                  minimumFontScale={0.9}
-                >
-                  {plant.waterRequirement || 'Unknown'}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.infoRow}>
-              {matchPercentage !== null && (
-                <View style={styles.infoTile}>
-                  <Icon name="checkmark-circle-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                  <Text
-                    style={styles.infoText}
-                    numberOfLines={1}
-                    adjustsFontSizeToFit={true}
-                    minimumFontScale={0.9}
-                  >
-                    {`${matchPercentage}% match`}
-                  </Text>
-                </View>
-              )}
-              <View style={styles.infoTile}>
-                <Icon name="school-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                <Text
-                  style={styles.infoText}
+                  style={plantCardStyles.infoText}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}
                   minimumFontScale={0.9}
@@ -145,11 +204,11 @@ const PlantDetailCard = ({
               </View>
             </View>
 
-            <View style={styles.infoRow}>
-              <View style={styles.infoTile}>
-                <Icon name="thermometer-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
+            <View style={plantCardStyles.infoRow}>
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="thermometer-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
                 <Text
-                  style={styles.infoText}
+                  style={plantCardStyles.infoText}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}
                   minimumFontScale={0.9}
@@ -159,10 +218,24 @@ const PlantDetailCard = ({
                     : 'Unknown temp'}
                 </Text>
               </View>
-              <View style={styles.infoTile}>
-                <Icon name="paw-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="water-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
                 <Text
-                  style={styles.infoText}
+                  style={plantCardStyles.infoText}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.9}
+                >
+                  {plant.waterRequirement || 'Unknown'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={plantCardStyles.infoRow}>
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="paw-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+                <Text
+                  style={plantCardStyles.infoText}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}
                   minimumFontScale={0.9}
@@ -170,19 +243,28 @@ const PlantDetailCard = ({
                   {plant.petsafe
                     ? 'Pet-safe'
                     : plant.petSafetyDetail || 'Not pet-safe'}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.infoRow}>
-              <View style={styles.infoTile}>
-                <Icon name="heart-outline" size={normalize(16)} color="#757575" style={styles.infoIcon} />
-                <Text 
-                  style={styles.infoText}
-                  numberOfLines={1}
-                  adjustsFontSizeToFit={true}
-                  minimumFontScale={0.9}
-                >
+                </Text></View>
+  <View style={plantCardStyles.infoTile}>
+    <Icon name="globe-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+    <Text
+      style={plantCardStyles.infoText}
+      numberOfLines={1}
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.9}
+    >
+      {plant.origin || 'Unknown'}
+    </Text>
+  </View>
+</View>
+<View style={plantCardStyles.infoRow}>
+  <View style={plantCardStyles.infoTile}>
+    <Icon name="heart-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+    <Text
+      style={plantCardStyles.infoText}
+      numberOfLines={1}
+      adjustsFontSizeToFit={true}
+      minimumFontScale={0.9}
+    >
                   {plant.loveLanguage || 'Unknown'}
                 </Text>
               </View>
@@ -190,20 +272,59 @@ const PlantDetailCard = ({
           </View>
 
           {showSwipeHint && (
-            <View style={styles.swipeHint}>
-              <Icon name="arrow-back-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
-              <Text style={styles.swipeText}>swipe to pass</Text>
-              <Text style={styles.separator}> | </Text>
-              <Text style={styles.swipeText}>swipe to save</Text>
-              <Icon name="arrow-forward-outline" size={normalize(14)} color="#757575" style={styles.hintIcon} />
+            <View style={plantCardStyles.swipeHint}>
+              <Icon name="arrow-back-outline" size={normalize(14)} color="#757575" style={plantCardStyles.hintIcon} />
+              <Text style={plantCardStyles.swipeText}>swipe to pass</Text>
+              <Text style={plantCardStyles.separator}> | </Text>
+              <Text style={plantCardStyles.swipeText}>swipe to save</Text>
+              <Icon name="arrow-forward-outline" size={normalize(14)} color="#757575" style={plantCardStyles.hintIcon} />
             </View>
           )}
 
           {currentIndex !== null && totalPlants !== null && (
-            <View style={styles.cardCounter}>
-              <Text style={styles.counterText}>
+            <View style={plantCardStyles.cardCounter}>
+              <Text style={plantCardStyles.counterText}>
                 {currentIndex + 1}/{totalPlants}
               </Text>
+            </View>
+          )}
+
+          {/* Info modal (used for both survival mode and grows well) */}
+          {showSurvivalInfo && (
+            <View style={plantCardStyles.survivalInfoOverlay}>
+              <TouchableOpacity
+                style={StyleSheet.absoluteFill}
+                activeOpacity={1}
+                onPress={() => setShowSurvivalInfo(false)}
+              />
+              <View style={[
+                plantCardStyles.survivalInfoContainer,
+                { 
+                  backgroundColor: matchPercentage >= 70 ? '#EFE6FF' : '#FEEEED',
+                  borderColor: matchPercentage >= 70 ? colors.accent : '#F5C8C6'
+                }
+              ]}>
+                <View style={plantCardStyles.survivalInfoHeader}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Icon 
+                      name={matchPercentage >= 70 ? "information-circle" : "warning-outline"} 
+                      size={normalize(18)} 
+                      color={matchPercentage >= 70 ? colors.accent : "#E57373"} 
+                      style={plantCardStyles.survivalIcon} 
+                    />
+                    <Text style={[
+                      plantCardStyles.survivalLabel, 
+                      { color: matchPercentage >= 70 ? colors.accent : "#E57373" }
+                    ]}>
+                      {currentInfoTitle}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => setShowSurvivalInfo(false)}>
+                    <Icon name="close-outline" size={normalize(18)} color="#757575" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={plantCardStyles.survivalNote}>{currentInfoMessage}</Text>
+              </View>
             </View>
           )}
         </View>
@@ -211,162 +332,5 @@ const PlantDetailCard = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  plantCard: {
-    width: '100%',
-    flexDirection: 'column',
-    borderRadius: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  cardWrapper: {
-    width: '100%',
-  },
-  cardSide: {
-    width: '100%',
-    borderRadius: 20,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  frontSide: {
-    flexDirection: 'column',
-    padding: normalize(20),
-    alignItems: 'center',
-  },
-  closeButtonContainer: {
-    position: 'absolute',
-    top: normalize(10),
-    right: normalize(10),
-    zIndex: 10,
-  },
-  closeIconButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 15,
-    width: normalize(30),
-    height: normalize(30),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  plantImage: {
-    width: '100%',
-    height: normalize(200),
-    resizeMode: 'cover',
-    borderRadius: 10,
-    marginBottom: normalize(15),
-  },
-  luxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: normalize(10),
-  },
-  luxBadge: {
-    backgroundColor: colors.secondaryBg,
-    borderRadius: 15,
-    paddingVertical: normalize(3),
-    paddingHorizontal: normalize(10),
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  luxIcon: {
-    marginRight: normalize(8),
-  },
-  luxText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    textAlign: 'center',
-  },
-  plantName: {
-    fontSize: FONT_SIZE.EXTRA_LARGE,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  plantStandout: {
-    fontSize: FONT_SIZE.REGULAR,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    textAlign: 'center',
-    marginBottom: normalize(15),
-    lineHeight: normalize(22),
-    paddingHorizontal: normalize(10),
-  },
-  italicTagline: {
-    fontStyle: 'italic',
-  },
-  infoGrid: {
-    width: '100%',
-    marginBottom: normalize(15),
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: normalize(10),
-  },
-  infoTile: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: normalize(5),
-    paddingVertical: normalize(5),
-    paddingHorizontal: normalize(10),
-    backgroundColor: colors.primaryMedium,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  infoIcon: {
-    marginRight: normalize(8),
-  },
-  infoText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    flexShrink: 1,
-  },
-  swipeHint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: normalize(10),
-  },
-  swipeText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-  },
-  hintIcon: {
-    marginRight: normalize(4),
-  },
-  separator: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-    marginHorizontal: normalize(5),
-  },
-  cardCounter: {
-    marginTop: normalize(15),
-    marginBottom: 0,
-    backgroundColor: colors.accent,
-    paddingVertical: normalize(2),
-    paddingHorizontal: normalize(10),
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.accent,
-  },
-  counterText: {
-    fontSize: FONT_SIZE.SMALL,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textLight,
-  },
-});
 
 export default PlantDetailCard;

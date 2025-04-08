@@ -7,6 +7,7 @@ import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY } from '../util
 import { getPlantsForLux, getLightLevel } from '../utils/plantAdvice';
 import PlantDetailCard from './PlantDetailCard';
 import modalStyles from '../utils/modalStyles.js';
+import plantCardStyles from '../utils/plantCardStyles.js';
 
 const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'This Spot' }) => {
   const [plantDeck, setPlantDeck] = useState([]);
@@ -149,10 +150,22 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
       onRequestClose={handleCloseModal}
     >
       <GestureHandlerRootView style={modalStyles.modalOverlay}>
-        <View style={styles.backdrop} />
-        <View style={styles.modalContainer}>
+        <View style={plantCardStyles.backdrop} />
+        <View style={plantCardStyles.modalContainer}>
           {currentPlant ? (
-            <View style={styles.contentWrapper}>
+            <View style={plantCardStyles.contentWrapper}>
+              {/* Light measurement badge now outside the card */}
+              {plantAdvice?.lux && (
+                <View style={plantCardStyles.luxBadgeContainer}>
+                  <View style={plantCardStyles.luxBadge}>
+                    <Icon name="flash-outline" size={normalize(14)} color="#757575" style={plantCardStyles.luxIcon} />
+                    <Text style={plantCardStyles.luxText}>
+                      {`Measured: ${getLightLevel(plantAdvice.lux)} (${plantAdvice.lux} lux)`}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              
               <PanGestureHandler
                 onGestureEvent={onGesture}
                 onHandlerStateChange={onHandlerStateChange}
@@ -160,7 +173,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
               >
                 <Animated.View
                   style={[
-                    styles.cardContainer,
+                    plantCardStyles.cardContainer,
                     {
                       transform: [
                         { translateX },
@@ -171,10 +184,6 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                 >
                   <PlantDetailCard 
                     plant={currentPlant} 
-                    showLuxBadge={true}
-                    luxLabel={label}
-                    lightLevel={getLightLevel(plantAdvice?.lux)}
-                    luxValue={plantAdvice?.lux}
                     matchPercentage={currentPlant.matchPercentage}
                     currentIndex={currentIndex}
                     totalPlants={plantDeck.length}
@@ -186,20 +195,20 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
               </PanGestureHandler>
             </View>
           ) : (
-            <View style={styles.noMorePlants}>
+            <View style={plantCardStyles.noMorePlants}>
               {plantDeck.length === 0 && initialLoad ? (
                 <>
-                  <Text style={styles.noMoreText}>No plants found</Text>
-                  <Text style={styles.noMatchExplanation}>
+                  <Text style={plantCardStyles.noMoreText}>No plants found</Text>
+                  <Text style={plantCardStyles.noMatchExplanation}>
                     Sorry, we couldn't find any plants that match your criteria. 
                     Try adjusting your filters or taking a measurement in a different 
                     spot with more light.
                   </Text>
                 </>
               ) : (
-                <Text style={styles.noMoreText}>No more matches!</Text>
+                <Text style={plantCardStyles.noMoreText}>No more matches!</Text>
               )}
-              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <TouchableOpacity style={plantCardStyles.closeButton} onPress={onClose}>
                 <Text style={modalStyles.buttonText}>Close</Text>
               </TouchableOpacity>
             </View>
@@ -207,10 +216,10 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
 
           {/* Undo Snackbar */}
           {snackbarVisible && lastSkippedPlant && (
-            <Animated.View style={[styles.snackbar, { opacity: fadeAnim }]}>
-              <Text style={styles.snackbarText}>{`${lastSkippedPlant.name} passed`}</Text>
+            <Animated.View style={[plantCardStyles.snackbar, { opacity: fadeAnim }]}>
+              <Text style={plantCardStyles.snackbarText}>{`${lastSkippedPlant.name} passed`}</Text>
               <TouchableOpacity onPress={handleUndo}>
-                <Text style={styles.undoText}>Undo</Text>
+                <Text style={plantCardStyles.undoText}>Undo</Text>
               </TouchableOpacity>
             </Animated.View>
           )}
@@ -219,85 +228,5 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    width: '90%',
-    maxHeight: '90%',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contentWrapper: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardContainer: {
-    width: '100%',
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noMorePlants: {
-    alignItems: 'center',
-    backgroundColor: colors.secondaryBg,
-    padding: normalize(20),
-    borderRadius: 20,
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  noMoreText: {
-    fontSize: FONT_SIZE.LARGE,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textPrimary,
-    marginBottom: normalize(20),
-  },
-  noMatchExplanation: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: colors.textDark,
-    textAlign: 'center',
-    marginBottom: normalize(20),
-    paddingHorizontal: normalize(10),
-  },
-  closeButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: normalize(12),
-    paddingHorizontal: normalize(20),
-    borderRadius: 8,
-  },
-  snackbar: {
-    position: 'absolute',
-    bottom: normalize(-60),
-    left: normalize(20),
-    right: normalize(20),
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    paddingVertical: normalize(12),
-    paddingHorizontal: normalize(16),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: colors.primaryBorder,
-  },
-  snackbarText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.REGULAR,
-    color: '#757575',
-  },
-  undoText: {
-    fontSize: FONT_SIZE.MEDIUM,
-    fontFamily: FONT_FAMILY.BOLD,
-    color: colors.textPrimary,
-  },
-});
 
 export default PlantAdviceModal;
