@@ -129,6 +129,7 @@ export default function FavoritePlantsScreen() {
                   <PlantDetailCard 
                     plant={selectedPlant} 
                     showCloseButton={true}
+                    showLightStory={true}
                     onClose={handleCloseModal}
                   />
                 </View>

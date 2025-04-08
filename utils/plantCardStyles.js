@@ -28,8 +28,8 @@ backdrop: {
   luxBadge: {
     backgroundColor: colors.primaryBg,
     borderRadius: 15,
-    paddingVertical: normalize(8),
-    paddingHorizontal: normalize(10),
+    paddingVertical: normalize(10),
+    paddingHorizontal: normalize(12),
     marginBottom: normalize(10),
     borderWidth: 1,
     borderColor: colors.primaryBorder,
@@ -53,7 +53,8 @@ backdrop: {
   },
   noMorePlants: {
     alignItems: 'center',
-    backgroundColor: colors.secondaryBg,
+    width: '85%',
+    backgroundColor: colors.primaryBg,
     padding: normalize(20),
     borderRadius: 20,
     elevation: 3,
@@ -65,6 +66,7 @@ backdrop: {
     fontFamily: FONT_FAMILY.BOLD,
     color: colors.textPrimary,
     marginBottom: normalize(20),
+    textAlign: 'center',
   },
   noMatchExplanation: {
     fontSize: FONT_SIZE.MEDIUM,

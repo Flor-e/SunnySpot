@@ -22,6 +22,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   const rotate = new Animated.Value(0);
   const opacity = new Animated.Value(1);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [showNoMoreMatchesOverlay, setShowNoMoreMatchesOverlay] = useState(false);
 
   useEffect(() => {
     if (visible && plantAdvice?.lux !== null && plantAdvice?.lux !== undefined) {
@@ -47,23 +48,23 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
   // Snackbar animation
   useEffect(() => {
     if (snackbarVisible) {
-      Animated.timing(fadeAnim, { 
-        toValue: 1, 
-        duration: 300, 
-        useNativeDriver: true 
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
       }).start();
-      
+
       const timeout = setTimeout(() => {
-        Animated.timing(fadeAnim, { 
-          toValue: 0, 
-          duration: 300, 
-          useNativeDriver: true 
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true
         }).start(() => {
           setSnackbarVisible(false);
           setLastSkippedPlant(null);
         });
       }, 5000);
-      
+
       return () => clearTimeout(timeout);
     } else {
       fadeAnim.setValue(0); // Reset animation when hidden
@@ -111,7 +112,7 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
             setLastSkippedPlant(plantDeck[currentIndex]);
             setSnackbarVisible(true);
           }
-          
+
           setCurrentIndex((prev) => prev + 1);
           translateX.setValue(0);
           rotate.setValue(0);
@@ -157,15 +158,17 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
               {/* Light measurement badge now outside the card */}
               {plantAdvice?.lux && (
                 <View style={plantCardStyles.luxBadgeContainer}>
-                  <View style={plantCardStyles.luxBadge}>
-                    <Icon name="flash-outline" size={normalize(14)} color="#757575" style={plantCardStyles.luxIcon} />
-                    <Text style={plantCardStyles.luxText}>
-                      {`Measured: ${getLightLevel(plantAdvice.lux)} (${plantAdvice.lux} lux)`}
-                    </Text>
+                  <View style={plantCardStyles.luxBadgeBackdrop}>
+                    <View style={plantCardStyles.luxBadge}>
+                      <Icon name="flash-outline" size={normalize(14)} color="#757575" style={plantCardStyles.luxIcon} />
+                      <Text style={plantCardStyles.luxText}>
+                        {`Measured: ${getLightLevel(plantAdvice.lux)} (${plantAdvice.lux} lux)`}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               )}
-              
+
               <PanGestureHandler
                 onGestureEvent={onGesture}
                 onHandlerStateChange={onHandlerStateChange}
@@ -182,8 +185,8 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                     },
                   ]}
                 >
-                  <PlantDetailCard 
-                    plant={currentPlant} 
+                  <PlantDetailCard
+                    plant={currentPlant}
                     matchPercentage={currentPlant.matchPercentage}
                     currentIndex={currentIndex}
                     totalPlants={plantDeck.length}
@@ -200,13 +203,13 @@ const PlantAdviceModal = ({ visible, plantAdvice, filters, onClose, label = 'Thi
                 <>
                   <Text style={plantCardStyles.noMoreText}>No plants found</Text>
                   <Text style={plantCardStyles.noMatchExplanation}>
-                    Sorry, we couldn't find any plants that match your criteria. 
-                    Try adjusting your filters or taking a measurement in a different 
+                    Sorry, we couldn't find any plants that match your criteria.
+                    Try adjusting your filters or taking a measurement in a different
                     spot with more light.
                   </Text>
                 </>
               ) : (
-                <Text style={plantCardStyles.noMoreText}>No more matches!</Text>
+                <Text style={plantCardStyles.noMoreText}>You swiped all matches.</Text>
               )}
               <TouchableOpacity style={plantCardStyles.closeButton} onPress={onClose}>
                 <Text style={modalStyles.buttonText}>Close</Text>

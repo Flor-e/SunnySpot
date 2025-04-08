@@ -16,6 +16,7 @@ const PlantDetailCard = ({
   totalPlants = null,
   showSwipeHint = false,
   showCloseButton = false,
+  showLightStory = false,
   onClose = null
 }) => {
   // Add state for info modal
@@ -79,7 +80,7 @@ const PlantDetailCard = ({
         },
         showAdditionalInfo: true, // Show info icon for 80% match
         infoTitle: "Grows well, but...",
-        infoMessage: "This plant likes a bit more light to thrive."
+        infoMessage: `This plant will do well in this spot, but likes a bit more light to absolutely thrive (between ${plant.thrivesMinLux} and ${plant.thrivesMaxLux} lux).`
       };
     } else {
       // Survival match - a complementary orange/amber color
@@ -95,7 +96,7 @@ const PlantDetailCard = ({
         },
         showAdditionalInfo: true, // Show info icon for survival mode
         infoTitle: "Survives, but ...",
-        infoMessage: plant?.survivalNote || "This plant may only survive in these light conditions."
+        infoMessage: `${plant?.survivalNote || "This plant may only survive in these light conditions."}\n\nThis plant would grow with a light level above ${plant.growsWellMinLux} lux. It would absolutely thrive between ${plant.thrivesMinLux} and ${plant.thrivesMaxLux} lux.`
       };
     }
   };
@@ -243,32 +244,71 @@ const PlantDetailCard = ({
                   {plant.petsafe
                     ? 'Pet-safe'
                     : plant.petSafetyDetail || 'Not pet-safe'}
-                </Text></View>
-  <View style={plantCardStyles.infoTile}>
-    <Icon name="globe-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
-    <Text
-      style={plantCardStyles.infoText}
-      numberOfLines={1}
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.9}
-    >
-      {plant.origin || 'Unknown'}
-    </Text>
-  </View>
-</View>
-<View style={plantCardStyles.infoRow}>
-  <View style={plantCardStyles.infoTile}>
-    <Icon name="heart-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
-    <Text
-      style={plantCardStyles.infoText}
-      numberOfLines={1}
-      adjustsFontSizeToFit={true}
-      minimumFontScale={0.9}
-    >
+                </Text>
+              </View>
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="globe-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+                <Text
+                  style={plantCardStyles.infoText}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.9}
+                >
+                  {plant.origin || 'Unknown origin'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={plantCardStyles.infoRow}>
+              <View style={plantCardStyles.infoTile}>
+                <Icon name="heart-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+                <Text
+                  style={[
+                    plantCardStyles.infoText,
+                    {
+                      fontSize: FONT_SIZE.SMALL,
+                    }
+                  ]}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.9}
+                >
                   {plant.loveLanguage || 'Unknown'}
                 </Text>
               </View>
             </View>
+
+            {showLightStory && (
+              <>
+                <View style={plantCardStyles.infoRow}>
+                  <View style={plantCardStyles.infoTile}>
+                    <Icon name="flash-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+                    <Text
+                      style={plantCardStyles.infoText}
+                      adjustsFontSizeToFit={true}
+                      minimumFontScale={0.9}
+                    >
+                      {`This plant does well from ${plant.growsWellMinLux} lux, and will thrive between ${plant.thrivesMinLux} and ${plant.thrivesMaxLux} lux.`}
+                    </Text>
+                  </View>
+                </View>
+
+                {plant.survivesMinLux && plant.survivalNote && (
+                  <View style={plantCardStyles.infoRow}>
+                    <View style={plantCardStyles.infoTile}>
+                      <Icon name="warning-outline" size={normalize(16)} color="#757575" style={plantCardStyles.cardIcon} />
+                      <Text
+                        style={[plantCardStyles.infoText, { color: '#757575' }]}
+                        adjustsFontSizeToFit={true}
+                        minimumFontScale={0.9}
+                      >
+                        {`It can survive as low as ${plant.survivesMinLux} lux. ${plant.survivalNote}`}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              </>
+            )}
           </View>
 
           {showSwipeHint && (
@@ -299,21 +339,21 @@ const PlantDetailCard = ({
               />
               <View style={[
                 plantCardStyles.survivalInfoContainer,
-                { 
+                {
                   backgroundColor: matchPercentage >= 70 ? '#EFE6FF' : '#FEEEED',
                   borderColor: matchPercentage >= 70 ? colors.accent : '#F5C8C6'
                 }
               ]}>
                 <View style={plantCardStyles.survivalInfoHeader}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Icon 
-                      name={matchPercentage >= 70 ? "information-circle" : "warning-outline"} 
-                      size={normalize(18)} 
-                      color={matchPercentage >= 70 ? colors.accent : "#E57373"} 
-                      style={plantCardStyles.survivalIcon} 
+                    <Icon
+                      name={matchPercentage >= 70 ? "information-circle" : "warning-outline"}
+                      size={normalize(18)}
+                      color={matchPercentage >= 70 ? colors.accent : "#E57373"}
+                      style={plantCardStyles.survivalIcon}
                     />
                     <Text style={[
-                      plantCardStyles.survivalLabel, 
+                      plantCardStyles.survivalLabel,
                       { color: matchPercentage >= 70 ? colors.accent : "#E57373" }
                     ]}>
                       {currentInfoTitle}
