@@ -61,4 +61,4 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## Contact
-**Email**: [flori@duck.com](mailto:flori@duck.com)
+**Email**: [sunnyspotapp@gmail.com](mailto:sunnyspotapp@gmail.com)
