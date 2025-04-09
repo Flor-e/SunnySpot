@@ -7,8 +7,9 @@ import HomeScreen from './components/HomeScreen';
 import FavoritePlantsScreen from './components/FavoritePlantsScreen';
 import AboutScreen from './components/AboutScreen';
 import { FavoriteProvider } from './contexts/FavoriteContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogbookProvider } from './contexts/LogbookContext';
 import { normalize } from './utils/fontScaling';
+import DatabaseService from './utils/database';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -31,28 +32,42 @@ const PaginationDots = ({ state }) => {
 };
 
 export default function App() {
-  const [spots, setSpots] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
   const [fontsLoaded, error] = useFonts({
     NunitoSans: NunitoSans_400Regular,
     NunitoSansBold: NunitoSans_700Bold,
     NunitoSansExtraBold: NunitoSans_800ExtraBold,
   });
+  const [isDbInitialized, setIsDbInitialized] = useState(false);
 
   const navigationRef = useNavigationContainerRef();
 
+  // Initialize the database on app startup
   useEffect(() => {
-    const clearStorage = async () => {
+    const initializeDatabase = async () => {
       try {
-        await AsyncStorage.removeItem('NAVIGATION_STATE'); 
+        // Initialize the database
+        await DatabaseService.initDB();
+        
+        // Optional: Verify database persistence or perform any initial checks
+        await DatabaseService.verifyDatabasePersistence();
+        
+        setIsDbInitialized(true);
       } catch (error) {
-        console.error('Error clearing navigation state:', error);
+        console.error('Failed to initialize database:', error);
       }
     };
-    clearStorage();
+
+    initializeDatabase();
+
+    // Cleanup function to close database when app is closed
+    return () => {
+      DatabaseService.closeDB();
+    };
   }, []);
 
-  if (!fontsLoaded && !error) {
+  // If fonts or database are not loaded, show loading indicator
+  if (!fontsLoaded || !isDbInitialized) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#425f29" />
@@ -62,34 +77,36 @@ export default function App() {
 
   return (
     <FavoriteProvider>
-      <StatusBar
-        backgroundColor="transparent"
-        translucent={true}
-        barStyle="dark-content"
-      />
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer ref={navigationRef} independent={true}>
-          <Tab.Navigator
-            initialRouteName="Home"
-            tabBar={(props) => <PaginationDots {...props} />}
-            screenOptions={{
-              swipeEnabled: true,
-              animationEnabled: true,
-              tabBarShowLabel: false,
-            }}
-          >
-            <Tab.Screen
-              name="Home"
-              children={(props) => (
-                <HomeScreen {...props} searchHistory={searchHistory} setSearchHistory={setSearchHistory} />
-              )}
-              options={{ title: 'Measure & Find' }}
-            />
-            <Tab.Screen name="FavoritePlants" component={FavoritePlantsScreen} options={{ title: 'Liked Plants' }} />
-            <Tab.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
-          </Tab.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
+      <LogbookProvider>
+        <StatusBar
+          backgroundColor="transparent"
+          translucent={true}
+          barStyle="dark-content"
+        />
+        <SafeAreaView style={styles.container}>
+          <NavigationContainer ref={navigationRef} independent={true}>
+            <Tab.Navigator
+              initialRouteName="Home"
+              tabBar={(props) => <PaginationDots {...props} />}
+              screenOptions={{
+                swipeEnabled: true,
+                animationEnabled: true,
+                tabBarShowLabel: false,
+              }}
+            >
+              <Tab.Screen
+                name="Home"
+                children={(props) => (
+                  <HomeScreen {...props} searchHistory={searchHistory} setSearchHistory={setSearchHistory} />
+                )}
+                options={{ title: 'Measure & Find' }}
+              />
+              <Tab.Screen name="FavoritePlants" component={FavoritePlantsScreen} options={{ title: 'Liked Plants' }} />
+              <Tab.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </LogbookProvider>
     </FavoriteProvider>
   );
 }

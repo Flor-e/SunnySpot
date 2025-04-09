@@ -1,5 +1,5 @@
 // AppModals.js - A collection of all modal components
-import React, { useMemo, useState, useEffect, useRef } from 'react'; 
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Modal, View, Text, TouchableOpacity, ScrollView, FlatList, TextInput, Dimensions, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
@@ -54,7 +54,7 @@ const AnimatedModal = ({ visible, onRequestClose, children }) => {
 
 // Styling for modals
 const styles = {
-  modalOption: { 
+  modalOption: {
     paddingVertical: normalize(10),
     paddingHorizontal: normalize(10), // Add horizontal padding
     alignItems: 'center',
@@ -62,22 +62,22 @@ const styles = {
     minWidth: '85%', // Ensure a minimum width
     alignSelf: 'center' // Center itself
   },
-  modalOptionText: { 
+  modalOptionText: {
     fontSize: FONT_SIZE.REGULAR,
-    fontFamily: FONT_FAMILY.REGULAR, 
-    color: '#425f29' 
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: '#425f29'
   },
-  modalContent: { 
-    width: '100%', 
-    marginBottom: normalize(15), 
-    flex: 1 
+  modalContent: {
+    width: '100%',
+    marginBottom: normalize(15),
+    flex: 1
   },
-  modalButtonRow: { 
-    flexDirection: 'row', 
-    justifyContent: 'center', 
-    width: '100%', 
-    marginTop: normalize(10), 
-    gap: normalize(10) 
+  modalButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: normalize(10),
+    gap: normalize(10)
   },
   spotNameInput: {
     width: 200,
@@ -174,10 +174,15 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
 
   // Function to handle the delete confirmation
   const handleDeleteConfirm = () => {
-    if (measurementToDelete) {
-      deleteMeasurement(measurementToDelete.timestamp);
+    if (measurementToDelete && selectedLogbook) {
+      deleteMeasurement(selectedLogbook.id, measurementToDelete.timestamp);
       setMeasurementToDelete(null);
       setConfirmDeleteVisible(false);
+    } else {
+      console.error('Cannot delete measurement: missing data', {
+        selectedLogbook,
+        measurementToDelete
+      });
     }
   };
 
@@ -213,26 +218,26 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
   };
 
   const formatMeasurementEntry = (measurement) => {
-  const date = new Date(measurement.timestamp);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+    const date = new Date(measurement.timestamp);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
-  // Determine light level based on lux value
-  const getLightLevel = (lux) => {
-    if (lux > 20000) return 'Direct Sunlight';
-    if (lux > 10000) return 'Bright Light';
-    if (lux > 2000) return 'Medium Light';
-    if (lux > 500) return 'Low Light';
-    return 'Very Low Light';
+    // Determine light level based on lux value
+    const getLightLevel = (lux) => {
+      if (lux > 20000) return 'Direct Sunlight';
+      if (lux > 10000) return 'Bright Light';
+      if (lux > 2000) return 'Medium Light';
+      if (lux > 500) return 'Low Light';
+      return 'Very Low Light';
+    };
+
+    const lightLevel = getLightLevel(measurement.lux);
+
+    return `${day}-${month}-${year} ${hours}:${minutes} ${lightLevel} (${measurement.lux} lux)`;
   };
-
-  const lightLevel = getLightLevel(measurement.lux);
-
-  return `${day}-${month}-${year} ${hours}:${minutes} ${lightLevel} (${measurement.lux} lux)`;
-};
 
   return (
     <>
@@ -257,13 +262,13 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
                     ]}
                   >
                     <View style={styles.historyTextContainer}>
-                    <Text
-                      style={[styles.historyText, isLatest && styles.lastHistoryText]}
-                      numberOfLines={3}
-                      ellipsizeMode="tail"
-                    >
-                      {formatMeasurementEntry(measurement)}
-                    </Text>
+                      <Text
+                        style={[styles.historyText, isLatest && styles.lastHistoryText]}
+                        numberOfLines={3}
+                        ellipsizeMode="tail"
+                      >
+                        {formatMeasurementEntry(measurement)}
+                      </Text>
                     </View>
                     <TouchableOpacity
                       style={styles.trashIcon}
@@ -297,45 +302,83 @@ export const HistoryModal = ({ visible, onClose, selectedLogbook, deleteMeasurem
 };
 
 // Create Logbook Modal
-export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLogbookName, onCreate }) => (
-  <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={modalStyles.modalBox}>
-      <Text style={modalStyles.modalTitle}>Create New Logbook</Text>
-      <View style={{ width: '100%', alignItems: 'center', paddingVertical: normalize(20) }}>
-        <TextInput
-          style={styles.spotNameInput}
-          value={newLogbookName}
-          onChangeText={setNewLogbookName}
-          placeholder="Enter logbook name"
-          placeholderTextColor="#757575"
-          autoCapitalize="words"
-        />
+export const CreateLogbookModal = ({ visible, onClose, newLogbookName, setNewLogbookName, onCreate }) => {
+  const handleCreate = async () => {
+    try {
+      // Only proceed if the name is not empty after trimming
+      if (!newLogbookName.trim()) {
+        // Optionally show an alert
+        Alert.alert('Error', 'Please enter a logbook name');
+        return;
+      }
+
+      const success = await onCreate(newLogbookName);
+      if (success) {
+        onClose();
+        // Reset the input after successful creation
+        setNewLogbookName('');
+      } else {
+        // Optionally show an error alert
+        Alert.alert('Error', 'Failed to create logbook. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error in modal create:', error);
+      Alert.alert('Error', 'An unexpected error occurred.');
+    }
+  };
+
+  // Check if the name is empty after trimming
+  const isNameEmpty = !newLogbookName.trim();
+
+  return (
+    <AnimatedModal visible={visible} onRequestClose={onClose}>
+      <View style={modalStyles.modalBox}>
+        <Text style={modalStyles.modalTitle}>Create New Logbook</Text>
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: normalize(20) }}>
+          <TextInput
+            style={styles.spotNameInput}
+            value={newLogbookName}
+            onChangeText={setNewLogbookName}
+            placeholder="Enter logbook name"
+            placeholderTextColor="#757575"
+            autoCapitalize="words"
+            autoCorrect={false}
+            returnKeyType="done"
+            onSubmitEditing={isNameEmpty ? null : handleCreate}
+          />
+        </View>
+        <View style={styles.modalButtonRow}>
+          <TouchableOpacity
+            style={modalStyles.modalNegativeButton}
+            onPress={onClose}
+          >
+            <Text style={modalStyles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              modalStyles.modalPositiveButton,
+              isNameEmpty && { opacity: 0.5 } // Make button appear disabled
+            ]}
+            onPress={handleCreate}
+            disabled={isNameEmpty} // Disable the button when name is empty
+          >
+            <Text style={modalStyles.buttonText}>Create</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.modalButtonRow}>
-        <TouchableOpacity
-          style={modalStyles.modalNegativeButton}
-          onPress={onClose}
-        >
-          <Text style={modalStyles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={modalStyles.modalPositiveButton}
-          onPress={onCreate}
-        >
-          <Text style={modalStyles.buttonText}>Create</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </AnimatedModal>
-);
+    </AnimatedModal>
+  );
+};
 
 // Delete Logbook Modal
 export const DeleteLogbookModal = ({ visible, onClose, selectedLogbook, onDelete }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
     <View style={modalStyles.modalBox}>
       <Text style={modalStyles.modalTitle}>Delete Logbook</Text>
-      <Text style={modalStyles.modalText}>
-        Are you sure you want to delete {selectedLogbook?.title || 'this logbook'}?
+      <Text style={[modalStyles.modalText, { textAlign: 'center' }]}>
+        Are you sure you want to permanently delete the logbook <Text style={{ color: colors.primary, fontWeight: FONT_WEIGHT.EXTRA_BOLD }}>
+          "{selectedLogbook?.title || 'Untitled'}"
+        </Text>?
       </Text>
       <View style={styles.modalButtonRow}>
         <TouchableOpacity
@@ -346,7 +389,10 @@ export const DeleteLogbookModal = ({ visible, onClose, selectedLogbook, onDelete
         </TouchableOpacity>
         <TouchableOpacity
           style={modalStyles.modalPositiveButton}
-          onPress={onDelete}
+          onPress={() => {
+            onDelete(selectedLogbook?.id);
+            onClose(); // Close the modal immediately after delete is initiated
+          }}
         >
           <Text style={modalStyles.buttonText}>Delete</Text>
         </TouchableOpacity>
@@ -356,30 +402,54 @@ export const DeleteLogbookModal = ({ visible, onClose, selectedLogbook, onDelete
 );
 
 // Logbooks Modal
-export const LogbooksModal = ({ visible, onClose, logbooks, onSelect }) => (
-  <AnimatedModal visible={visible} onRequestClose={onClose}>
-    <View style={modalStyles.modalBox}>
-      <Text style={modalStyles.modalTitle}>Select Logbook</Text>
-      <ScrollView style={modalStyles.modalScroll}>
-        {logbooks.map((logbook) => (
-          <TouchableOpacity
-            key={logbook.id}
-            style={styles.modalOption}
-            onPress={() => onSelect(logbook)}
+export const LogbooksModal = ({ visible, onClose, logbooks, onSelect }) => {
+  const screenHeight = Dimensions.get('window').height;
+
+  return (
+    <AnimatedModal visible={visible} onRequestClose={onClose}>
+      <View style={[
+        modalStyles.modalBox,
+        {
+          height: screenHeight * 0.7, // Set a fixed height based on screen height
+          maxHeight: screenHeight * 0.85, // Add safety maximum
+          paddingVertical: normalize(20)
+        }
+      ]}>
+        <Text style={modalStyles.modalTitle}>Select Logbook</Text>
+
+        {/* Container to make content take up available space but not overflow */}
+        <View style={{
+          flex: 1,
+          width: '100%',
+          maxHeight: screenHeight * 0.7 // Leave room for title and buttons
+        }}>
+          <ScrollView
+            style={{ width: '100%' }}
+            contentContainerStyle={{ paddingBottom: normalize(10) }}
+            showsVerticalScrollIndicator={true}
           >
-            <Text style={styles.modalOptionText}>{logbook.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <TouchableOpacity
-        style={modalStyles.modalClose}
-        onPress={onClose}
-      >
-        <Text style={modalStyles.buttonText}>Close</Text>
-      </TouchableOpacity>
-    </View>
-  </AnimatedModal>
-);
+            {logbooks.map((logbook) => (
+              <TouchableOpacity
+                key={logbook.id}
+                style={styles.modalOption}
+                onPress={() => onSelect(logbook)}
+              >
+                <Text style={styles.modalOptionText}>{logbook.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        <TouchableOpacity
+          style={[modalStyles.modalClose, { marginTop: normalize(10) }]}
+          onPress={onClose}
+        >
+          <Text style={modalStyles.buttonText}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    </AnimatedModal>
+  );
+};
 
 // Imbalance Modal
 export const ImbalanceModal = ({ visible, onClose, onProceed }) => (
@@ -433,10 +503,10 @@ export const FilterModal = ({ type, title, visible, onClose, options, onSelect, 
   </AnimatedModal>
 );
 
-export const ConfirmDeleteMeasurementModal = ({ 
-  visible, 
-  onClose, 
-  onConfirm, 
+export const ConfirmDeleteMeasurementModal = ({
+  visible,
+  onClose,
+  onConfirm,
   timestamp,
   formatTimestamp,
   lux
@@ -449,10 +519,10 @@ export const ConfirmDeleteMeasurementModal = ({
       </Text>
       {timestamp ? (
         <>
-          <Text style={[modalStyles.modalText, { 
+          <Text style={[modalStyles.modalText, {
             fontFamily: FONT_FAMILY.BOLD,
-            fontWeight: FONT_WEIGHT.BOLD, 
-            marginVertical: normalize(10) 
+            fontWeight: FONT_WEIGHT.BOLD,
+            marginVertical: normalize(10)
           }]}>
             {formatTimestamp(timestamp)}
           </Text>
@@ -519,12 +589,12 @@ export const NoMoreMatchesAfterSwipingModal = ({ visible, onClose }) => (
 );
 
 // Plant Detail Modal component
-export const PlantDetailModal = ({ 
-  visible, 
-  onClose, 
+export const PlantDetailModal = ({
+  visible,
+  onClose,
   selectedPlant,
   toggleFavorite,
-  favoritePlants 
+  favoritePlants
 }) => (
   <AnimatedModal visible={visible} onRequestClose={onClose}>
     <View style={modalStyles.modalBox}>
@@ -546,11 +616,11 @@ export const PlantDetailModal = ({
               }}>
                 <Text style={modalStyles.modalTitle}>{selectedPlant.name}</Text>
               </View>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={{
                   marginTop: normalize(-8),
                   marginRight: normalize(5)
-                }} 
+                }}
                 onPress={() => toggleFavorite(selectedPlant)}
               >
                 <Icon
@@ -624,8 +694,8 @@ const PlantDetailRows = ({ plant }) => {
     return plant.petsafe
       ? 'Yes'
       : plant.petSafetyDetail
-      ? `No, ${plant.petSafetyDetail}`
-      : 'No';
+        ? `No, ${plant.petSafetyDetail}`
+        : 'No';
   };
 
   const getTemperatureText = () => {
@@ -649,5 +719,5 @@ const PlantDetailRows = ({ plant }) => {
       {renderDetailRow('Love language', plant.loveLanguage || 'Unknown')}
       {renderDetailRow('Pet safe', getPetSafeText())}
     </>
-)
+  )
 };

@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Animated, Image, Modal, StyleSheet } from 'react-native';
+import { 
+  View, 
+  Text, 
+  FlatList, 
+  TouchableOpacity, 
+  Animated, 
+  Image, 
+  Modal, 
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useFavorites } from '../contexts/FavoriteContext';
 import { getImageSource } from '../utils/imageMap';
-import globalStyles, { colors, normalize, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT, typography } from '../utils/globalStyles';
+import globalStyles, { 
+  colors, 
+  normalize, 
+  FONT_SIZE, 
+  FONT_FAMILY, 
+  FONT_WEIGHT, 
+  typography 
+} from '../utils/globalStyles';
 import favoriteCardStyles from '../utils/favoriteCardStyles';
 import PlantDetailCard from './PlantDetailCard';
 import modalStyles from '../utils/modalStyles.js';
@@ -39,25 +56,30 @@ const PlantCard = ({ plant, toggleFavorite, isFavorite, onDetailPress }) => (
 );
 
 export default function FavoritePlantsScreen() {
-  const { favoritePlants, setFavoritePlants } = useFavorites();
+  const { favoritePlants, removeFavorite, addFavorite, setFavoritePlants, isLoading } = useFavorites();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [lastDeletedPlant, setLastDeletedPlant] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-  const toggleFavorite = (plant) => {
-    setFavoritePlants((prev) => {
-      const updatedFavorites = prev.filter((p) => p.name !== plant.name);
-      setLastDeletedPlant(plant);
-      setSnackbarVisible(true);
-      return updatedFavorites;
-    });
+  const toggleFavorite = async (plant) => {
+    // Store the plant before removing
+    setLastDeletedPlant(plant);
+    
+    // Remove from favorites
+    await removeFavorite(plant.name);
+    
+    // Show snackbar
+    setSnackbarVisible(true);
   };
 
-  const handleUndo = () => {
+  const handleUndo = async () => {
     if (lastDeletedPlant) {
-      setFavoritePlants((prev) => [...prev, lastDeletedPlant]);
+      // Add the plant back to favorites
+      await addFavorite(lastDeletedPlant);
+      
+      // Hide snackbar and clear the lastDeletedPlant
       setSnackbarVisible(false);
       setLastDeletedPlant(null);
     }
@@ -74,13 +96,23 @@ export default function FavoritePlantsScreen() {
 
   useEffect(() => {
     if (snackbarVisible) {
-      Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }).start();
+      Animated.timing(fadeAnim, { 
+        toValue: 1, 
+        duration: 300, 
+        useNativeDriver: true 
+      }).start();
+      
       const timeout = setTimeout(() => {
-        Animated.timing(fadeAnim, { toValue: 0, duration: 300, useNativeDriver: true }).start(() => {
+        Animated.timing(fadeAnim, { 
+          toValue: 0, 
+          duration: 300, 
+          useNativeDriver: true 
+        }).start(() => {
           setSnackbarVisible(false);
           setLastDeletedPlant(null);
         });
       }, 5000);
+      
       return () => clearTimeout(timeout);
     } else {
       fadeAnim.setValue(0); // Reset animation when hidden
@@ -95,6 +127,15 @@ export default function FavoritePlantsScreen() {
       onDetailPress={handlePlantDetailPress}
     /> 
   );
+
+  if (isLoading) {
+    return (
+      <View style={[globalStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={{ marginTop: 10 }}>Loading favorites...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={globalStyles.container}>

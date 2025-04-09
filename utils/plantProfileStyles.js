@@ -7,7 +7,7 @@ const plantProfileStyles = StyleSheet.create({
   container: {
     width: '100%',
     borderRadius: 12,
-    padding: normalize(15),
+    padding: normalize(20),
     position: 'relative',
     alignSelf: 'center',
   },

@@ -1,138 +1,58 @@
-// sunny-spot-swipe/utils/storage.js
+import DatabaseService from './database';
+
+// Light Sensor Hint
+export const loadLightSensorHintFirstTime = async () => {
+    return await DatabaseService.loadBooleanSetting('lightSensorHintFirstTime', true);
+};
+
+export const saveLightSensorHintShown = async () => {
+    return await DatabaseService.saveBooleanSetting('lightSensorHintFirstTime', false);
+};
+
+// Nerd Mode First Open
+export const loadNerdModeFirstOpen = async () => {
+    return await DatabaseService.loadBooleanSetting('nerdModeFirstOpen', true);
+};
+
+export const saveNerdModeFirstOpen = async () => {
+    return await DatabaseService.saveBooleanSetting('nerdModeFirstOpen', false);
+};
+
+// Normal Mode First Open
+export const loadNormalModeFirstOpen = async () => {
+    return await DatabaseService.loadBooleanSetting('normalModeFirstOpen', true);
+};
+
+export const saveNormalModeFirstOpen = async () => {
+    return await DatabaseService.saveBooleanSetting('normalModeFirstOpen', false);
+};
+
+// Normal Mode Filters (kept in AsyncStorage)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Load whether light sensor hint has been shown
-export const loadLightSensorHintFirstTime = async () => {
-  try {
-    const value = await AsyncStorage.getItem('lightSensorHintShown');
-    return value === null; 
-  } catch (error) {
-    console.error('Error loading lightSensorHintFirstTime:', error);
-    return true;
-  }
-};
-
-// Save that light sensor hint has been shown
-export const saveLightSensorHintShown = async () => {
-  try {
-    await AsyncStorage.setItem('lightSensorHintShown', 'true');
-  } catch (error) {
-    console.error('Error saving lightSensorHintShown:', error);
-  }
-};
-
-// Load logbooks from AsyncStorage
-export const loadLogbooks = async () => {
-  try {
-    const storedLogbooks = await AsyncStorage.getItem('logbooks');
-    return storedLogbooks ? JSON.parse(storedLogbooks) : [];
-  } catch (error) {
-    console.error('Error loading logbooks:', error);
-    return [];
-  }
-};
-
-// Save logbooks to AsyncStorage
-export const saveLogbooks = async (logbooks) => {
-  try {
-    await AsyncStorage.setItem('logbooks', JSON.stringify(logbooks));
-    console.log('Saved logbooks:', logbooks); 
-  } catch (error) {
-    console.error('Error saving logbooks:', error);
-  }
-};
-
-// Load favorite plants from AsyncStorage
-export const loadFavorites = async () => {
-  try {
-    const storedFavorites = await AsyncStorage.getItem('favoritePlants');
-    return storedFavorites ? JSON.parse(storedFavorites) : [];
-  } catch (error) {
-    console.error('Error loading favorites:', error);
-    return [];
-  }
-};
-
-// Save favorite plants to AsyncStorage
-export const saveFavorites = async (favorites) => {
-  try {
-    await AsyncStorage.setItem('favoritePlants', JSON.stringify(favorites));
-  } catch (error) {
-    console.error('Error saving favorites:', error);
-  }
-};
-
-// Load the last selected logbook ID from AsyncStorage
-export const loadLastSelectedLogbookId = async () => {
-  try {
-    const lastSelectedLogbookId = await AsyncStorage.getItem('lastSelectedLogbookId');
-    return lastSelectedLogbookId || null;
-  } catch (error) {
-    console.error('Error loading last selected logbook ID:', error);
-    return null;
-  }
-};
-
-// Save the last selected logbook ID to AsyncStorage
-export const saveLastSelectedLogbookId = async (logbookId) => {
-  try {
-    if (logbookId === null) {
-      // If logbookId is null, remove the item from AsyncStorage
-      await AsyncStorage.removeItem('lastSelectedLogbookId');
-    } else {
-      // Otherwise, save the logbookId
-      await AsyncStorage.setItem('lastSelectedLogbookId', logbookId);
-    }
-  } catch (error) {
-    console.error('Error saving last selected logbook ID:', error);
-  }
-};
-
-// Load whether NerdMode has been opened before
-export const loadNerdModeFirstOpen = async () => {
-  try {
-    const value = await AsyncStorage.getItem('nerdModeFirstOpen');
-    return value === null; 
-  } catch (error) {
-    console.error('Error loading nerdModeFirstOpen:', error);
-    return false;
-  }
-};
-
-// Save whether Nerd Mode has been opened
-export const saveNerdModeFirstOpen = async () => {
-  try {
-    await AsyncStorage.setItem('nerdModeFirstOpen', 'false');
-  } catch (error) {
-    console.error('Error saving nerdModeFirstOpen:', error);
-  }
-};
-
-// Load NormalMode filters from AsyncStorage
 export const loadNormalModeFilters = async () => {
-  try {
-    const storedFilters = await AsyncStorage.getItem('normalModeFilters');
-    return storedFilters ? JSON.parse(storedFilters) : null;
-  } catch (error) {
-    console.error('Error loading NormalMode filters:', error);
-    return null;
-  }
+    try {
+        const jsonValue = await AsyncStorage.getItem('@normalModeFilters');
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        console.error('Error loading normal mode filters:', e);
+        return null;
+    }
 };
 
-// NEW: Save NormalMode filters to AsyncStorage
 export const saveNormalModeFilters = async (filters) => {
-  try {
-    await AsyncStorage.setItem('normalModeFilters', JSON.stringify(filters));
-  } catch (error) {
-    console.error('Error saving NormalMode filters:', error);
-  }
+    try {
+        const jsonValue = JSON.stringify(filters);
+        await AsyncStorage.setItem('@normalModeFilters', jsonValue);
+    } catch (e) {
+        console.error('Error saving normal mode filters:', e);
+    }
 };
 
-// NEW: Clear NormalMode filters from AsyncStorage
 export const clearNormalModeFilters = async () => {
-  try {
-    await AsyncStorage.removeItem('normalModeFilters');
-  } catch (error) {
-    console.error('Error clearing NormalMode filters:', error);
-  }
+    try {
+        await AsyncStorage.removeItem('@normalModeFilters');
+    } catch (e) {
+        console.error('Error clearing normal mode filters:', e);
+    }
 };
